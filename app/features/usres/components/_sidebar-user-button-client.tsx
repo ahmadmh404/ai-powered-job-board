@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,17 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+import { UserTable } from "@/drizzle/schema";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useClerk } from "@clerk/nextjs";
 import { ChevronsUpDownIcon, LogOut, Settings, UserIcon } from "lucide-react";
-import Link from "next/link";
 
 type Props = {
-  user: {
-    email: string;
-    name: string;
-    imageUrl: string;
-  };
+  user: typeof UserTable.$inferInsert;
 };
 
 export function SidebarUserButtonClient({ user }: Props) {
