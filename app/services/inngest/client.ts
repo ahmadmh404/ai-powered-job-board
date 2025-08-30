@@ -10,9 +10,9 @@ type ClerkWebHookData<T> = {
 };
 
 type Events = {
-  "clerk/user.created": ClerkWebHookData<UserJSON>;
-  "clerk/user.updated": ClerkWebHookData<UserJSON>;
-  "clerk/user.deleted": ClerkWebHookData<DeletedObjectJSON>;
+  "Clerk/user.created": ClerkWebHookData<UserJSON>;
+  "Clerk/user.updated": ClerkWebHookData<UserJSON>;
+  "Clerk/user.deleted": ClerkWebHookData<DeletedObjectJSON>;
 };
 
 // Create a client to send and receive events
