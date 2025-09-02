@@ -15,6 +15,13 @@
       "when": 1756292024676,
       "tag": "0001_flaky_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756819327822,
+      "tag": "0002_wonderful_morlun",
+      "breakpoints": true
     }
   ]
 }

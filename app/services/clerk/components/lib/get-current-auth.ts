@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { OrganaizationTable, UserTable } from "@/drizzle/schema";
+import { OrganizationTable, UserTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
@@ -42,7 +42,7 @@ async function getOrganaization(orgId: string) {
   // if the user data changes then it will get the new user infor
   cacheTag(getOrganaizationIdTag(orgId));
 
-  return db.query.OrganaizationTable.findFirst({
-    where: eq(OrganaizationTable.id, orgId),
+  return db.query.OrganizationTable.findFirst({
+    where: eq(OrganizationTable.id, orgId),
   });
 }

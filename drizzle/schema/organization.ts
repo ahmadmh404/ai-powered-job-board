@@ -7,11 +7,11 @@ import {
   OrganaizationUserSettingsTable,
 } from "@/drizzle/schema";
 
-export const OrganaizationTable = pgTable("organaizatoins", {
+export const OrganizationTable = pgTable("organizatoins", {
   id: varchar().primaryKey(),
   name: varchar().notNull(),
   // Clerk always return an image url
-  imageUrl: varchar().notNull(),
+  imageUrl: varchar(),
 
   // imported from a file to avoide DRY
   createdAt,
@@ -19,7 +19,7 @@ export const OrganaizationTable = pgTable("organaizatoins", {
 });
 
 export const OrganaizationReferences = relations(
-  OrganaizationTable,
+  OrganizationTable,
   ({ many }) => ({
     jobListings: many(JobListingTable),
 

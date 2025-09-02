@@ -9,7 +9,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { createdAt, id, updatedAt } from "@/drizzle/schema-helpers";
-import { OrganaizationTable } from "./organaizatoin";
+import { OrganizationTable } from "./organaizatoin";
 import { relations } from "drizzle-orm";
 import { JobLIstingApplicationTable } from "./job-listing-application";
 
@@ -60,7 +60,7 @@ export const JobListingTable = pgTable(
     id,
     // foreign key from organaiztoin table
     organaizationId: varchar()
-      .references(() => OrganaizationTable.id, {
+      .references(() => OrganizationTable.id, {
         onDelete: "cascade",
       })
       .notNull(),
@@ -94,9 +94,9 @@ export const jobListingReferences = relations(
   JobListingTable,
   ({ one, many }) => ({
     // every job listing is owned by an organaization
-    organaization: one(OrganaizationTable, {
+    organaization: one(OrganizationTable, {
       fields: [JobListingTable.organaizationId],
-      references: [OrganaizationTable.id],
+      references: [OrganizationTable.id],
     }),
 
     // relation have neither fields nor references. This tells Typescript that applications is nullable:
