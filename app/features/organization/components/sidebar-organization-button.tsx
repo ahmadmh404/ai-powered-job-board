@@ -5,8 +5,8 @@ import {
 } from "@/app/services/clerk/components/lib/get-current-auth";
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
-import SidebarOrganaizationClientButton from "./_sidebar-organaizatoin-button-client";
 import { LogOutIcon } from "lucide-react";
+import SidebarOrganaizationClientButton from "./_sidebar-organization-button-client";
 
 export function SidebarOrganaizationButton() {
   return (

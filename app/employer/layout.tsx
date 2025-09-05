@@ -15,6 +15,7 @@ import { ClipboardListIcon, PlusIcon } from "lucide-react";
 import { getCurrentOrganaization } from "../services/clerk/components/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import { ChildrenProps } from "@/types";
+import { SidebarOrganaizationButton } from "../features/organization/components/sidebar-organization-button";
 
 const navItems: Item[] = [
   { href: "/", icon: <ClipboardListIcon />, label: "Job Board" },
@@ -35,7 +36,7 @@ const Content = (
   </>
 );
 
-const footerButton = <SidebarUserButton />;
+const footerButton = <SidebarOrganaizationButton />;
 
 export default function EmployerLayout({ children }: ChildrenProps) {
   return (

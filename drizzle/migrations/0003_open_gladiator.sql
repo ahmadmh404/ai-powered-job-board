@@ -1,0 +1,1 @@
+ALTER TABLE "organizatoins" ALTER COLUMN "imageUrl" DROP NOT NULL;

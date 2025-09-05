@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { Organaization, User } from "@/types";
@@ -14,8 +16,6 @@ import {
   ChevronsUpDownIcon,
   CreditCardIcon,
   LogOut,
-  Settings,
-  UserIcon,
   UserRoundCogIcon,
 } from "lucide-react";
 import Link from "next/link";
