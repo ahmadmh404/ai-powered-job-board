@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getUserIdTag } from "@/app//features/usres/db/cache/users";
-import { getOrganaizationIdTag } from "@/app/features/oranaizations/db/cache/organaizations";
+import { getOrganaizationIdTag } from "@/app/features/organization/db/cache/organizations";
 
 export async function getCurrentUser({ allData = false } = {}) {
   const { userId } = await auth();

@@ -9,7 +9,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { createdAt, id, updatedAt } from "@/drizzle/schema-helpers";
-import { OrganizationTable } from "./organaizatoin";
+import { OrganizationTable } from "./organization";
 import { relations } from "drizzle-orm";
 import { JobLIstingApplicationTable } from "./job-listing-application";
 
