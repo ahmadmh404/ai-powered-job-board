@@ -86,3 +86,21 @@ export function formatJobListingStatus(status: JobListingStatus) {
       throw new Error(`Invalid Location Requirement ${status satisfies never}`);
   }
 }
+
+export function formatWage(wage: number, wageInterval: WageInterval) {
+  const wageFormatter = Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+  });
+
+  switch (wageInterval) {
+    case "hourly":
+      return `${wageFormatter.format(wage)} / hr`;
+    case "yearly":
+      return wageFormatter.format(wage);
+
+    default:
+      throw new Error(`Unknown wage interval ${wageInterval satisfies never}`);
+  }
+}

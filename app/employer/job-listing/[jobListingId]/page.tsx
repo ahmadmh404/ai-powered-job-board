@@ -1,3 +1,4 @@
+import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
 import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
 import { formatJobListingStatus } from "@/app/features/job-listings/util/formators";
 import { getCurrentOrganaization } from "@/app/services/clerk/components/lib/get-current-auth";
@@ -47,6 +48,7 @@ async function SuspensedPage({ params }: Props) {
 
           <div className="flex flex-wrap gap-1 mt-2">
             <Badge>{formatJobListingStatus(jobListing.status)}</Badge>
+            <JobListingBadges jobListing={jobListing} />
           </div>
         </div>
 

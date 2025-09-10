@@ -69,7 +69,7 @@ export const JobListingTable = pgTable(
     description: text().notNull(),
 
     wage: integer(),
-    wageIntervalEnum: WageIntervalEnum(),
+    wageInterva: WageIntervalEnum(),
     city: varchar(),
     stateAbreviation: varchar(),
     isFeatured: boolean().notNull().default(false),
