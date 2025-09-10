@@ -12,14 +12,14 @@ import { relations } from "drizzle-orm";
 
 // used for the organaization settings associated with a certain user
 // like: do you want to receive an email when a user apply for you job application, and what are the minimum rating you wnat to setto determine if the applicant is okay iwth this job.
-// in here the user may be in one or more organaization so the primary key is a userId, organaizationId companasion.
+// in here the user may be in one or more organaization so the primary key is a userId, organizationId companasion.
 export const OrganaizationUserSettingsTable = pgTable(
   "organaiztion_user_settings",
   {
     id: varchar()
       .notNull()
       .references(() => UserTable.id),
-    organaizationId: varchar()
+    organizationId: varchar()
       .notNull()
       .references(() => OrganizationTable.id),
 
@@ -28,7 +28,7 @@ export const OrganaizationUserSettingsTable = pgTable(
     createdAt,
     updatedAt,
   },
-  (table) => [primaryKey({ columns: [table.id, table.organaizationId] })]
+  (table) => [primaryKey({ columns: [table.id, table.organizationId] })]
 );
 
 export const OrganaizationUserSettingsReferences = relations(
@@ -40,7 +40,7 @@ export const OrganaizationUserSettingsReferences = relations(
     }),
 
     organaization: one(OrganizationTable, {
-      fields: [OrganaizationUserSettingsTable.organaizationId],
+      fields: [OrganaizationUserSettingsTable.organizationId],
       references: [OrganizationTable.id],
     }),
   })

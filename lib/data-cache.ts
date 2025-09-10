@@ -14,6 +14,11 @@ export function getGlobalTag(tag: CacheTag) {
   return `global:${tag}` as const;
 }
 
+// this is an organization level caching, like caching a specific organization joblising. sp
+export function getOrganizationTag(tag: CacheTag, organizationId: string) {
+  return `organization:${organizationId}-${tag}` as const;
+}
+
 // the narrow caching, is when i wnat to cache a specific record with a specific id
 // like when a certain user with a specific id changes i wnat to refetch the cache related to that user.
 export function getIdlTag(tag: CacheTag, id: string) {

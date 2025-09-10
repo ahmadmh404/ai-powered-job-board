@@ -192,7 +192,7 @@ export const clerkUpdateOrganization = inngest.createFunction(
       }
     });
 
-    step.run("update-organization", async () => {
+    await step.run("update-organization", async () => {
       const orgData = event.data.data;
 
       await updateOrganization(orgData.id, {
@@ -220,7 +220,7 @@ export const clerkDeleteOrganization = inngest.createFunction(
       }
     });
 
-    step.run("delete-organization", async () => {
+    await step.run("delete-organization", async () => {
       const { id } = event.data.data;
 
       if (id == null) {

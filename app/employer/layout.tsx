@@ -6,7 +6,6 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/shared/app-sidebar";
-import { SidebarUserButton } from "../features/usres/components/sidebar-user-button";
 import SidebarNavMenuGroup, {
   Item,
 } from "@/components/shared/sidebar-nav-menu-group";

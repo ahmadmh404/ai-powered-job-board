@@ -15,7 +15,7 @@ export function AppSidebarClient({ children }: { children: ReactNode }) {
           <span className="text-nowrap text-xl">SPN Jobs</span>
         </div>
 
-        <div className="flex-1">\{children}</div>
+        <div className="flex-1">{children}</div>
       </div>
     );
   }

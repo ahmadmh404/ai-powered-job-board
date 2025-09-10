@@ -23,7 +23,7 @@ export const WageIntervalEnum = pgEnum(
 
 // location requirement
 export const locationRequirements = ["in-office", "remote", "hybrid"] as const;
-export type LocationRequirement = (typeof wageIntervals)[number];
+export type LocationRequirement = (typeof locationRequirements)[number];
 export const LocationRequirementEnum = pgEnum(
   "job_listing_location_requirement",
   locationRequirements
@@ -31,10 +31,10 @@ export const LocationRequirementEnum = pgEnum(
 
 // experience level
 export const experienceLevels = ["junior", "mid-level", "senior"] as const;
-export type ExperienceLevel = (typeof wageIntervals)[number];
+export type ExperienceLevel = (typeof experienceLevels)[number];
 export const ExperienceLevelEnum = pgEnum(
   "job_listing_experience_level",
-  locationRequirements
+  experienceLevels
 );
 
 // job listing status
@@ -59,14 +59,14 @@ export const JobListingTable = pgTable(
   {
     id,
     // foreign key from organaiztoin table
-    organaizationId: varchar()
+    organizationId: varchar()
       .references(() => OrganizationTable.id, {
         onDelete: "cascade",
       })
       .notNull(),
 
     title: varchar().notNull(),
-    descriptoin: text().notNull(),
+    description: text().notNull(),
 
     wage: integer(),
     wageIntervalEnum: WageIntervalEnum(),
@@ -88,14 +88,13 @@ export const JobListingTable = pgTable(
   (table) => [index().on(table.stateAbreviation)]
 );
 
-// relatoins
-
+// relatoinss
 export const jobListingReferences = relations(
   JobListingTable,
   ({ one, many }) => ({
     // every job listing is owned by an organaization
     organaization: one(OrganizationTable, {
-      fields: [JobListingTable.organaizationId],
+      fields: [JobListingTable.organizationId],
       references: [OrganizationTable.id],
     }),
 
