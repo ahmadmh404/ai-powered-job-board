@@ -104,3 +104,21 @@ export function formatWage(wage: number, wageInterval: WageInterval) {
       throw new Error(`Unknown wage interval ${wageInterval satisfies never}`);
   }
 }
+
+export function formatJobListingLocation({
+  city,
+  stateAbreviation,
+}: {
+  city: string | null;
+  stateAbreviation: string | null;
+}) {
+  if (city == null && stateAbreviation == null) return "None";
+
+  const locationParts = [] as string[];
+
+  if (city != null) locationParts.push(city);
+  if (stateAbreviation != null)
+    locationParts.push(stateAbreviation.toUpperCase());
+
+  return locationParts.join(", ");
+}

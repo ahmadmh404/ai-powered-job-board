@@ -1,7 +1,21 @@
 import { Badge } from "@/components/ui/badge";
 import { JobListingTable } from "@/drizzle/schema";
 import { ComponentProps } from "react";
-import { formatWage } from "../util/formators";
+import {
+  formatExperienceLevel,
+  formatJobListingLocation,
+  formatJobType,
+  formatLocationRequirments,
+  formatWage,
+} from "../util/formators";
+import {
+  BanknoteIcon,
+  BuildingIcon,
+  GraduationCapIcon,
+  HourglassIcon,
+  MapPinIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function JobListingBadges({
   jobListing: {
@@ -29,6 +43,7 @@ export default function JobListingBadges({
   >;
   className?: string;
 }) {
+  console.log("jobListing: ", wage, wageInterva);
   const badgeProps = {
     variant: "outline",
     className,
@@ -36,9 +51,46 @@ export default function JobListingBadges({
 
   return (
     <>
-      {wage != null && wageInterva != null && (
-        <Badge {...badgeProps}>{formatWage(wage, wageInterva)}</Badge>
+      {!isFeatured && (
+        <Badge
+          {...badgeProps}
+          className={cn(
+            className,
+            "border-featured bg-featured/50 text-featured-foregroundound"
+          )}
+        >
+          Featured
+        </Badge>
       )}
+
+      {wage != null && wageInterva != null && (
+        <Badge {...badgeProps}>
+          <BanknoteIcon />
+          {formatWage(wage, wageInterva)}
+        </Badge>
+      )}
+
+      {(stateAbreviation != null || city != null) && (
+        <Badge {...badgeProps}>
+          <MapPinIcon className="" />
+          {formatJobListingLocation({ city, stateAbreviation })}
+        </Badge>
+      )}
+
+      <Badge {...badgeProps}>
+        <BuildingIcon />
+        {formatLocationRequirments(locationRequirement)}
+      </Badge>
+
+      <Badge {...badgeProps}>
+        <HourglassIcon />
+        {formatJobType(type)}
+      </Badge>
+
+      <Badge {...badgeProps}>
+        <GraduationCapIcon />
+        {formatExperienceLevel(experienceLevel)}
+      </Badge>
     </>
   );
 }

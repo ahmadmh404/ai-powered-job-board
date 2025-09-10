@@ -3,10 +3,13 @@ import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-lis
 import { formatJobListingStatus } from "@/app/features/job-listings/util/formators";
 import { getCurrentOrganaization } from "@/app/services/clerk/components/lib/get-current-auth";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
 import { JobListingTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
+import { EditIcon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 
@@ -46,15 +49,33 @@ async function SuspensedPage({ params }: Props) {
             {jobListing.title}
           </h1>
 
-          <div className="flex flex-wrap gap-1 mt-2">
+          <div className="flex flex-wrap gap-3 mt-2">
             <Badge>{formatJobListingStatus(jobListing.status)}</Badge>
             <JobListingBadges jobListing={jobListing} />
           </div>
         </div>
 
         {/* Actions */}
-        <div></div>
+        <div className="flex items-center gap-2 empty:-mt-4">
+          <Button variant={"outline"} asChild>
+            <Link href={`/employer/job-listing/${jobListing.id}/edit`}>
+              <EditIcon className="size-4" />
+              Edit
+            </Link>
+          </Button>
+        </div>
       </div>
+
+      <MarkdownPartial
+        dialogMardown={<MarkdownRenderder source={jobListing.description} />}
+        mainMarkdown={
+          <MarkdownRenderer
+            className="prose-sm"
+            source={jobListing.description}
+          />
+        }
+        dialogTitle="Descriiption"
+      />
     </div>
   );
 }
