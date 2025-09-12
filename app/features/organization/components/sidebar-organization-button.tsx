@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import {
   getCurrentOrganaization,
   getCurrentUser,
-} from "@/app/services/clerk/components/lib/get-current-auth";
+} from "@/app/services/clerk/lib/get-current-auth";
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { LogOutIcon } from "lucide-react";

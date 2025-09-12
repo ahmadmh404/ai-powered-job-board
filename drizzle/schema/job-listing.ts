@@ -69,9 +69,9 @@ export const JobListingTable = pgTable(
     description: text().notNull(),
 
     wage: integer(),
-    wageInterva: WageIntervalEnum(),
+    wageInterval: WageIntervalEnum(),
     city: varchar(),
-    stateAbreviation: varchar(),
+    stateAbbreviation: varchar(),
     isFeatured: boolean().notNull().default(false),
     locationRequirement: LocationRequirementEnum().notNull(),
     experienceLevel: ExperienceLevelEnum().notNull(),
@@ -85,7 +85,7 @@ export const JobListingTable = pgTable(
   },
 
   // to search faster depending on state abreviatoin
-  (table) => [index().on(table.stateAbreviation)]
+  (table) => [index().on(table.stateAbbreviation)]
 );
 
 // relatoinss

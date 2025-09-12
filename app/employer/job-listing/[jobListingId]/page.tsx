@@ -1,7 +1,11 @@
 import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
 import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
 import { formatJobListingStatus } from "@/app/features/job-listings/util/formators";
-import { getCurrentOrganaization } from "@/app/services/clerk/components/lib/get-current-auth";
+import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
+import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
+import AsyncIf from "@/components/async-if";
+import { MarkdownPartial } from "@/components/markdown/markdown-partial";
+import MarkdownRenderder from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
@@ -40,6 +44,8 @@ async function SuspensedPage({ params }: Props) {
     return notFound();
   }
 
+  const editPermissoin = () => hasOrgUserPermissoin("job_listing:update");
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-4 @container">
       <div className="flex items-center justify-between gap-4 @max-4xl:flex-col @max-4xl:items-start">
@@ -57,19 +63,21 @@ async function SuspensedPage({ params }: Props) {
 
         {/* Actions */}
         <div className="flex items-center gap-2 empty:-mt-4">
-          <Button variant={"outline"} asChild>
-            <Link href={`/employer/job-listing/${jobListing.id}/edit`}>
-              <EditIcon className="size-4" />
-              Edit
-            </Link>
-          </Button>
+          <AsyncIf condition={editPermissoin}>
+            <Button variant={"outline"} asChild>
+              <Link href={`/employer/job-listing/${jobListing.id}/edit`}>
+                <EditIcon className="size-4" />
+                Edit
+              </Link>
+            </Button>
+          </AsyncIf>
         </div>
       </div>
 
       <MarkdownPartial
-        dialogMardown={<MarkdownRenderder source={jobListing.description} />}
+        dialogMarkdown={<MarkdownRenderder source={jobListing.description} />}
         mainMarkdown={
-          <MarkdownRenderer
+          <MarkdownRenderder
             className="prose-sm"
             source={jobListing.description}
           />
@@ -80,7 +88,7 @@ async function SuspensedPage({ params }: Props) {
   );
 }
 
-async function getJobListing(id: string, orgId: string) {
+export async function getJobListing(id: string, orgId: string) {
   "use cache";
   cacheTag(getJobListingIdTag(id));
 

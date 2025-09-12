@@ -1,28 +1,27 @@
-import { markdownClassnNames } from "./_markdown-editor";
-
-import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
-import remarkGFM from "remark-gfm";
-
 import { cn } from "@/lib/utils";
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 
-type Props = { props: MDXRemoteProps; className?: string };
+export const markdownClassNames =
+  "max-w-none prose prose-neutral dark:prose-invert font-sans";
 
-export default function MarkdownRenderder({
-  props: { options, ...props },
-  className = "",
-}: Props) {
+export default function MarkdownRenderer({
+  className,
+  options,
+  ...props
+}: MDXRemoteProps & { className?: string }) {
   return (
-    <div className={cn(markdownClassnNames, className)}>
+    <div className={cn(markdownClassNames, className)}>
       <MDXRemote
         {...props}
         options={{
           mdxOptions: {
             remarkPlugins: [
-              remarkGFM,
+              remarkGfm,
               ...(options?.mdxOptions?.remarkPlugins ?? []),
             ],
+            ...options?.mdxOptions,
           },
-          ...options?.mdxOptions,
         }}
       />
     </div>

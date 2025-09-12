@@ -3,7 +3,7 @@ import { SidebarUserButtonClient } from "./_sidebar-user-button-client";
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { LogOutIcon } from "lucide-react";
-import { getCurrentUser } from "@/app/services/clerk/components/lib/get-current-auth";
+import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 
 export function SidebarUserButton() {
   return (

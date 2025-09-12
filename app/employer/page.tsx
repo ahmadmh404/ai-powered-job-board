@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
-import { getCurrentOrganaization } from "../services/clerk/components/lib/get-current-auth";
+import { getCurrentOrganaization } from "../services/clerk/lib/get-current-auth";
 import { db } from "@/drizzle/db";
 import { desc, eq } from "drizzle-orm";
-import { JobListingTable, OrganizationTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schema";
 import { redirect } from "next/navigation";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
@@ -18,9 +18,13 @@ function EmployerHomePage() {
 async function SuspensedPage() {
   const { orgId } = await getCurrentOrganaization();
 
-  if (!orgId) return null;
+  if (!orgId) {
+    return null;
+  }
 
   const jobListing = await getMostRecentJobListing(orgId);
+
+  console.log("jobListing: ", jobListing);
 
   if (jobListing == null) {
     redirect("/employer/job-listing/new");

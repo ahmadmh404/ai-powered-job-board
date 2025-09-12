@@ -22,10 +22,10 @@ export default function JobListingBadges({
     city,
     type,
     wage,
-    wageInterva,
+    wageInterval,
     experienceLevel,
     isFeatured,
-    stateAbreviation,
+    stateAbbreviation,
     locationRequirement,
   },
   className = "",
@@ -35,15 +35,14 @@ export default function JobListingBadges({
     | "city"
     | "type"
     | "wage"
-    | "wageInterva"
+    | "wageInterval"
     | "experienceLevel"
     | "isFeatured"
-    | "stateAbreviation"
+    | "stateAbbreviation"
     | "locationRequirement"
   >;
   className?: string;
 }) {
-  console.log("jobListing: ", wage, wageInterva);
   const badgeProps = {
     variant: "outline",
     className,
@@ -51,7 +50,7 @@ export default function JobListingBadges({
 
   return (
     <>
-      {!isFeatured && (
+      {isFeatured && (
         <Badge
           {...badgeProps}
           className={cn(
@@ -63,17 +62,17 @@ export default function JobListingBadges({
         </Badge>
       )}
 
-      {wage != null && wageInterva != null && (
+      {wage != null && wageInterval != null && (
         <Badge {...badgeProps}>
           <BanknoteIcon />
-          {formatWage(wage, wageInterva)}
+          {formatWage(wage, wageInterval)}
         </Badge>
       )}
 
-      {(stateAbreviation != null || city != null) && (
+      {(stateAbbreviation != null || city != null) && (
         <Badge {...badgeProps}>
-          <MapPinIcon className="" />
-          {formatJobListingLocation({ city, stateAbreviation })}
+          <MapPinIcon />
+          {formatJobListingLocation({ city, stateAbbreviation })}
         </Badge>
       )}
 

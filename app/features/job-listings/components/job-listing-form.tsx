@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import {
   experienceLevels,
+  JobListingTable,
   jobListingTypes,
   locationRequirements,
   wageIntervals,
@@ -38,29 +39,51 @@ import { StateSelectItems } from "./state-abbreviation-items";
 import { MDXMarkdownEditor } from "@/components/markdown/markdown";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/loading-swap";
-import { createJobListing } from "../actions/actions";
+import { createJobListing, updateJobListing } from "../actions/actions";
 import { toast } from "sonner";
 
 const NON_SELCT_VALUE = "none";
 
-function JobListingForm() {
+type Props = {
+  jobListing?: Pick<
+    typeof JobListingTable.$inferSelect,
+    | "id"
+    | "title"
+    | "description"
+    | "city"
+    | "type"
+    | "wage"
+    | "wageInterval"
+    | "locationRequirement"
+    | "experienceLevel"
+    | "stateAbbreviation"
+  >;
+};
+
+function JobListingForm({ jobListing }: Props) {
   const form = useForm({
     resolver: zodResolver(JobListingSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      city: null,
-      stateAbbreviation: null,
-      wage: null,
-      wageInterval: "yearly",
-      experienceLevel: "junior",
-      locationRequirement: "in-office",
-      type: "full-time",
-    },
+    defaultValues: jobListing
+      ? jobListing
+      : {
+          title: "",
+          description: "",
+          city: null,
+          stateAbbreviation: null,
+          wage: null,
+          wageInterval: "yearly",
+          experienceLevel: "junior",
+          locationRequirement: "in-office",
+          type: "full-time",
+        },
   });
 
   async function onSubmit(data: z.infer<typeof JobListingSchema>) {
-    const res = await createJobListing(data);
+    const action = jobListing
+      ? updateJobListing.bind(null, jobListing.id)
+      : createJobListing;
+
+    const res = await action(data);
 
     if (res.error) {
       toast.error(res.message);
@@ -176,7 +199,7 @@ function JobListingForm() {
                       field.onChange(val === NON_SELCT_VALUE ? null : val)
                     }
                   >
-                    <FormControl>
+                    <FormControl suppressHydrationWarning>
                       <SelectTrigger className="w-full">
                         / <SelectValue />
                       </SelectTrigger>

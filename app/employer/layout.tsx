@@ -11,7 +11,7 @@ import SidebarNavMenuGroup, {
 } from "@/components/shared/sidebar-nav-menu-group";
 
 import { ClipboardListIcon, PlusIcon } from "lucide-react";
-import { getCurrentOrganaization } from "../services/clerk/components/lib/get-current-auth";
+import { getCurrentOrganaization } from "../services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import { ChildrenProps } from "@/types";
 import { SidebarOrganaizationButton } from "../features/organization/components/sidebar-organization-button";

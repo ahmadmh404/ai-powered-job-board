@@ -2,16 +2,24 @@
 
 import z from "zod";
 import { JobListingSchema } from "./schemas";
-import { getCurrentOrganaization } from "@/app/services/clerk/components/lib/get-current-auth";
+import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
-import { insertJobListing } from "../db/job-listings";
+import {
+  insertJobListing,
+  updateJobListing as updateJobListingDB,
+} from "../db/job-listings";
+import { JobListingTable } from "@/drizzle/schema";
+import { getJobListing } from "@/app/employer/job-listing/[jobListingId]/page";
+import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
 
 export async function createJobListing(
   unsaveData: z.infer<typeof JobListingSchema>
 ) {
   const { orgId } = await getCurrentOrganaization();
 
-  if (orgId == null) {
+  const hasPermission = await hasOrgUserPermissoin("job_listing:create");
+
+  if (orgId == null || !hasPermission) {
     return {
       error: true,
       message: "You have no permission to create a job listing",
@@ -34,4 +42,42 @@ export async function createJobListing(
   });
 
   redirect(`/employer/job-listing/${jobListing.id}`);
+}
+
+export async function updateJobListing(
+  id: string,
+  unsaveData: Partial<typeof JobListingTable.$inferInsert>
+) {
+  const { orgId } = await getCurrentOrganaization();
+
+  const hasPermission = await hasOrgUserPermissoin("job_listing:update");
+
+  if (orgId == null || !hasPermission) {
+    return {
+      error: true,
+      message: "You have no permission to update a job listing",
+    };
+  }
+
+  const { success, data } = JobListingSchema.safeParse(unsaveData);
+
+  if (!success) {
+    return {
+      error: true,
+      message: "THere was an error updating your job listing",
+    };
+  }
+
+  const jobListing = await getJobListing(id, orgId);
+
+  if (jobListing == null) {
+    return {
+      error: true,
+      message: "THere was an error updating your job listing",
+    };
+  }
+
+  const updatedJobListing = updateJobListingDB(id, data);
+
+  redirect(`/employer/job-listing/${(await updatedJobListing).jobListingId}`);
 }

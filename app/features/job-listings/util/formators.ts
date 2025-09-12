@@ -107,18 +107,18 @@ export function formatWage(wage: number, wageInterval: WageInterval) {
 
 export function formatJobListingLocation({
   city,
-  stateAbreviation,
+  stateAbbreviation,
 }: {
   city: string | null;
-  stateAbreviation: string | null;
+  stateAbbreviation: string | null;
 }) {
-  if (city == null && stateAbreviation == null) return "None";
+  if (city == null && stateAbbreviation == null) return "None";
 
   const locationParts = [] as string[];
 
   if (city != null) locationParts.push(city);
-  if (stateAbreviation != null)
-    locationParts.push(stateAbreviation.toUpperCase());
+  if (stateAbbreviation != null)
+    locationParts.push(stateAbbreviation.toUpperCase());
 
   return locationParts.join(", ");
 }
