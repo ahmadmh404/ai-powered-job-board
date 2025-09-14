@@ -1,19 +1,27 @@
 import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
+import UpgradePopover, {
+  JobListingStatusText,
+} from "@/app/features/job-listings/components/upgrade-popover";
 import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
 import { formatJobListingStatus } from "@/app/features/job-listings/util/formators";
-import { getNextJobListingStatus } from "@/app/features/job-listings/util/util";
+import { hasReachedMaxFeatredJobListings } from "@/app/features/job-listings/util/plan-features-helpers";
+import { getNextJobListingStatus } from "@/app/features/job-listings/util/utils";
 import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
-import { hasPlanFeature } from "@/app/services/clerk/lib/plan-features";
 import AsyncIf from "@/components/async-if";
 import { MarkdownPartial } from "@/components/markdown/markdown-partial";
 import MarkdownRenderder from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { db } from "@/drizzle/db";
 import { JobListingStatus, JobListingTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
-import { EditIcon } from "lucide-react";
+import { EditIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -95,13 +103,31 @@ async function SuspensedPage({ params }: Props) {
 function JobListingStatusButton({ status }: { status: JobListingStatus }) {
   const button = <Button variant={"outline"}>Toggle</Button>;
   const nextStatus = getNextJobListingStatus(status);
+  const buttonText = JobListingStatusText(status);
 
+  const hasReachedMax = () => hasReachedMaxFeatredJobListings();
   const hasChangePermission = () =>
     hasOrgUserPermissoin("job_listing:change_status");
 
   return (
     <AsyncIf condition={hasChangePermission}>
-      {nextStatus === "published" ? <AsyncIf>{button}</AsyncIf> : button}
+      {nextStatus === "published" ? (
+        <AsyncIf
+          condition={hasReachedMax}
+          otherwise={
+            <UpgradePopover
+              buttonText={buttonText}
+              popoverText={
+                " You must upgrade your plan to publish more job listings"
+              }
+            />
+          }
+        >
+          {button}
+        </AsyncIf>
+      ) : (
+        button
+      )}
     </AsyncIf>
   );
 }
