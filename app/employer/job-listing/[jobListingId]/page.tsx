@@ -1,15 +1,17 @@
 import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
 import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
 import { formatJobListingStatus } from "@/app/features/job-listings/util/formators";
+import { getNextJobListingStatus } from "@/app/features/job-listings/util/util";
 import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
+import { hasPlanFeature } from "@/app/services/clerk/lib/plan-features";
 import AsyncIf from "@/components/async-if";
 import { MarkdownPartial } from "@/components/markdown/markdown-partial";
 import MarkdownRenderder from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingStatus, JobListingTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
 import { EditIcon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
@@ -71,6 +73,8 @@ async function SuspensedPage({ params }: Props) {
               </Link>
             </Button>
           </AsyncIf>
+
+          <JobListingStatusButton status={jobListing.status} />
         </div>
       </div>
 
@@ -85,6 +89,20 @@ async function SuspensedPage({ params }: Props) {
         dialogTitle="Descriiption"
       />
     </div>
+  );
+}
+
+function JobListingStatusButton({ status }: { status: JobListingStatus }) {
+  const button = <Button variant={"outline"}>Toggle</Button>;
+  const nextStatus = getNextJobListingStatus(status);
+
+  const hasChangePermission = () =>
+    hasOrgUserPermissoin("job_listing:change_status");
+
+  return (
+    <AsyncIf condition={hasChangePermission}>
+      {nextStatus === "published" ? <AsyncIf>{button}</AsyncIf> : button}
+    </AsyncIf>
   );
 }
 
