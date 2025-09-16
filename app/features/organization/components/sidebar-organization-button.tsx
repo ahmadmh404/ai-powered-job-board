@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import {
-  getCurrentOrganization,
+  getCurrentOrganaization,
   getCurrentUser,
 } from "@/app/services/clerk/lib/get-current-auth";
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
@@ -19,7 +19,7 @@ export function SidebarOrganaizationButton() {
 async function SidebarOrganaizationSuspense() {
   const [{ user }, { organaization }] = await Promise.all([
     getCurrentUser({ allData: true }),
-    getCurrentOrganization({ allData: true }),
+    getCurrentOrganaization({ allData: true }),
   ]);
 
   if (user == null || organaization == null) {

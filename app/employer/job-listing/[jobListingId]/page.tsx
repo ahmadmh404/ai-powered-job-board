@@ -15,7 +15,7 @@ import {
   hasReachedMaxPublishedJobListings,
 } from "@/app/features/job-listings/lib/plan-features-helpers";
 import { getNextJobListingStatus } from "@/app/features/job-listings/lib/utils";
-import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
 import ActionButton from "@/components/action-button";
 import AsyncIf from "@/components/async-if";
@@ -23,15 +23,10 @@ import { MarkdownPartial } from "@/components/markdown/markdown-partial";
 import MarkdownRenderder from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { db } from "@/drizzle/db";
 import { JobListingStatus, JobListingTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
-import { EditIcon, EyeIcon, EyeOffIcon, Trash2Icon } from "lucide-react";
+import { EditIcon, Trash2Icon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -50,7 +45,7 @@ export default function JobListingPage({ params }: Props) {
 }
 
 async function SuspensedPage({ params }: Props) {
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   if (orgId == null) {
     return null;

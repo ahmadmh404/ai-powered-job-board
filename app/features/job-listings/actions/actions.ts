@@ -2,7 +2,7 @@
 
 import z from "zod";
 import { JobListingSchema } from "./schemas";
-import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import {
   insertJobListing,
@@ -21,7 +21,7 @@ import {
 export async function createJobListing(
   unsaveData: z.infer<typeof JobListingSchema>
 ) {
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   const hasPermission = await hasOrgUserPermissoin("job_listing:create");
 
@@ -54,7 +54,7 @@ export async function updateJobListing(
   id: string,
   unsaveData: Partial<typeof JobListingTable.$inferInsert>
 ) {
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   const hasPermission = await hasOrgUserPermissoin("job_listing:update");
 
@@ -94,7 +94,7 @@ export async function toggleJobListingStatus(id: string) {
     message: "You have no permission to update a job listing status",
   };
 
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   const hasPermission = await hasOrgUserPermissoin("job_listing:update");
 
@@ -133,7 +133,7 @@ export async function toggleJobListingFeatured(id: string) {
     message: "You have no permission to update a job listing featured status",
   };
 
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   const hasPermission = await hasOrgUserPermissoin("job_listing:update");
 
@@ -167,7 +167,7 @@ export async function deleteJobListing(id: string) {
     message: "You have no permission to delete a job listing.",
   };
 
-  const { orgId } = await getCurrentOrganization();
+  const { orgId } = await getCurrentOrganaization();
 
   const hasPermission = await hasOrgUserPermissoin("job_listing:delete");
 
