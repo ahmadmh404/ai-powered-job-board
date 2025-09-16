@@ -34,7 +34,7 @@ import {
   formatJobType,
   formatLocationRequirments,
   formatWageIntervals,
-} from "../util/formators";
+} from "../lib/formators";
 import { StateSelectItems } from "./state-abbreviation-items";
 import { MDXMarkdownEditor } from "@/components/markdown/markdown";
 import { Button } from "@/components/ui/button";

@@ -1,35 +1,29 @@
-import React, { Suspense } from "react";
-import { getCurrentOrganaization } from "../services/clerk/lib/get-current-auth";
 import { db } from "@/drizzle/db";
-import { desc, eq } from "drizzle-orm";
 import { JobListingTable } from "@/drizzle/schema";
+import { desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { Suspense } from "react";
+import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
 import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 
-function EmployerHomePage() {
+export default function EmployerHomePage() {
   return (
     <Suspense>
-      <SuspensedPage />
+      <SuspendedPage />
     </Suspense>
   );
 }
 
-async function SuspensedPage() {
+async function SuspendedPage() {
   const { orgId } = await getCurrentOrganaization();
-
-  if (!orgId) {
-    return null;
-  }
+  if (orgId == null) return null;
 
   const jobListing = await getMostRecentJobListing(orgId);
-
-  console.log("jobListing: ", jobListing);
-
   if (jobListing == null) {
-    redirect("/employer/job-listing/new");
+    redirect("/employer/job-listings/new");
   } else {
-    redirect(`/employer/job-listing/${jobListing.id}`);
+    redirect(`/employer/job-listings/${jobListing.id}`);
   }
 }
 
@@ -43,5 +37,3 @@ async function getMostRecentJobListing(orgId: string) {
     columns: { id: true },
   });
 }
-
-export default EmployerHomePage;

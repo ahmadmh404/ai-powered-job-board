@@ -7,7 +7,7 @@ import {
   formatJobType,
   formatLocationRequirments,
   formatWage,
-} from "../util/formators";
+} from "../lib/formators";
 import {
   BanknoteIcon,
   BuildingIcon,
@@ -31,7 +31,7 @@ export default function JobListingBadges({
   className = "",
 }: {
   jobListing: Pick<
-    typeof JobListingTable.$inferInsert,
+    typeof JobListingTable.$inferSelect,
     | "city"
     | "type"
     | "wage"

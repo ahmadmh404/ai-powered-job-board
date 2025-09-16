@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { JobListingStatus } from "@/drizzle/schema";
-import { EyeIcon, EyeOffIcon, Link } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Link, StarIcon, StarOffIcon } from "lucide-react";
 import { ReactNode } from "react";
 
 type Props = {
@@ -46,6 +46,26 @@ export function JobListingStatusText(status: JobListingStatus) {
         <>
           <EyeOffIcon className="size-4" />
           Delist
+        </>
+      );
+  }
+}
+
+export function JobListingSFeaturedText(isFeatured: boolean) {
+  switch (isFeatured) {
+    case true:
+      return (
+        <>
+          <StarOffIcon className="size-4" />
+          isFeatured
+        </>
+      );
+
+    case false:
+      return (
+        <>
+          <StarIcon className="size-4" />
+          Feature
         </>
       );
   }

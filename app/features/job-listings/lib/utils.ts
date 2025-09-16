@@ -1,0 +1,31 @@
+import { JobListingStatus } from "@/drizzle/schema";
+import {
+  jobListingStatus,
+  JobListingStatusEnum,
+} from "../../../../drizzle/schema/job-listing";
+
+export function getNextJobListingStatus(status: JobListingStatus) {
+  switch (status) {
+    case "delisted":
+    case "draft":
+      return "published";
+
+    case "published":
+      return "delisted";
+    default:
+      throw new Error(`Invalid job listing ${status satisfies never}`);
+  }
+}
+
+export function sortJobListingsByStatus(
+  a: JobListingStatus,
+  b: JobListingStatus
+) {
+  return JOB_LISTING_STATUS_SORT_ORDER[a] - JOB_LISTING_STATUS_SORT_ORDER[b];
+}
+
+const JOB_LISTING_STATUS_SORT_ORDER: Record<JobListingStatus, number> = {
+  published: 0,
+  draft: 1,
+  delisted: 2,
+};
