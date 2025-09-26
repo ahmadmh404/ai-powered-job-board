@@ -4,23 +4,31 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { JobListingStatus } from "@/drizzle/schema";
 import { useParams } from "next/navigation";
 import { formatJobListingStatus } from "../features/job-listings/lib/formators";
 import { ChevronRightIcon } from "lucide-react";
-import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import Link from "next/link";
 
-export type JobListings = {
+export type JobListing = {
   id: string;
   title: string;
   status: JobListingStatus;
   applicationCount: number;
-}[];
+};
 
 type Props = {
   status: JobListingStatus;
-  jobListings: JobListings;
+  jobListings: JobListing[];
 };
 
 export default function JobLIstingMenuGroup({ jobListings, status }: Props) {
@@ -42,8 +50,36 @@ export default function JobLIstingMenuGroup({ jobListings, status }: Props) {
               <ChevronRightIcon className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
           </CollapsibleTrigger>
+
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {jobListings.map((job) => (
+                <JobListingMenuItem key={job.id} jobListing={job} />
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
         </SidebarMenuItem>
       </Collapsible>
     </SidebarMenu>
+  );
+}
+
+function JobListingMenuItem({ jobListing }: { jobListing: JobListing }) {
+  const { jobListingId } = useParams();
+
+  return (
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton isActive={jobListingId === jobListing.id} asChild>
+        <Link href={`/employer/job-listing/${jobListing.id}`}>
+          <span className="truncate">{jobListing.title}</span>
+
+          {jobListing.applicationCount > 0 && (
+            <div className="absolute right-2 text-sm text-muted-foreground">
+              {jobListing.applicationCount}
+            </div>
+          )}
+        </Link>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }

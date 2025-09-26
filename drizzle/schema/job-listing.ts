@@ -84,16 +84,16 @@ export const JobListingTable = pgTable(
     updatedAt,
   },
 
-  // to search faster depending on state abreviatoin
+  // to search faster depending on state abbreviation
   (table) => [index().on(table.stateAbbreviation)]
 );
 
-// relatoinss
+// relations
 export const jobListingReferences = relations(
   JobListingTable,
   ({ one, many }) => ({
-    // every job listing is owned by an organaization
-    organaization: one(OrganizationTable, {
+    // every job listing is owned by an organizations
+    organization: one(OrganizationTable, {
       fields: [JobListingTable.organizationId],
       references: [OrganizationTable.id],
     }),

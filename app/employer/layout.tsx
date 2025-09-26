@@ -14,11 +14,11 @@ import SidebarNavMenuGroup, {
 } from "@/components/shared/sidebar-nav-menu-group";
 
 import { ClipboardListIcon, PlusIcon } from "lucide-react";
-import { getCurrentOrganaization } from "../services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "../services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import { ChildrenProps } from "@/types";
 import { SidebarOrganaizationButton } from "../features/organization/components/sidebar-organization-button";
-import { hasOrgUserPermissoin } from "../services/clerk/lib/org-user-permissions";
+import { hasOrgUserPermission } from "../services/clerk/lib/org-user-permissions";
 import AsyncIf from "@/components/async-if";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
@@ -46,7 +46,7 @@ export default function EmployerLayout({ children }: ChildrenProps) {
 }
 
 async function SuspenseLayout({ children }: ChildrenProps) {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) return redirect("/organaizations/select");
 
@@ -57,7 +57,7 @@ async function SuspenseLayout({ children }: ChildrenProps) {
           <SidebarGroup>
             <SidebarGroupLabel>Job LIstings</SidebarGroupLabel>
             <AsyncIf
-              condition={() => hasOrgUserPermissoin("job_listing:create")}
+              condition={() => hasOrgUserPermission("job_listing:create")}
             >
               <SidebarGroupAction title="Add Job Listing" asChild>
                 <Link href={"/employer/job-listing/new"}>
@@ -88,7 +88,7 @@ async function JobListingMenu({ orgId }: { orgId: string }) {
 
   if (
     jobListings.length === 0 &&
-    (await hasOrgUserPermissoin("job_listing:create"))
+    (await hasOrgUserPermission("job_listing:create"))
   ) {
     return (
       <SidebarMenu>

@@ -28,10 +28,10 @@ export default function ActionButton({
   areYouSureDescription = "This action cannot be undone.",
   ...props
 }: Props) {
-  const [isLoading, startTransitoin] = useTransition();
+  const [isLoading, startTransition] = useTransition();
 
   const performAction = () => {
-    startTransitoin(async () => {
+    startTransition(async () => {
       const data = await action();
 
       if (data.error) {

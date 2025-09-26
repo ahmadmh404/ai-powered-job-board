@@ -21,6 +21,9 @@ type Events = {
   "Clerk/organization.created": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.updated": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.deleted": ClerkWebHookData<DeletedObjectJSON>;
+  "app/jobListingApplication.created": {
+    data: { jobListingId: string; userId: string };
+  };
 };
 
 // Create a client to send and receive events

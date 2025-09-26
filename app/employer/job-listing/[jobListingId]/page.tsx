@@ -15,8 +15,8 @@ import {
   hasReachedMaxPublishedJobListings,
 } from "@/app/features/job-listings/lib/plan-features-helpers";
 import { getNextJobListingStatus } from "@/app/features/job-listings/lib/utils";
-import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
-import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
+import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
+import { hasOrgUserPermission } from "@/app/services/clerk/lib/org-user-permissions";
 import ActionButton from "@/components/action-button";
 import AsyncIf from "@/components/async-if";
 import { MarkdownPartial } from "@/components/markdown/markdown-partial";
@@ -45,7 +45,7 @@ export default function JobListingPage({ params }: Props) {
 }
 
 async function SuspensedPage({ params }: Props) {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) {
     return null;
@@ -59,8 +59,8 @@ async function SuspensedPage({ params }: Props) {
     return notFound();
   }
 
-  const editPermissoin = () => hasOrgUserPermissoin("job_listing:update");
-  const deletePermissoin = () => hasOrgUserPermissoin("job_listing:delete");
+  const editPermission = () => hasOrgUserPermission("job_listing:update");
+  const deletePermission = () => hasOrgUserPermission("job_listing:delete");
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-4 @container">
@@ -79,7 +79,7 @@ async function SuspensedPage({ params }: Props) {
 
         {/* Actions */}
         <div className="flex items-center gap-2 empty:-mt-4">
-          <AsyncIf condition={editPermissoin}>
+          <AsyncIf condition={editPermission}>
             <Button variant={"outline"} asChild>
               <Link href={`/employer/job-listing/${jobListing.id}/edit`}>
                 <EditIcon className="size-4" />
@@ -100,7 +100,7 @@ async function SuspensedPage({ params }: Props) {
             />
           )}
 
-          <AsyncIf condition={deletePermissoin}>
+          <AsyncIf condition={deletePermission}>
             <ActionButton
               variant={"destructive"}
               action={deleteJobListing.bind(null, jobListing.id)}
@@ -149,7 +149,7 @@ function ToggleJobListingStatusButton({
   );
   const hasReachedMax = () => hasReachedMaxPublishedJobListings();
   const hasChangePermission = () =>
-    hasOrgUserPermissoin("job_listing:change_status");
+    hasOrgUserPermission("job_listing:change_status");
 
   return (
     <AsyncIf condition={hasChangePermission}>
@@ -194,7 +194,7 @@ function ToggleJobListingIsFeatureButton({
 
   const hasReachedMax = () => hasReachedMaxFeaturedJobListings();
   const hasChangePermission = () =>
-    hasOrgUserPermissoin("job_listing:change_status");
+    hasOrgUserPermission("job_listing:change_status");
 
   return (
     <AsyncIf condition={hasChangePermission}>
@@ -205,7 +205,7 @@ function ToggleJobListingIsFeatureButton({
             <UpgradePopover
               buttonText={buttonText}
               popoverText={
-                " You must upgrade your to feature more job listings"
+                " You must upgrade your plan to feature more job listings"
               }
             />
           }

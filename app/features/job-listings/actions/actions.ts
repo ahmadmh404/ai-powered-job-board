@@ -2,7 +2,7 @@
 
 import z from "zod";
 import { JobListingSchema } from "./schemas";
-import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import {
   insertJobListing,
@@ -11,7 +11,7 @@ import {
 } from "../db/job-listings";
 import { JobListingTable } from "@/drizzle/schema";
 import { getJobListing } from "@/app/employer/job-listing/[jobListingId]/page";
-import { hasOrgUserPermissoin } from "@/app/services/clerk/lib/org-user-permissions";
+import { hasOrgUserPermission } from "@/app/services/clerk/lib/org-user-permissions";
 import { getNextJobListingStatus } from "../lib/utils";
 import {
   hasReachedMaxFeaturedJobListings,
@@ -21,9 +21,9 @@ import {
 export async function createJobListing(
   unsaveData: z.infer<typeof JobListingSchema>
 ) {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
-  const hasPermission = await hasOrgUserPermissoin("job_listing:create");
+  const hasPermission = await hasOrgUserPermission("job_listing:create");
 
   if (orgId == null || !hasPermission) {
     return {
@@ -54,9 +54,9 @@ export async function updateJobListing(
   id: string,
   unsaveData: Partial<typeof JobListingTable.$inferInsert>
 ) {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
-  const hasPermission = await hasOrgUserPermissoin("job_listing:update");
+  const hasPermission = await hasOrgUserPermission("job_listing:update");
 
   if (orgId == null || !hasPermission) {
     return {
@@ -94,9 +94,9 @@ export async function toggleJobListingStatus(id: string) {
     message: "You have no permission to update a job listing status",
   };
 
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
-  const hasPermission = await hasOrgUserPermissoin("job_listing:update");
+  const hasPermission = await hasOrgUserPermission("job_listing:update");
 
   if (orgId == null || !hasPermission) return error;
 
@@ -108,7 +108,7 @@ export async function toggleJobListingStatus(id: string) {
 
   // checking permissions
   if (
-    ((await hasOrgUserPermissoin("job_listing:change_status")) ||
+    ((await hasOrgUserPermission("job_listing:change_status")) ||
       (newStatus === "published" &&
         (await hasReachedMaxPublishedJobListings()))) === false
   ) {
@@ -133,9 +133,9 @@ export async function toggleJobListingFeatured(id: string) {
     message: "You have no permission to update a job listing featured status",
   };
 
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
-  const hasPermission = await hasOrgUserPermissoin("job_listing:update");
+  const hasPermission = await hasOrgUserPermission("job_listing:update");
 
   if (orgId == null || !hasPermission) return error;
 
@@ -147,7 +147,7 @@ export async function toggleJobListingFeatured(id: string) {
 
   // checking permissions
   if (
-    ((await hasOrgUserPermissoin("job_listing:change_status")) ||
+    ((await hasOrgUserPermission("job_listing:change_status")) ||
       (newFeaturedStatus && (await hasReachedMaxFeaturedJobListings()))) ===
     false
   ) {
@@ -167,9 +167,9 @@ export async function deleteJobListing(id: string) {
     message: "You have no permission to delete a job listing.",
   };
 
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
-  const hasPermission = await hasOrgUserPermissoin("job_listing:delete");
+  const hasPermission = await hasOrgUserPermission("job_listing:delete");
 
   if (orgId == null || !hasPermission) return error;
 

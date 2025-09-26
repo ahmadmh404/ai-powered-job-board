@@ -19,7 +19,7 @@ export const formatWageIntervals = (interval: WageInterval) => {
   }
 };
 
-export const formatLocationRequirments = (
+export const formatLocationRequirements = (
   locationRequirement: LocationRequirement
 ) => {
   switch (locationRequirement) {

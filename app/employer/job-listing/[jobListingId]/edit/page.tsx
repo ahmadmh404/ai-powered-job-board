@@ -1,5 +1,5 @@
 import JobListingForm from "@/app/features/job-listings/components/job-listing-form";
-import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -31,7 +31,7 @@ export default function EditJobListingPage(props: Props) {
 async function SuspendedPage({ params }: Props) {
   const { jobListingId } = await params;
 
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) {
     return notFound();

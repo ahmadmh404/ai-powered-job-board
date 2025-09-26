@@ -25,6 +25,6 @@ export const revalidateJobListingCache = ({
 }) => {
   // this revalidateTag is a nextjs build in functoin
   revalidateTag(getJobListingGlobalTag());
-  getJobListingOrganizationTag(organizationId);
+  revalidateTag(getJobListingOrganizationTag(organizationId));
   revalidateTag(getJobListingIdTag(jobListingId));
 };

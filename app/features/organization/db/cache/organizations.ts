@@ -7,7 +7,7 @@ export const getOrganizationGlobalTag = () => {
   return getGlobalTag("organaizations");
 };
 
-export const getOrganaizationIdTag = (orgId: string) => {
+export const getOrganizationIdTag = (orgId: string) => {
   return getIdlTag("organaizations", orgId);
 };
 
@@ -15,5 +15,5 @@ export const getOrganaizationIdTag = (orgId: string) => {
 export const revalidateOrganizatoinCache = (orgId: string) => {
   // this revalidateTag is a nextjs build in functoin
   revalidateTag(getOrganizationGlobalTag());
-  revalidateTag(getOrganaizationIdTag(orgId));
+  revalidateTag(getOrganizationIdTag(orgId));
 };

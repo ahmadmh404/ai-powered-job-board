@@ -8,7 +8,7 @@ type OrgUserPermissions =
   | "job_listing_application:change_rating"
   | "job_listing_application:change_stage";
 
-export async function hasOrgUserPermissoin(permission: OrgUserPermissions) {
+export async function hasOrgUserPermission(permission: OrgUserPermissions) {
   const { has } = await auth();
   return has({ permission });
 }

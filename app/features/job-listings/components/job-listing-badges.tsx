@@ -5,7 +5,7 @@ import {
   formatExperienceLevel,
   formatJobListingLocation,
   formatJobType,
-  formatLocationRequirments,
+  formatLocationRequirements,
   formatWage,
 } from "../lib/formators";
 import {
@@ -55,7 +55,7 @@ export default function JobListingBadges({
           {...badgeProps}
           className={cn(
             className,
-            "border-featured bg-featured/50 text-featured-foregroundound"
+            "border-featured bg-featured/50 text-featured-foreground"
           )}
         >
           Featured
@@ -78,7 +78,7 @@ export default function JobListingBadges({
 
       <Badge {...badgeProps}>
         <BuildingIcon />
-        {formatLocationRequirments(locationRequirement)}
+        {formatLocationRequirements(locationRequirement)}
       </Badge>
 
       <Badge {...badgeProps}>

@@ -1,11 +1,11 @@
-import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
 import { hasPlanFeature } from "@/app/services/clerk/lib/plan-features";
 import { db } from "@/drizzle/db";
 import { JobListingTable } from "@/drizzle/schema";
 import { and, count, eq } from "drizzle-orm";
 
 export async function hasReachedMaxPublishedJobListings() {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) {
     return true;
@@ -23,7 +23,7 @@ export async function hasReachedMaxPublishedJobListings() {
 }
 
 export async function hasReachedMaxFeaturedJobListings() {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) {
     return true;

@@ -11,6 +11,7 @@ import {
   LayoutDashboardIcon,
   LogInIcon,
 } from "lucide-react";
+import { ReactNode } from "react";
 
 const navItems: Item[] = [
   { href: "/", icon: <ClipboardListIcon />, label: "Job Board" },
@@ -18,7 +19,7 @@ const navItems: Item[] = [
   {
     href: "/employer",
     icon: <LayoutDashboardIcon />,
-    label: "Employer Dashbaord",
+    label: "Employer Dashboard",
     authStatus: "signed-in",
   },
   {
@@ -29,14 +30,26 @@ const navItems: Item[] = [
   },
 ];
 
-const Content = <SidebarNavMenuGroup className="mt-auto" items={navItems} />;
-
 const footerButton = <SidebarUserButton />;
 
-const JobSeekerLayout = () => {
+const JobSeekerLayout = ({
+  children,
+  sidebar,
+}: {
+  children: ReactNode;
+  sidebar: ReactNode;
+}) => {
   return (
-    <AppSidebar content={Content} footerButton={footerButton}>
-      <main className="flex-1">lahgoehrgo</main>
+    <AppSidebar
+      content={
+        <>
+          {sidebar}
+          <SidebarNavMenuGroup className="mt-auto" items={navItems} />
+        </>
+      }
+      footerButton={footerButton}
+    >
+      <main className="flex-1">{children}</main>
     </AppSidebar>
   );
 };

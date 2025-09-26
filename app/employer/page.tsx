@@ -3,7 +3,7 @@ import { JobListingTable } from "@/drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { getCurrentOrganaization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
 import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 
@@ -16,7 +16,7 @@ export default function EmployerHomePage() {
 }
 
 async function SuspendedPage() {
-  const { orgId } = await getCurrentOrganaization();
+  const { orgId } = await getCurrentOrganization();
   if (orgId == null) return null;
 
   const jobListing = await getMostRecentJobListing(orgId);

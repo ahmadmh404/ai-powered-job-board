@@ -32,7 +32,7 @@ import {
 import {
   formatExperienceLevel,
   formatJobType,
-  formatLocationRequirments,
+  formatLocationRequirements,
   formatWageIntervals,
 } from "../lib/formators";
 import { StateSelectItems } from "./state-abbreviation-items";
@@ -235,7 +235,7 @@ function JobListingForm({ jobListing }: Props) {
                   <SelectContent>
                     {locationRequirements.map((lr) => (
                       <SelectItem key={lr} value={lr}>
-                        {formatLocationRequirments(lr)}
+                        {formatLocationRequirements(lr)}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -5,7 +5,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { JobListingStatus } from "@/drizzle/schema";
-import { EyeIcon, EyeOffIcon, Link, StarIcon, StarOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, StarIcon, StarOffIcon } from "lucide-react";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 type Props = {
@@ -22,7 +23,7 @@ export default function UpgradePopover({ buttonText, popoverText }: Props) {
 
       <PopoverContent className="flex flex-col gap-2">
         <p className="text-center">{popoverText}</p>
-        <Button asChild>
+        <Button asChild className="w-full">
           <Link href={"/employer/pricing"}>Upgrade Plan</Link>
         </Button>
       </PopoverContent>
