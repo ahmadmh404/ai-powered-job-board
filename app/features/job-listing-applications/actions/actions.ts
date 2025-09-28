@@ -49,7 +49,6 @@ export async function createJobListingApplication(
     ...data,
   });
 
-  // TODO: AI generation
   await inngest.send({
     name: "app/jobListingApplication.created",
     data: { jobListingId, userId },

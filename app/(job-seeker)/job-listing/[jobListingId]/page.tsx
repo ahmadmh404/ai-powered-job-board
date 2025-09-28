@@ -67,7 +67,7 @@ export default function JobListingPage({ params, searchParams }: Props) {
           breakPoint="min-width:1024px"
           otherwise={
             <ClientSheet>
-              <SheetContent className="p-4" hideCloseButton>
+              <SheetContent className="p-4 overflow-y-auto" hideCloseButton>
                 <SheetHeader>
                   <SheetTitle>Job Listing Details</SheetTitle>
                 </SheetHeader>

@@ -20,10 +20,7 @@ import {
   thematicBreakPlugin,
   toolbarPlugin,
 } from "@mdxeditor/editor";
-
-// tailwind auto style markdown text
-export const markdownClassnNames =
-  "max-w-none pruse pruse-neutral dark:pruse-invert font-sans";
+import { markdownClassNames } from "./markdown-renderer";
 
 export default function InternalMDXMarkdownEditor({
   ref,
@@ -37,7 +34,7 @@ export default function InternalMDXMarkdownEditor({
       {...props}
       ref={ref}
       suppressHtmlProcessing
-      className={cn(markdownClassnNames, isDarkMode && "dark-theme", className)}
+      className={cn(markdownClassNames, isDarkMode && "dark-theme", className)}
       plugins={[
         headingsPlugin(),
         listsPlugin(),

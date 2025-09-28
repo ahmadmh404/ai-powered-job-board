@@ -23,5 +23,5 @@ export function useIsDarkMode() {
     };
   }, []);
 
-  return isDarkMode
+  return isDarkMode;
 }
