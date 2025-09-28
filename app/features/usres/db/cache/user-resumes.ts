@@ -9,7 +9,7 @@ export const getUserResumeIdTAg = (userId: string) => {
   return getIdlTag("user-resume", userId);
 };
 
-export const revalidateUserCache = (id: string) => {
+export const revalidateUserResumeCache = (id: string) => {
   revalidateTag(getUserResumeGlobalTAg());
   revalidateTag(getUserResumeIdTAg(id));
 };

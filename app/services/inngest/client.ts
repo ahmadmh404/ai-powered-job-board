@@ -24,6 +24,9 @@ type Events = {
   "app/jobListingApplication.created": {
     data: { jobListingId: string; userId: string };
   };
+  "app/resume.uploaded": {
+    user: { id: string };
+  };
 };
 
 // Create a client to send and receive events

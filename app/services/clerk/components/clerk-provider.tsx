@@ -6,7 +6,7 @@ import { dark } from "@clerk/themes";
 import { ClerkProvider as OriginalClerkProvider } from "@clerk/nextjs";
 import { useIsDarkMode } from "@/hooks/use-is-dark-mode";
 
-export function ClerkProvidre({ children }: { children: ReactNode }) {
+export function ClerkProvider({ children }: { children: ReactNode }) {
   const isDarkMode = useIsDarkMode();
 
   return (
