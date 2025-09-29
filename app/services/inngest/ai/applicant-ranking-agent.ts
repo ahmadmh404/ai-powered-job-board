@@ -1,8 +1,8 @@
 import { updateJobListingApplication } from "@/app/features/job-listing-applications/db/job-listing-applications";
 import { env } from "@/data/env/server";
-import { createAgent, createTool } from "@/inngest/agent-kit";
-import { models } from "inngest";
+import { gemini, models } from "inngest";
 import z from "zod";
+import { createTool, createAgent } from "@inngest/agent-kit";
 
 const saveApplicantRatingTool = createTool({
   name: "SAve Applicant Raking",
@@ -33,7 +33,7 @@ export const applicantRankingAgent = createAgent({
     a rating of 1 is for applicants that doesn't meet the requirements at all.
     You should save the user rating in the database and not return any output`,
   tools: [saveApplicantRatingTool],
-  models: gemini({
+  model: gemini({
     model: "gemini-2.0-flash",
     apiKey: env.GEMINI_API_KEY,
   }),

@@ -49,3 +49,7 @@ export const JobListingSchema = z
       path: ["stateAbbreviation"],
     }
   );
+
+export const jobListingAISearchSchema = z.object({
+  query: z.string().min(1, "Required"),
+});
