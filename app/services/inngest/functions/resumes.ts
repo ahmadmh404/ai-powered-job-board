@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schema";
 import { env } from "@/data/env/server";
 import { updateUserResume } from "@/app/features/usres/db/user-resumes";
+import { toast } from "sonner";
 
 export const createAISummaryForUploadedResume = inngest.createFunction(
   {
@@ -11,7 +12,7 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
     name: "Create AI Summary For Uploaded Summary",
   },
   {
-    event: "app/resume.uploaded",
+    event: "App/resume.uploaded",
   },
   async ({ step, event }) => {
     const { id: userId } = event.user;
@@ -25,12 +26,14 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
       });
     });
 
-    if (userResume == null) return;
+    if (userResume == null) {
+      return;
+    }
 
     // get ai summary with inngest ai help
     const result = await step.ai.infer("create ai summary", {
       model: step.ai.models.anthropic({
-        model: "claude-3-5-haiku-latest",
+        model: "claude-2.1",
         defaultParameters: { max_tokens: 2048 },
         apiKey: env.ANTHROPIC_API_KEY,
       }),
@@ -61,9 +64,19 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
       },
     });
 
+    if (result.error) {
+      if (result.error.type === "forbidden") {
+        toast.error("You need to turn on a VPN.");
+      } else {
+        toast.error(`${result.error.type}: ${result.error.message}`);
+      }
+    }
+
     // save ai summary
     await step.run("save ai summary", async () => {
       const message = result.content[0];
+
+      console.log("AI reply: ", result.content);
 
       if (message.type !== "text") return;
 

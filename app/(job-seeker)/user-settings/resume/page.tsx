@@ -22,7 +22,7 @@ import MarkdownRenderer from "@/components/markdown/markdown-renderer";
 export default function UserResumePage() {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 space-y-6">
-      <h2 className="text-2l font-bold">Upload your resume</h2>
+      <h2 className="text-2xl font-bold">Upload your resume</h2>
       <Card>
         <CardContent>
           <DropZoneCLient />
@@ -78,6 +78,8 @@ async function AISummary() {
   if (userId == null) return notFound();
 
   const userResume = await getUserResume(userId);
+
+  console.log("userResume: ", userResume);
 
   if (userResume == null || userResume.aiSummary == null) return null;
 

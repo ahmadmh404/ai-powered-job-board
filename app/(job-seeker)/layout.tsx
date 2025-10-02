@@ -5,16 +5,10 @@ import SidebarNavMenuGroup, {
   Item,
 } from "@/components/shared/sidebar-nav-menu-group";
 
-import {
-  BrainCircuitIcon,
-  ClipboardListIcon,
-  LayoutDashboardIcon,
-  LogInIcon,
-} from "lucide-react";
+import { BrainCircuitIcon, LayoutDashboardIcon, LogInIcon } from "lucide-react";
 import { ReactNode } from "react";
 
 const navItems: Item[] = [
-  { href: "/", icon: <ClipboardListIcon />, label: "Job Board" },
   { href: "/ai-search", icon: <BrainCircuitIcon />, label: "AI Search" },
   {
     href: "/employer",

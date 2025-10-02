@@ -14,11 +14,9 @@ export const rankingApplicant = inngest.createFunction(
     id: "rank applicant",
     name: "Rank Applicant",
   },
-  { event: "app/jobListingApplication.created" },
+  { event: "App/job-listing-application.created" },
   async ({ step, event }) => {
     const { userId, jobListingId } = event.data;
-
-    // when you are not awaiting the inngest steps you want it to run in parallel
 
     // get cover letter
     const getCoverLetter = step.run("get-cover-letter", async () => {
@@ -73,8 +71,12 @@ export const rankingApplicant = inngest.createFunction(
 
     if (coverLetter == null || jobListing == null) return;
 
-    await applicantRankingAgent.run(
-      JSON.stringify({ coverLetter, resumeSummary, jobListing })
-    );
+    await step.run("rank-applicant", async () => {
+      const res = await applicantRankingAgent.run(
+        JSON.stringify({ coverLetter, resumeSummary, jobListing })
+      );
+
+      console.log("agent result: ", res.output);
+    });
   }
 );

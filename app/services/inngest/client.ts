@@ -21,16 +21,18 @@ type Events = {
   "Clerk/organization.created": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.updated": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.deleted": ClerkWebHookData<DeletedObjectJSON>;
-  "app/jobListingApplication.created": {
+
+  "App/job-listing-application.created": {
     data: { jobListingId: string; userId: string };
   };
-  "app/resume.uploaded": {
+
+  "App/resume.uploaded": {
     user: { id: string };
   };
 };
 
 // Create a client to send and receive events
 export const inngest = new Inngest({
-  id: "job-borad-spn",
+  id: "job-board-spn",
   schemas: new EventSchemas().fromRecord<Events>(),
 });

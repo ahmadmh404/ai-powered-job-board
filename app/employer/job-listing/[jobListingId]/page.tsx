@@ -20,7 +20,7 @@ import { hasOrgUserPermission } from "@/app/services/clerk/lib/org-user-permissi
 import ActionButton from "@/components/action-button";
 import AsyncIf from "@/components/async-if";
 import { MarkdownPartial } from "@/components/markdown/markdown-partial";
-import MarkdownRenderder from "@/components/markdown/markdown-renderer";
+import MarkdownRenderer from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
@@ -114,9 +114,9 @@ async function SuspensedPage({ params }: Props) {
       </div>
 
       <MarkdownPartial
-        dialogMarkdown={<MarkdownRenderder source={jobListing.description} />}
+        dialogMarkdown={<MarkdownRenderer source={jobListing.description} />}
         mainMarkdown={
-          <MarkdownRenderder
+          <MarkdownRenderer
             className="prose-sm"
             source={jobListing.description}
           />
@@ -142,7 +142,7 @@ function ToggleJobListingStatusButton({
       action={toggleJobListingStatus.bind(null, id)}
       variant={"outline"}
       requireAreYouSure={nextStatus === "published"}
-      areYouSureDescription="This will immediatly show this for all users"
+      areYouSureDescription="This will immediately show this for all users"
     >
       {buttonText}
     </ActionButton>

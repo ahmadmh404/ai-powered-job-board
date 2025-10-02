@@ -50,7 +50,7 @@ export async function createJobListingApplication(
   });
 
   await inngest.send({
-    name: "app/jobListingApplication.created",
+    name: "App/job-listing-application.created",
     data: { jobListingId, userId },
   });
 

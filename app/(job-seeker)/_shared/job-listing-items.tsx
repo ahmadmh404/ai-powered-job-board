@@ -75,7 +75,7 @@ async function SuspendedComponent({ searchParams, params }: Props) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-y-3">
       {jobListings.map((job) => (
         <Link
           key={job.id}
