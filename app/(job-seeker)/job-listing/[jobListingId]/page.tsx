@@ -37,7 +37,7 @@ import { SignUpButton } from "@/app/services/clerk/components/auth-buttons";
 import { getJobListingApplicationIdTag } from "@/app/features/job-listing-applications/db/cache/job-listing-applications";
 import { differenceInDays } from "date-fns";
 import { connection } from "next/server";
-import { getUserResumeIdTAg } from "@/app/features/usres/db/cache/user-resumes";
+import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
 import {
   Dialog,
   DialogContent,
@@ -251,7 +251,7 @@ async function ApplyButton({ jobListingId }: { jobListingId: string }) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-x-auto">
+        <div className="flex-1">
           <NewJobListingApplicationForm jobListingId={jobListingId} />
         </div>
       </DialogContent>

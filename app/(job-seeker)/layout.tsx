@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/shared/app-sidebar";
-import { SidebarUserButton } from "../features/usres/components/sidebar-user-button";
+import { SidebarUserButton } from "../features/users/components/sidebar-user-button";
 
 import SidebarNavMenuGroup, {
   Item,

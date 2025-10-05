@@ -1,4 +1,4 @@
-import { revalidateUserCache } from "@/app/features/usres/db/cache/users";
+import { revalidateUserCache } from "@/app/features/users/db/cache/users";
 import { db } from "@/drizzle/db";
 import { UserTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";

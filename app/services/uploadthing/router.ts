@@ -5,7 +5,7 @@ import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schema";
 import { uploadthing } from "./client";
-import { upsertUserResume } from "@/app/features/usres/db/user-resumes";
+import { upsertUserResume } from "@/app/features/users/db/user-resumes";
 import { getCurrentUser } from "../clerk/lib/get-current-auth";
 
 const f = createUploadthing();

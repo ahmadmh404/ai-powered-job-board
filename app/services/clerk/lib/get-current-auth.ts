@@ -3,7 +3,7 @@ import { OrganizationTable, UserTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getUserIdTag } from "@/app//features/usres/db/cache/users";
+import { getUserIdTag } from "@/app//features/users/db/cache/users";
 import { getOrganizationIdTag } from "@/app/features/organization/db/cache/organizations";
 
 export async function getCurrentUser({ allData = false } = {}) {

@@ -71,12 +71,8 @@ export const rankingApplicant = inngest.createFunction(
 
     if (coverLetter == null || jobListing == null) return;
 
-    await step.run("rank-applicant", async () => {
-      const res = await applicantRankingAgent.run(
-        JSON.stringify({ coverLetter, resumeSummary, jobListing })
-      );
-
-      console.log("agent result: ", res.output);
-    });
+    await applicantRankingAgent.run(
+      JSON.stringify({ coverLetter, resumeSummary, jobListing })
+    );
   }
 );

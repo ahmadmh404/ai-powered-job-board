@@ -30,7 +30,7 @@ export function JobListingAISearchForm() {
   const onSubmit = async (data: z.infer<typeof jobListingAISearchSchema>) => {
     const results = await getJobListingAISearchResults(data);
 
-    if (results.error) {
+    if (results?.error) {
       toast.error(results.message);
       return;
     }

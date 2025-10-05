@@ -5,12 +5,17 @@ import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { db } from "@/drizzle/db";
 import { and, eq } from "drizzle-orm";
-import { JobListingTable, UserResumeTable } from "@/drizzle/schema";
-import { getUserResumeIdTAg } from "../../usres/db/cache/user-resumes";
+import {
+  JobLIstingApplicationTable,
+  JobListingTable,
+  UserResumeTable,
+} from "@/drizzle/schema";
+import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
 import { getJobListingIdTag } from "../../job-listings/db/cache/job-listings";
 import { jobListingApplicationSchema } from "../../job-listing-applications/actions/schemas";
 import { insertJobListingApplication } from "../db/job-listing-applications";
 import { inngest } from "@/app/services/inngest/client";
+import { getJobListingApplicationIdTag } from "../db/cache/job-listing-applications";
 
 export async function createJobListingApplication(
   jobListingId: string,
@@ -25,6 +30,18 @@ export async function createJobListingApplication(
 
   if (userId == null) {
     return permissionError;
+  }
+
+  const userJobListingApplication = await getUserJobListingApplication(
+    userId,
+    jobListingId
+  );
+
+  if (userJobListingApplication) {
+    return {
+      error: true,
+      message: "You have Already applied to this job.",
+    };
   }
 
   const [userResume, jobListing] = await Promise.all([
@@ -58,6 +75,24 @@ export async function createJobListingApplication(
     error: false,
     message: "Your application was successfully submitted",
   };
+}
+
+async function getUserJobListingApplication(
+  userId: string,
+  jobListingId: string
+) {
+  "use cache";
+  cacheTag(getJobListingApplicationIdTag({ userId, jobListingId }));
+
+  return db.query.JobLIstingApplicationTable.findFirst({
+    where: and(
+      eq(JobLIstingApplicationTable.userId, userId),
+      eq(JobLIstingApplicationTable.jobListingId, jobListingId)
+    ),
+    columns: {
+      userId: true,
+    },
+  });
 }
 
 async function getPublishJobListing(id: string) {

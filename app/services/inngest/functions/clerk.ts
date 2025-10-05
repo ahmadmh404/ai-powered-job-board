@@ -7,8 +7,8 @@ import {
   deleteUser,
   InsertUser,
   updateUser,
-} from "@/app/features/usres/db/users";
-import { insertUserNotificationSettings } from "@/app/features/usres/db/user-notification-settings";
+} from "@/app/features/users/db/users";
+import { insertUserNotificationSettings } from "@/app/features/users/db/user-notification-settings";
 import {
   deleteOrganization,
   InsertOrganization,

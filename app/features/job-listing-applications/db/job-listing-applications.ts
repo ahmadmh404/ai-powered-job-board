@@ -29,8 +29,8 @@ export async function updateJobListingApplication(
     .set(data)
     .where(
       and(
-        eq(JobLIstingApplicationTable.userId, userId),
-        eq(JobLIstingApplicationTable.jobListingId, jobListingId)
+        eq(JobLIstingApplicationTable.jobListingId, jobListingId),
+        eq(JobLIstingApplicationTable.userId, userId)
       )
     );
 

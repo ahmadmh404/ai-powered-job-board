@@ -9,7 +9,7 @@ import {
   clerkUpdateOrganization,
   clerkUpdateUser,
 } from "@/app/services/inngest/functions/clerk";
-import { createAISummaryForUploadedResume } from "@/app/services/inngest/functions/resumes";
+import { createAiSummaryOfUploadedResume } from "@/app/services/inngest/functions/resumes";
 import { rankingApplicant } from "@/app/services/inngest/functions/job-listing-applications";
 
 export const { GET, POST, PUT } = serve({
@@ -21,7 +21,7 @@ export const { GET, POST, PUT } = serve({
     clerkCreateOrganization,
     clerkUpdateOrganization,
     clerkDeleteOrganization,
-    createAISummaryForUploadedResume,
+    createAiSummaryOfUploadedResume,
     rankingApplicant,
   ],
 });

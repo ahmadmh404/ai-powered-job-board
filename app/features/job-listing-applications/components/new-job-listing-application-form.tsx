@@ -54,7 +54,11 @@ export default function NewJobListingApplicationForm({
               <FormLabel>Cover Letter</FormLabel>
 
               <FormControl>
-                <MDXMarkdownEditor {...field} markdown={field.value ?? ""} />
+                <MDXMarkdownEditor
+                  {...field}
+                  markdown={field.value ?? ""}
+                  className="overflow-y-auto h-full max-h-[400px]"
+                />
               </FormControl>
 
               <FormDescription>Optional</FormDescription>

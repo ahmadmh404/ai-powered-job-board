@@ -3,13 +3,12 @@ import { inngest } from "../client";
 import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schema";
 import { env } from "@/data/env/server";
-import { updateUserResume } from "@/app/features/usres/db/user-resumes";
-import { toast } from "sonner";
+import { updateUserResume } from "@/app/features/users/db/user-resumes";
 
-export const createAISummaryForUploadedResume = inngest.createFunction(
+export const createAiSummaryOfUploadedResume = inngest.createFunction(
   {
-    id: "create ai summary for uploaded summary",
-    name: "Create AI Summary For Uploaded Summary",
+    id: "create-ai-summary-of-uploaded-resume",
+    name: "Create AI Summary of Uploaded Resume",
   },
   {
     event: "App/resume.uploaded",
@@ -17,29 +16,23 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
   async ({ step, event }) => {
     const { id: userId } = event.user;
 
-    const userResume = await step.run("get ure resume file url", async () => {
+    const userResume = await step.run("get-user-resume", async () => {
       return await db.query.UserResumeTable.findFirst({
         where: eq(UserResumeTable.userId, userId),
-        columns: {
-          resumeFileUrl: true,
-        },
+        columns: { resumeFileUrl: true },
       });
     });
 
-    if (userResume == null) {
-      return;
-    }
+    if (userResume == null) return;
 
-    // get ai summary with inngest ai help
-    const result = await step.ai.infer("create ai summary", {
+    const result = await step.ai.infer("create-ai-summary", {
       model: step.ai.models.anthropic({
-        model: "claude-2.1",
+        model: "claude-3-5-sonnet-latest",
         defaultParameters: { max_tokens: 2048 },
         apiKey: env.ANTHROPIC_API_KEY,
       }),
       body: {
         messages: [
-          // 1- send the resume file
           {
             role: "user",
             content: [
@@ -52,11 +45,7 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
               },
               {
                 type: "text",
-                text: `Summarize the following resume, and extract all key skills,
-                 experiences and qualifications. The summary should include all the information
-                 a hiring manger would need to know about a candidate in order to determine if they
-                 are a good fit for a job. The summary should be formatted as markdown. 
-                 Do not send any other text. If the file does not look like a resume send the text 'N/A.'`,
+                text: "Summarize the following resume and extract all key skills, experience, and qualifications. The summary should include all the information that a hiring manager would need to know about the candidate in order to determine if they are a good fit for a job. This summary should be formatted as markdown. Do not return any other text. If the file does not look like a resume return the text 'N/A'.",
               },
             ],
           },
@@ -64,25 +53,11 @@ export const createAISummaryForUploadedResume = inngest.createFunction(
       },
     });
 
-    if (result.error) {
-      if (result.error.type === "forbidden") {
-        toast.error("You need to turn on a VPN.");
-      } else {
-        toast.error(`${result.error.type}: ${result.error.message}`);
-      }
-    }
-
-    // save ai summary
-    await step.run("save ai summary", async () => {
+    await step.run("save-ai-summary", async () => {
       const message = result.content[0];
-
-      console.log("AI reply: ", result.content);
-
       if (message.type !== "text") return;
 
-      await updateUserResume(userId, {
-        aiSummary: message.text,
-      });
+      await updateUserResume(userId, { aiSummary: message.text });
     });
   }
 );

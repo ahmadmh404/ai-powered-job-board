@@ -16,7 +16,7 @@ import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schema";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getUserResumeIdTAg } from "@/app/features/usres/db/cache/user-resumes";
+import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
 import MarkdownRenderer from "@/components/markdown/markdown-renderer";
 
 export default function UserResumePage() {
