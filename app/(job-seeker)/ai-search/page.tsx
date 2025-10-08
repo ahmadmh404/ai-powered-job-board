@@ -13,7 +13,7 @@ import {
 
 export default function AISearchPage() {
   return (
-    <div className="p-4 flex items-center justify-center min-h-full">
+    <div className="p-4 min-h-full flex items-center justify-center">
       <Card className="max-w-4xl">
         <AsyncIf
           condition={async () => {

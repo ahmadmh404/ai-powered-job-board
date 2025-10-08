@@ -13,13 +13,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/loading-swap";
 import { toast } from "sonner";
 import { getJobListingAISearchResults } from "../db/job-listings";
+import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 export function JobListingAISearchForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(jobListingAISearchSchema),
     defaultValues: {
@@ -29,13 +32,14 @@ export function JobListingAISearchForm() {
 
   const onSubmit = async (data: z.infer<typeof jobListingAISearchSchema>) => {
     const results = await getJobListingAISearchResults(data);
-
     if (results?.error) {
       toast.error(results.message);
       return;
     }
 
-    toast.success(results.message);
+    const params = new URLSearchParams();
+    results.jobIds.forEach((id) => params.append("jobIds", id));
+    router.push(`/?${params.toString()}`);
   };
 
   return (
@@ -49,7 +53,7 @@ export function JobListingAISearchForm() {
               <FormLabel>Query</FormLabel>
               {/* Replace the Input with Textarea */}
               <FormControl>
-                <Input {...field} className="min-h-32" />
+                <Textarea {...field} className="min-h-32" />
               </FormControl>
 
               <FormDescription>

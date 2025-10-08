@@ -1,3 +1,5 @@
+"use server";
+
 import { JobListingTable } from "@/drizzle/schema";
 import {
   getJobListingGlobalTag,
@@ -9,6 +11,7 @@ import z from "zod";
 import { jobListingAISearchSchema } from "../actions/schemas";
 import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { getMatchingJobListing } from "@/app/services/inngest/ai/get-matchingjob-listings";
 
 export async function insertJobListing(
   jobListing: typeof JobListingTable.$inferInsert
@@ -61,9 +64,11 @@ export async function deleteJobListing(id: string) {
   return deletedJobListing;
 }
 
-export async function getJobListingAISearchResults(
+export const getJobListingAISearchResults = async (
   unsafe: z.infer<typeof jobListingAISearchSchema>
-) {
+): Promise<
+  { error: true; message: string } | { error: false; jobIds: string[] }
+> => {
   const { userId } = await getCurrentUser();
 
   if (userId == null) {
@@ -75,19 +80,33 @@ export async function getJobListingAISearchResults(
 
   const { success, data } = jobListingAISearchSchema.safeParse(unsafe);
 
-  if (success) {
+  if (!success) {
     return {
       error: true,
       message: "There was an error processing your search query",
     };
   }
 
-  const listings = await getPublicJobListings();
-}
+  const allListings = await getPublicJobListings();
+
+  const matchedJobListings = await getMatchingJobListing({
+    jobListings: allListings,
+    prompt: data.query,
+    options: { maxNumberOfJobs: 10 },
+  });
+
+  if (matchedJobListings.length === 0) {
+    return {
+      error: true,
+      message: "No jobs matched your criteria",
+    };
+  }
+
+  return { error: false, jobIds: matchedJobListings };
+};
 
 async function getPublicJobListings() {
   "use cache";
-
   cacheTag(getJobListingGlobalTag());
 
   return db.query.JobListingTable.findMany({

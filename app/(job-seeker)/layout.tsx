@@ -43,7 +43,7 @@ const JobSeekerLayout = ({
       }
       footerButton={footerButton}
     >
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 h-full">{children}</main>
     </AppSidebar>
   );
 };
