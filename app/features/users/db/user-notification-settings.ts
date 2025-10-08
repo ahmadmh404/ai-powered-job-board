@@ -17,12 +17,15 @@ export async function insertUserNotificationSettings(
 
 export async function updateUserNotificationSettings(
   userId: string,
-  data: Omit<typeof UserNotificationSettingsTable.$inferInsert, "userId">
+  settings: Omit<typeof UserNotificationSettingsTable.$inferInsert, "userId">
 ) {
   await db
-    .update(UserNotificationSettingsTable)
-    .set(data)
-    .where(eq(UserNotificationSettingsTable.userId, userId));
+    .insert(UserNotificationSettingsTable)
+    .values({ ...settings, userId })
+    .onConflictDoUpdate({
+      target: UserNotificationSettingsTable.userId,
+      set: settings,
+    });
 
   revalidateUserNotificationSettingsCache(userId);
 }

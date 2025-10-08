@@ -8,21 +8,23 @@ import { updateUserNotificationSettings as updateUserNotificationSettingsDB } fr
 export const updateUserNotificationSettings = async (
   unsafe: z.infer<typeof UserNotificationSettingsSchema>
 ) => {
-  const error = {
-    error: true,
-    message: "there was an error updating your notification settings",
-  };
-
   const { userId } = await getCurrentUser();
 
   if (userId == null) {
-    return error;
+    return {
+      error: true,
+      message:
+        "You must be signed in in oder to update our notification settings",
+    };
   }
 
   const { success, data } = UserNotificationSettingsSchema.safeParse(unsafe);
 
   if (!success) {
-    return error;
+    return {
+      error: true,
+      message: "there was an error updating your notification settings",
+    };
   }
 
   await updateUserNotificationSettingsDB(userId, { ...data });
