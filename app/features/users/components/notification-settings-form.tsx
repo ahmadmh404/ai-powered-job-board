@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { UserNotificationSettingsTable } from "../../../../drizzle/schema/user-notification-settings";
+import { UserNotificationSettingsTable } from "../../../../drizzle/schemas/user-notification-settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserNotificationSettingsSchema } from "../actions/schemas";
 import z from "zod";

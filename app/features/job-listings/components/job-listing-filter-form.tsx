@@ -23,7 +23,7 @@ import {
   jobListingTypes,
   LocationRequirement,
   locationRequirements,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";

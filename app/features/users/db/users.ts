@@ -1,6 +1,6 @@
 import { revalidateUserCache } from "@/app/features/users/db/cache/users";
 import { db } from "@/drizzle/db";
-import { UserTable } from "@/drizzle/schema";
+import { UserTable } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
 
 export async function InsertUser(user: typeof UserTable.$inferInsert) {

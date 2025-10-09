@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { JobListingStatus } from "@/drizzle/schema";
+import { JobListingStatus } from "@/drizzle/schemas";
 import { EyeIcon, EyeOffIcon, StarIcon, StarOffIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";

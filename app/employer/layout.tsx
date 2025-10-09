@@ -27,7 +27,7 @@ import {
   JobLIstingApplicationTable,
   JobListingStatus,
   JobListingTable,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { count, desc, eq } from "drizzle-orm";
 import { getJobListingApplicationJobListingTag } from "../features/job-listing-applications/db/cache/job-listing-applications";
 import { sortJobListingsByStatus } from "../features/job-listings/lib/utils";

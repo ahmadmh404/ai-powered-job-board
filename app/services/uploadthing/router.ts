@@ -3,7 +3,7 @@ import { UploadThingError } from "uploadthing/server";
 import { inngest } from "../inngest/client";
 import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
-import { UserResumeTable } from "@/drizzle/schema";
+import { UserResumeTable } from "@/drizzle/schemas";
 import { uploadthing } from "./client";
 import { upsertUserResume } from "@/app/features/users/db/user-resumes";
 import { getCurrentUser } from "../clerk/lib/get-current-auth";

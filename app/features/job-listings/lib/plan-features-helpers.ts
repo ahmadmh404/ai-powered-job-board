@@ -1,7 +1,7 @@
 import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
 import { hasPlanFeature } from "@/app/services/clerk/lib/plan-features";
 import { db } from "@/drizzle/db";
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schemas";
 import { and, count, eq } from "drizzle-orm";
 
 export async function hasReachedMaxPublishedJobListings() {

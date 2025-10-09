@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 import LoadingSpinner from "@/components/loading-sinner";
 import { Card, CardContent } from "@/components/ui/card";
 import { db } from "@/drizzle/db";
-import { UserNotificationSettingsTable } from "@/drizzle/schema";
+import { UserNotificationSettingsTable } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { notFound } from "next/navigation";

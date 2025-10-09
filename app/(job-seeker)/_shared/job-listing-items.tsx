@@ -14,7 +14,7 @@ import {
   locationRequirements,
   OrganizationTable,
   jobListingTypes,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { convertSearchParamsToString } from "@/lib/convert-search-params-to-string";
 import { cn } from "@/lib/utils";
 import { and, desc, eq, ilike, or, SQL } from "drizzle-orm";

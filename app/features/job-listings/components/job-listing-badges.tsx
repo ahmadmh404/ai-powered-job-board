@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schemas";
 import { ComponentProps } from "react";
 import {
   formatExperienceLevel,

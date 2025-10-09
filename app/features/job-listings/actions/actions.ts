@@ -9,7 +9,7 @@ import {
   updateJobListing as updateJobListingDB,
   deleteJobListing as deleteJobListingDB,
 } from "../db/job-listings";
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schemas";
 import { getJobListing } from "@/app/employer/job-listing/[jobListingId]/page";
 import { hasOrgUserPermission } from "@/app/services/clerk/lib/org-user-permissions";
 import { getNextJobListingStatus } from "../lib/utils";

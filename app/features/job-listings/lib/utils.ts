@@ -1,8 +1,8 @@
-import { JobListingStatus } from "@/drizzle/schema";
+import { JobListingStatus } from "@/drizzle/schemas";
 import {
   jobListingStatus,
   JobListingStatusEnum,
-} from "../../../../drizzle/schema/job-listing";
+} from "../../../../drizzle/schemas/job-listing";
 
 export function getNextJobListingStatus(status: JobListingStatus) {
   switch (status) {

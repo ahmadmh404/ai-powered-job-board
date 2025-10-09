@@ -5,7 +5,7 @@ import {
   JobLIstingApplicationTable,
   JobListingTable,
   UserResumeTable,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { applicantRankingAgent } from "../ai/applicant-ranking-agent";
 
 // rank the applicant when he apply to a job

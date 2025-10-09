@@ -1,6 +1,6 @@
 import { revalidateUserNotificationSettingsCache } from "@/app/features/users/db/cache/user-notification-settings";
 import { db } from "@/drizzle/db";
-import { UserNotificationSettingsTable } from "@/drizzle/schema";
+import { UserNotificationSettingsTable } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
 
 export async function insertUserNotificationSettings(

@@ -3,7 +3,7 @@ import {
   jobListingTypes,
   locationRequirements,
   wageIntervals,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import z from "zod";
 
 export const JobListingSchema = z

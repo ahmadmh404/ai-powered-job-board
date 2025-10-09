@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
-import { UserResumeTable } from "@/drizzle/schema";
+import { UserResumeTable } from "@/drizzle/schemas";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
 import MarkdownRenderer from "@/components/markdown/markdown-renderer";

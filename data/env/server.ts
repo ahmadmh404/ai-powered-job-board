@@ -13,6 +13,7 @@ export const env = createEnv({
     UPLOADTHING_TOKEN: z.string().min(1),
     ANTHROPIC_API_KEY: z.string().min(1),
     GEMINI_API_KEY: z.string().min(1),
+    RESEND_API_KEY: z.string().min(1),
   },
   // this prop takes all our process env variables and validate them over these zod validate rules
   experimental__runtimeEnv: process.env,

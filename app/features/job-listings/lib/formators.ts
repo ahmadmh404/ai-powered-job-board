@@ -4,7 +4,7 @@ import {
   JobListingType,
   LocationRequirement,
   WageInterval,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 
 export const formatWageIntervals = (interval: WageInterval) => {
   switch (interval) {

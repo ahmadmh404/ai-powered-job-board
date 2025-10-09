@@ -6,8 +6,8 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-import { OrganizationTable, UserTable } from "@/drizzle/schema";
-import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
+import { OrganizationTable, UserTable } from "@/drizzle/schemas";
+import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
 import { relations } from "drizzle-orm";
 
 // used for the organaization settings associated with a certain user

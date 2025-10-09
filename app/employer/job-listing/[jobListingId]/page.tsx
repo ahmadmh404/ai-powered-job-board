@@ -24,7 +24,7 @@ import MarkdownRenderer from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
-import { JobListingStatus, JobListingTable } from "@/drizzle/schema";
+import { JobListingStatus, JobListingTable } from "@/drizzle/schemas";
 import { and, eq } from "drizzle-orm";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";

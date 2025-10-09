@@ -1,6 +1,6 @@
 "use server";
 
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schemas";
 import {
   getJobListingGlobalTag,
   revalidateJobListingCache,

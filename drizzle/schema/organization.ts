@@ -1,11 +1,11 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
+import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
 import {
   JobListingTable,
   OrganaizationUserSettingsTable,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 
 export const OrganizationTable = pgTable("organizatoins", {
   id: varchar().primaryKey(),

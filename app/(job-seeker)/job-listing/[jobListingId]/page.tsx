@@ -19,7 +19,7 @@ import {
   JobLIstingApplicationTable,
   JobListingTable,
   UserResumeTable,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

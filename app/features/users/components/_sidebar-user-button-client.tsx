@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
-import { UserTable } from "@/drizzle/schema";
+import { UserTable } from "@/drizzle/schemas";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useClerk } from "@clerk/nextjs";
 import { ChevronsUpDownIcon, LogOut, Settings, UserIcon } from "lucide-react";

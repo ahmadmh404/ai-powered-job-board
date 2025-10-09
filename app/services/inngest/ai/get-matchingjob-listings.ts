@@ -4,7 +4,7 @@ import {
   locationRequirements,
   WageInterval,
   wageIntervals,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { createAgent, gemini } from "@inngest/agent-kit";
 import * as z from "zod";
 import { getLastOutputMessage } from "./get-last-utpt-message";
@@ -26,13 +26,13 @@ const listingSchema = z.object({
 interface Props {
   prompt: string;
   jobListings: z.infer<typeof listingSchema>[];
-  options: { maxNumberOfJobs: number };
+  options?: { maxNumberOfJobs?: number };
 }
 
 export async function getMatchingJobListing({
   jobListings,
   prompt,
-  options: { maxNumberOfJobs },
+  options: { maxNumberOfJobs } = {},
 }: Props) {
   const NO_JOBS = "NO_JOBS";
 

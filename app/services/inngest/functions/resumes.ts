@@ -1,7 +1,7 @@
 import { db } from "@/drizzle/db";
 import { inngest } from "../client";
 import { eq } from "drizzle-orm";
-import { UserResumeTable } from "@/drizzle/schema";
+import { UserResumeTable } from "@/drizzle/schemas";
 import { env } from "@/data/env/server";
 import { updateUserResume } from "@/app/features/users/db/user-resumes";
 

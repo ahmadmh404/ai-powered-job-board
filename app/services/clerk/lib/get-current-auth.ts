@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { OrganizationTable, UserTable } from "@/drizzle/schema";
+import { OrganizationTable, UserTable } from "@/drizzle/schemas";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";

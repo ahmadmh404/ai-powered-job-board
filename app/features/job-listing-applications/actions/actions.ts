@@ -9,7 +9,7 @@ import {
   JobLIstingApplicationTable,
   JobListingTable,
   UserResumeTable,
-} from "@/drizzle/schema";
+} from "@/drizzle/schemas";
 import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
 import { getJobListingIdTag } from "../../job-listings/db/cache/job-listings";
 import { jobListingApplicationSchema } from "../../job-listing-applications/actions/schemas";

@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { OrganizationTable } from "@/drizzle/schema";
+import { OrganizationTable } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
 import { revalidateOrganizatoinCache } from "@/app/features/organization/db/cache/organizations";
 

@@ -5,15 +5,15 @@ import {
   OrganaizationUserSettingsTable,
   UserNotificationSettingsTable,
   UserResumeTable,
-} from "@/drizzle/schema";
-import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
+} from "@/drizzle/schemas";
+import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
 
 export const UserTable = pgTable("users", {
   id: varchar().primaryKey(),
   name: varchar().notNull(),
   // Clerk always return an image url
   imageUrl: varchar().notNull(),
-  email: varchar().unique(),
+  email: varchar().unique().notNull(),
 
   // imported from a file to avoide DRY
   createdAt,

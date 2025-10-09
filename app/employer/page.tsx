@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { JobListingTable } from "@/drizzle/schema";
+import { JobListingTable } from "@/drizzle/schemas";
 import { desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";

@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { JobLIstingApplicationTable } from "@/drizzle/schema/job-listing-application";
+import { JobLIstingApplicationTable } from "@/drizzle/schemas/job-listing-application";
 import { and, eq } from "drizzle-orm";
 import { revalidateJobListingApplicationCache } from "./cache/job-listing-applications";
 
