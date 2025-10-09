@@ -1,7 +1,7 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
+import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
 import {
   JobListingTable,
   OrganaizationUserSettingsTable,

@@ -8,10 +8,10 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createdAt, id, updatedAt } from "@/drizzle/schemas-helpers";
 import { OrganizationTable } from "./organization";
 import { relations } from "drizzle-orm";
 import { JobLIstingApplicationTable } from "./job-listing-application";
+import { createdAt, id, updatedAt } from "../schema-helpers";
 
 // wage intervals
 export const wageIntervals = ["hourly", "yearly"] as const;

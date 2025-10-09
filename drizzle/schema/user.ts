@@ -6,7 +6,7 @@ import {
   UserNotificationSettingsTable,
   UserResumeTable,
 } from "@/drizzle/schemas";
-import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
+import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
 
 export const UserTable = pgTable("users", {
   id: varchar().primaryKey(),

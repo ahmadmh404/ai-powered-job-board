@@ -10,7 +10,7 @@ import {
 
 import { JobListingTable, UserTable } from "@/drizzle/schemas";
 
-import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
+import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
 import { relations } from "drizzle-orm";
 
 export const applicationStages = [

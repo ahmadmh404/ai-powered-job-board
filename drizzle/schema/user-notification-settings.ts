@@ -1,7 +1,7 @@
 import { boolean, pgTable, varchar } from "drizzle-orm/pg-core";
 
 import { UserTable } from "@/drizzle/schemas";
-import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
+import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
 import { relations } from "drizzle-orm";
 
 export const UserNotificationSettingsTable = pgTable(

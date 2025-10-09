@@ -7,8 +7,8 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { OrganizationTable, UserTable } from "@/drizzle/schemas";
-import { createdAt, updatedAt } from "@/drizzle/schemas-helpers";
 import { relations } from "drizzle-orm";
+import { createdAt, updatedAt } from "../schema-helpers";
 
 // used for the organaization settings associated with a certain user
 // like: do you want to receive an email when a user apply for you job application, and what are the minimum rating you wnat to setto determine if the applicant is okay iwth this job.

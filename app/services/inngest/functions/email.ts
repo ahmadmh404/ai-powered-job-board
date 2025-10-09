@@ -1,15 +1,16 @@
 import { db } from "@/drizzle/db";
 import { inngest } from "../client";
 import { and, eq } from "drizzle-orm";
-import {
-  JobListingTable,
-  UserNotificationSettingsTable,
-} from "@/drizzle/schemas";
+
 import { subDays } from "date-fns";
 import { GetEvents } from "inngest";
 import { getMatchingJobListing } from "../ai/get-matchingjob-listings";
 import { resend } from "../../resend/client";
-import { DailyJobListingEmail } from "./../../resend/components/daily-job-listing-email";
+import DailyJobListingEmail from "../../resend/components/daily-job-listing-email";
+import {
+  JobListingTable,
+  UserNotificationSettingsTable,
+} from "@/drizzle/schemas";
 
 export const properDailyUserJobListingNotifications = inngest.createFunction(
   {
@@ -127,7 +128,11 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
         from: "linkedlist590@gmail.com",
         to: email,
         subject: "Daily Job Listings",
-        react: DailyJobListingEmail(),
+        react: DailyJobListingEmail({
+          userName: name,
+          jobListings: matchingJobListings,
+          serverUrl: "http://localhost:3000",
+        }),
       });
     });
   }
