@@ -17,7 +17,7 @@ export const UserNotificationSettingsTable = pgTable(
   }
 );
 
-export const UserNotificatoinSettingsReferences = relations(
+export const UserNotificationSettingsReferences = relations(
   UserNotificationSettingsTable,
   ({ one }) => ({
     user: one(UserTable, {

@@ -7,7 +7,7 @@ import {
   formatJobType,
   formatLocationRequirements,
   formatWage,
-} from "../lib/formators";
+} from "../lib/formatters";
 import {
   BanknoteIcon,
   BuildingIcon,

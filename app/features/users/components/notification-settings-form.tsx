@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { UserNotificationSettingsTable } from "../../../../drizzle/schemas/user-notification-settings";
+import { UserNotificationSettingsTable } from "@/drizzle/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserNotificationSettingsSchema } from "../actions/schemas";
 import z from "zod";
@@ -23,7 +23,7 @@ import { updateUserNotificationSettings } from "../actions/user-notification-set
 export function NotificationSettingsForm({
   notificationSettings,
 }: {
-  notificationSettings: Pick<
+  notificationSettings?: Pick<
     typeof UserNotificationSettingsTable.$inferSelect,
     "newJobEmailNotifications" | "aiPrompt"
   >;
@@ -32,7 +32,7 @@ export function NotificationSettingsForm({
     resolver: zodResolver(UserNotificationSettingsSchema),
     defaultValues: notificationSettings ?? {
       aiPrompt: "",
-      newJoEmailNotification: false,
+      newJobEmailNotifications: false,
     },
   });
 

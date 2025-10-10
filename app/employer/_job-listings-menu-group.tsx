@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { JobListingStatus } from "@/drizzle/schemas";
 import { useParams } from "next/navigation";
-import { formatJobListingStatus } from "../features/job-listings/lib/formators";
+import { formatJobListingStatus } from "../features/job-listings/lib/formatters";
 import { ChevronRightIcon } from "lucide-react";
 import {
   Collapsible,

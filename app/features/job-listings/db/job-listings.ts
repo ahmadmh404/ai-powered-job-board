@@ -11,7 +11,7 @@ import z from "zod";
 import { jobListingAISearchSchema } from "../actions/schemas";
 import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getMatchingJobListing } from "@/app/services/inngest/ai/get-matchingjob-listings";
+import { getMatchingJobListing } from "@/app/services/inngest/ai/get-matching-job-listings";
 
 export async function insertJobListing(
   jobListing: typeof JobListingTable.$inferInsert

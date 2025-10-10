@@ -17,7 +17,7 @@ import { ClipboardListIcon, PlusIcon } from "lucide-react";
 import { getCurrentOrganization } from "../services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import { ChildrenProps } from "@/types";
-import { SidebarOrganaizationButton } from "../features/organization/components/sidebar-organization-button";
+import { SidebarOrganizationButton } from "../features/organization/components/sidebar-organization-button";
 import { hasOrgUserPermission } from "../services/clerk/lib/org-user-permissions";
 import AsyncIf from "@/components/async-if";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
@@ -48,7 +48,7 @@ export default function EmployerLayout({ children }: ChildrenProps) {
 async function SuspenseLayout({ children }: ChildrenProps) {
   const { orgId } = await getCurrentOrganization();
 
-  if (orgId == null) return redirect("/organaizations/select");
+  if (orgId == null) return redirect("/organization/select");
 
   return (
     <AppSidebar
@@ -76,7 +76,7 @@ async function SuspenseLayout({ children }: ChildrenProps) {
           <SidebarNavMenuGroup className="mt-auto" items={navItems} />
         </>
       }
-      footerButton={<SidebarOrganaizationButton />}
+      footerButton={<SidebarOrganizationButton />}
     >
       {children}
     </AppSidebar>

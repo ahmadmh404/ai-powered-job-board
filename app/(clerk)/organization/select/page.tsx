@@ -6,7 +6,7 @@ type Props = {
   searchParams: Promise<{ redirect?: string }>;
 };
 
-export default function OrganazationSelectPage(props: Props) {
+export default function OrganizationSelectPage(props: Props) {
   return (
     <Suspense>
       <SuspendedPage {...props} />

@@ -8,8 +8,8 @@ import z from "zod";
 
 export const JobListingSchema = z
   .object({
-    title: z.string().min(1, { error: "Requried" }),
-    description: z.string().min(1, { error: "Requried" }),
+    title: z.string().min(1, { error: "Required" }),
+    description: z.string().min(1, { error: "Required" }),
 
     experienceLevel: z.enum(experienceLevels),
     locationRequirement: z.enum(locationRequirements),

@@ -6,23 +6,23 @@ import {
 import { SignOutButton } from "@/app/services/clerk/components/auth-buttons";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { LogOutIcon } from "lucide-react";
-import SidebarOrganaizationClientButton from "./_sidebar-organization-button-client";
+import { SidebarOrganizationClientButton } from "./_sidebar-organization-button-client";
 
-export function SidebarOrganaizationButton() {
+export function SidebarOrganizationButton() {
   return (
     <Suspense>
-      <SidebarOrganaizationSuspense />
+      <SidebarOrganizationSuspense />
     </Suspense>
   );
 }
 
-async function SidebarOrganaizationSuspense() {
-  const [{ user }, { organaization }] = await Promise.all([
+async function SidebarOrganizationSuspense() {
+  const [{ user }, { organization }] = await Promise.all([
     getCurrentUser({ allData: true }),
     getCurrentOrganization({ allData: true }),
   ]);
 
-  if (user == null || organaization == null) {
+  if (user == null || organization == null) {
     return (
       <SignOutButton>
         <SidebarMenuButton>
@@ -34,9 +34,6 @@ async function SidebarOrganaizationSuspense() {
   }
 
   return (
-    <SidebarOrganaizationClientButton
-      user={user}
-      organaization={organaization}
-    />
+    <SidebarOrganizationClientButton user={user} organization={organization} />
   );
 }

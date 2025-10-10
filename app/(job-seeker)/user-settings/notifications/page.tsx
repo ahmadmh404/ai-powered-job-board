@@ -1,8 +1,5 @@
 import { NotificationSettingsForm } from "@/app/features/users/components/notification-settings-form";
-import {
-  getUserNotificationSettingsGlobalTag,
-  getUserNotificationSettingsIdTag,
-} from "@/app/features/users/db/cache/user-notification-settings";
+import { getUserNotificationSettingsIdTag } from "@/app/features/users/db/cache/user-notification-settings";
 import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
 import LoadingSpinner from "@/components/loading-sinner";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,7 +29,7 @@ async function SuspendedComponent() {
       <Card>
         <CardContent>
           <Suspense fallback={<LoadingSpinner />}>
-            <SuspendedForm />
+            <SuspendedForm userId={userId} />
           </Suspense>
         </CardContent>
       </Card>
@@ -43,7 +40,8 @@ async function SuspendedComponent() {
 async function SuspendedForm({ userId }: { userId: string }) {
   const settings = await getNotificationSettings(userId);
 
-  return <NotificationSettingsForm notificationSettings={settings} />;
+  if (!settings)
+    return <NotificationSettingsForm notificationSettings={settings} />;
 }
 
 async function getNotificationSettings(userId: string) {

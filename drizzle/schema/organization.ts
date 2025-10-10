@@ -4,10 +4,10 @@ import { relations } from "drizzle-orm";
 import { createdAt, updatedAt } from "@/drizzle/schema-helpers";
 import {
   JobListingTable,
-  OrganaizationUserSettingsTable,
+  OrganizationUserSettingsTable,
 } from "@/drizzle/schemas";
 
-export const OrganizationTable = pgTable("organizatoins", {
+export const OrganizationTable = pgTable("organizations", {
   id: varchar().primaryKey(),
   name: varchar().notNull(),
   // Clerk always return an image url
@@ -18,12 +18,12 @@ export const OrganizationTable = pgTable("organizatoins", {
   updatedAt,
 });
 
-export const OrganaizationReferences = relations(
+export const OrganizationReferences = relations(
   OrganizationTable,
   ({ many }) => ({
     jobListings: many(JobListingTable),
 
     // for each job listing we have settings so we have many settings
-    organaizationSettings: many(OrganaizationUserSettingsTable),
+    organizationSettings: many(OrganizationUserSettingsTable),
   })
 );

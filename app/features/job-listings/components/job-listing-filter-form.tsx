@@ -32,7 +32,7 @@ import {
   formatExperienceLevel,
   formatJobType,
   formatLocationRequirements,
-} from "../lib/formators";
+} from "../lib/formatters";
 import { StateSelectItems } from "./state-abbreviation-items";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/loading-swap";

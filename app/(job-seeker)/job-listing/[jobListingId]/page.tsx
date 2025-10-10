@@ -117,7 +117,7 @@ async function JobListingDetails({ params, searchParams }: Props) {
   return (
     <div className="space-y-6 @container">
       <div className="space-y-4">
-        <div className="flex ga-3 items-start">
+        <div className="flex gap-3 items-start">
           <Avatar className="size-14 @max-sm:hidden">
             <AvatarImage
               src={jobListing.organization.imageUrl ?? undefined}
@@ -138,7 +138,7 @@ async function JobListingDetails({ params, searchParams }: Props) {
             </div>
 
             {jobListing.postedAt != null && (
-              <div className="text-sm font-medium text-primary @min-md:hidden">
+              <div className="text-sm font-medium text-primary ml-auto @min-md:hidden">
                 <Suspense>
                   <DaysSincePosting postedAt={jobListing.postedAt} />
                 </Suspense>

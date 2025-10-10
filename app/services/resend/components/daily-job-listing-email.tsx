@@ -16,7 +16,7 @@ import {
   formatJobType,
   formatLocationRequirements,
   formatWage,
-} from "@/app/features/job-listings/lib/formators";
+} from "@/app/features/job-listings/lib/formatters";
 
 type JobListing = Pick<
   typeof JobListingTable.$inferSelect,

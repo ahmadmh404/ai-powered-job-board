@@ -34,7 +34,7 @@ import {
   formatJobType,
   formatLocationRequirements,
   formatWageIntervals,
-} from "../lib/formators";
+} from "../lib/formatters";
 import { StateSelectItems } from "./state-abbreviation-items";
 import { MDXMarkdownEditor } from "@/components/markdown/markdown";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,7 @@ import { LoadingSwap } from "@/components/loading-swap";
 import { createJobListing, updateJobListing } from "../actions/actions";
 import { toast } from "sonner";
 
-const NON_SELCT_VALUE = "none";
+const NON_SELECT_VALUE = "none";
 
 type Props = {
   jobListing?: Pick<
@@ -196,7 +196,7 @@ function JobListingForm({ jobListing }: Props) {
                   <Select
                     value={field.value ?? ""}
                     onValueChange={(val) =>
-                      field.onChange(val === NON_SELCT_VALUE ? null : val)
+                      field.onChange(val === NON_SELECT_VALUE ? null : val)
                     }
                   >
                     <FormControl suppressHydrationWarning>
@@ -207,7 +207,7 @@ function JobListingForm({ jobListing }: Props) {
 
                     <SelectContent>
                       {field.value != null && (
-                        <SelectItem value={NON_SELCT_VALUE}>Clear</SelectItem>
+                        <SelectItem value={NON_SELECT_VALUE}>Clear</SelectItem>
                       )}
                       <StateSelectItems />
                     </SelectContent>

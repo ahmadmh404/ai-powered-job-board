@@ -1,12 +1,12 @@
 // type for the cache tags, meaning users cahced tag, organaizatoins cache tag, ...
 type CacheTag =
   | "users"
-  | "organaizations"
+  | "organizations"
   | "job-listing"
-  | "user-notificatoin-settings"
+  | "user-notification-settings"
   | "job-listing-application"
   | "user-resume"
-  | "organaization-user-settings";
+  | "organization-user-settings";
 
 // util to get the tag as string
 // when i add, update, delte, any record i need to get the key related to the cached data to update it.

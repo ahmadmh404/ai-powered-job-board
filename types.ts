@@ -13,7 +13,7 @@ export type User = {
   updatedAt: Date;
 };
 
-export type Organaization = {
+export type Organization = {
   id: string;
   name: string;
   imageUrl: string | null;

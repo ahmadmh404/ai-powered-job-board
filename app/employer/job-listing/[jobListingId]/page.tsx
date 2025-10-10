@@ -9,7 +9,7 @@ import UpgradePopover, {
   JobListingStatusText,
 } from "@/app/features/job-listings/components/upgrade-popover";
 import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
-import { formatJobListingStatus } from "@/app/features/job-listings/lib/formators";
+import { formatJobListingStatus } from "@/app/features/job-listings/lib/formatters";
 import {
   hasReachedMaxFeaturedJobListings,
   hasReachedMaxPublishedJobListings,
@@ -39,12 +39,12 @@ type Props = {
 export default function JobListingPage({ params }: Props) {
   return (
     <Suspense>
-      <SuspensedPage params={params} />
+      <SuspendedPage params={params} />
     </Suspense>
   );
 }
 
-async function SuspensedPage({ params }: Props) {
+async function SuspendedPage({ params }: Props) {
   const { orgId } = await getCurrentOrganization();
 
   if (orgId == null) {
@@ -121,7 +121,7 @@ async function SuspensedPage({ params }: Props) {
             source={jobListing.description}
           />
         }
-        dialogTitle="Descriiption"
+        dialogTitle="Description"
       />
     </div>
   );

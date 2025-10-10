@@ -1,7 +1,7 @@
 import { db } from "@/drizzle/db";
 import { OrganizationTable } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
-import { revalidateOrganizatoinCache } from "@/app/features/organization/db/cache/organizations";
+import { revalidateOrganizationCache } from "@/app/features/organization/db/cache/organizations";
 
 export async function InsertOrganization(
   org: typeof OrganizationTable.$inferInsert
@@ -9,7 +9,7 @@ export async function InsertOrganization(
   // What onConflictDonotUpdate does is that ignores any conflict requests.
   await db.insert(OrganizationTable).values(org).onConflictDoNothing();
 
-  revalidateOrganizatoinCache(org.id);
+  revalidateOrganizationCache(org.id);
 }
 
 export async function updateOrganization(
@@ -22,11 +22,11 @@ export async function updateOrganization(
     .set(org)
     .where(eq(OrganizationTable.id, id));
 
-  revalidateOrganizatoinCache(id);
+  revalidateOrganizationCache(id);
 }
 
 export async function deleteOrganization(id: string) {
   await db.delete(OrganizationTable).where(eq(OrganizationTable.id, id));
 
-  revalidateOrganizatoinCache(id);
+  revalidateOrganizationCache(id);
 }

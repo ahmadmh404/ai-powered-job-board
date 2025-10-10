@@ -19,7 +19,7 @@ export const UserResumeTable = pgTable("user_resumes", {
   updatedAt,
 });
 
-export const UserResumeRelatinos = relations(UserResumeTable, ({ one }) => ({
+export const UserResumeRelations = relations(UserResumeTable, ({ one }) => ({
   user: one(UserTable, {
     fields: [UserResumeTable.userId],
     references: [UserTable.id],

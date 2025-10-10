@@ -2,7 +2,6 @@ import {
   experienceLevels,
   jobListingTypes,
   locationRequirements,
-  WageInterval,
   wageIntervals,
 } from "@/drizzle/schemas";
 import { createAgent, gemini } from "@inngest/agent-kit";

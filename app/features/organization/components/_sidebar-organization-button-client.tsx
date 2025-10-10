@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Organaization, User } from "@/types";
+import { Organization, User } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +27,10 @@ import { useClerk } from "@clerk/nextjs";
 
 type Props = {
   user: User;
-  organaization: Organaization;
+  organization: Organization;
 };
 
-function SidebarOrganaizationClientButton({ user, organaization }: Props) {
+export function SidebarOrganizationClientButton({ user, organization }: Props) {
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
 
@@ -43,7 +43,7 @@ function SidebarOrganaizationClientButton({ user, organaization }: Props) {
           size={"lg"}
           className="data-[state=open]:bg-sidebar-accent data-[state=open[:text-sidebar-accent-foreground"
         >
-          <OrganaizationInfo user={user} organaization={organaization} />
+          <OrganizationInfo user={user} organization={organization} />
           <ChevronsUpDownIcon className="ml-auto group-data-[state=collapsed]:hidden" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
@@ -53,7 +53,7 @@ function SidebarOrganaizationClientButton({ user, organaization }: Props) {
         side={isMobile ? "bottom" : "right"}
         className="min-w-64 max-w-80"
       >
-        <OrganaizationInfo user={user} organaization={organaization} />
+        <OrganizationInfo user={user} organization={organization} />
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
@@ -61,7 +61,7 @@ function SidebarOrganaizationClientButton({ user, organaization }: Props) {
             setOpenMobile(false);
           }}
         >
-          <Building2 className="mr-1" /> Manage organaization
+          <Building2 className="mr-1" /> Manage organization
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
@@ -78,8 +78,8 @@ function SidebarOrganaizationClientButton({ user, organaization }: Props) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href={"/organaizations/select"}>
-            <ArrowLeftRightIcon className="mr-1" /> Switch Organaization
+          <Link href={"/organization/select"}>
+            <ArrowLeftRightIcon className="mr-1" /> Switch Organization
           </Link>
         </DropdownMenuItem>
 
@@ -95,8 +95,8 @@ function SidebarOrganaizationClientButton({ user, organaization }: Props) {
   );
 }
 
-export function OrganaizationInfo({ user, organaization }: Props) {
-  const nameInitials = organaization.name
+export function OrganizationInfo({ user, organization }: Props) {
+  const nameInitials = organization.name
     .split(" ")
     .splice(0, 2)
     .map((str) => str.charAt(0))
@@ -106,8 +106,8 @@ export function OrganaizationInfo({ user, organaization }: Props) {
     <div className="flex items-center gap-2 p-2">
       <Avatar className="rounded-lg size-8">
         <AvatarImage
-          src={organaization.imageUrl ?? undefined}
-          alt={organaization.name}
+          src={organization.imageUrl ?? undefined}
+          alt={organization.name}
         />
         <AvatarFallback className="uppercase bg-primary text-primary-foreground">
           {nameInitials}
@@ -116,12 +116,10 @@ export function OrganaizationInfo({ user, organaization }: Props) {
 
       <div className="flex flex-col flex-1 min-w-0 leading-tight group-data-[state=collapsed]:hidden">
         <span className="truncate text-sm font-semibold">
-          {organaization.name}
+          {organization.name}
         </span>
         <span className="truncate text-sm xs">{user.email}</span>
       </div>
     </div>
   );
 }
-
-export default SidebarOrganaizationClientButton;

@@ -20,7 +20,7 @@ export async function getCurrentOrganization({ allData = false } = {}) {
 
   return {
     orgId,
-    organaization:
+    organization:
       allData && orgId != null ? await getOrganization(orgId) : undefined,
   };
 }
