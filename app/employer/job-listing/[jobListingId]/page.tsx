@@ -2,21 +2,21 @@ import {
   deleteJobListing,
   toggleJobListingFeatured,
   toggleJobListingStatus,
-} from "@/app/features/job-listings/actions/actions";
-import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
+} from "@/features/job-listings/actions/actions";
+import JobListingBadges from "@/features/job-listings/components/job-listing-badges";
 import UpgradePopover, {
   JobListingSFeaturedText,
   JobListingStatusText,
-} from "@/app/features/job-listings/components/upgrade-popover";
-import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
-import { formatJobListingStatus } from "@/app/features/job-listings/lib/formatters";
+} from "@/features/job-listings/components/upgrade-popover";
+import { getJobListingIdTag } from "@/features/job-listings/db/cache/job-listings";
+import { formatJobListingStatus } from "@/features/job-listings/lib/formatters";
 import {
   hasReachedMaxFeaturedJobListings,
   hasReachedMaxPublishedJobListings,
-} from "@/app/features/job-listings/lib/plan-features-helpers";
-import { getNextJobListingStatus } from "@/app/features/job-listings/lib/utils";
-import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
-import { hasOrgUserPermission } from "@/app/services/clerk/lib/org-user-permissions";
+} from "@/features/job-listings/lib/plan-features-helpers";
+import { getNextJobListingStatus } from "@/features/job-listings/lib/utils";
+import { getCurrentOrganization } from "@/services/clerk/lib/get-current-auth";
+import { hasOrgUserPermission } from "@/services/clerk/lib/org-user-permissions";
 import ActionButton from "@/components/action-button";
 import AsyncIf from "@/components/async-if";
 import { MarkdownPartial } from "@/components/markdown/markdown-partial";

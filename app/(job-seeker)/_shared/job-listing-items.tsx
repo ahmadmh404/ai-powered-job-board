@@ -24,12 +24,12 @@ import { differenceInDays } from "date-fns";
 import { connection } from "next/server";
 import { Badge } from "@/components/ui/badge";
 
-import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
+import JobListingBadges from "@/features/job-listings/components/job-listing-badges";
 
 import z from "zod";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getJobListingGlobalTag } from "@/app/features/job-listings/db/cache/job-listings";
-import { getOrganizationIdTag } from "@/app/features/organization/db/cache/organizations";
+import { getJobListingGlobalTag } from "@/features/job-listings/db/cache/job-listings";
+import { getOrganizationIdTag } from "@/features/organization/db/cache/organizations";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[]>>;

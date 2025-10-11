@@ -1,6 +1,6 @@
-import { JobListingAISearchForm } from "@/app/features/job-listings/components/job-listing-ai-search-form";
-import { SignUpButton } from "@/app/services/clerk/components/auth-buttons";
-import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
+import { JobListingAISearchForm } from "@/features/job-listings/components/job-listing-ai-search-form";
+import { SignUpButton } from "@/services/clerk/components/auth-buttons";
+import { getCurrentUser } from "@/services/clerk/lib/get-current-auth";
 import AsyncIf from "@/components/async-if";
 import { LoadingSwap } from "@/components/loading-swap";
 import {

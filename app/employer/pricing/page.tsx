@@ -1,4 +1,4 @@
-import PricingTable from "@/app/services/clerk/components/pricing-table";
+import PricingTable from "@/services/clerk/components/pricing-table";
 
 export default function PricingPage() {
   return (

@@ -2,7 +2,7 @@ import { connection } from "next/server";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { Suspense } from "react";
-import { customFileRouter } from "@/app/services/uploadthing/router";
+import { customFileRouter } from "@/services/uploadthing/router";
 
 export function UploadthingSSr() {
   return (

@@ -12,7 +12,7 @@ import LoadingSpinner from "@/components/loading-sinner";
 import ClientSheet from "./_client-sheet";
 import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getJobListingIdTag } from "@/app/features/job-listings/db/cache/job-listings";
+import { getJobListingIdTag } from "@/features/job-listings/db/cache/job-listings";
 import { db } from "@/drizzle/db";
 import { and, eq } from "drizzle-orm";
 import {
@@ -25,19 +25,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { convertSearchParamsToString } from "@/lib/convert-search-params-to-string";
 import { XIcon } from "lucide-react";
-import JobListingBadges from "@/app/features/job-listings/components/job-listing-badges";
+import JobListingBadges from "@/features/job-listings/components/job-listing-badges";
 import MarkdownRenderer from "@/components/markdown/markdown-renderer";
-import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentUser } from "@/services/clerk/lib/get-current-auth";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { SignUpButton } from "@/app/services/clerk/components/auth-buttons";
-import { getJobListingApplicationIdTag } from "@/app/features/job-listing-applications/db/cache/job-listing-applications";
+import { SignUpButton } from "@/services/clerk/components/auth-buttons";
+import { getJobListingApplicationIdTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";
 import { differenceInDays } from "date-fns";
 import { connection } from "next/server";
-import { getUserResumeIdTAg } from "@/app/features/users/db/cache/user-resumes";
+import { getUserResumeIdTAg } from "@/features/users/db/cache/user-resumes";
 import {
   Dialog,
   DialogContent,
@@ -46,7 +46,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import NewJobListingApplicationForm from "@/app/features/job-listing-applications/components/new-job-listing-application-form";
+import NewJobListingApplicationForm from "@/features/job-listing-applications/components/new-job-listing-application-form";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;

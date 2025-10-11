@@ -1,4 +1,4 @@
-import JobListingFilterForm from "@/app/features/job-listings/components/job-listing-filter-form";
+import JobListingFilterForm from "@/features/job-listings/components/job-listing-filter-form";
 import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import React from "react";
 

@@ -1,5 +1,5 @@
-import JobListingForm from "@/app/features/job-listings/components/job-listing-form";
-import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
+import JobListingForm from "@/features/job-listings/components/job-listing-form";
+import { getCurrentOrganization } from "@/services/clerk/lib/get-current-auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";

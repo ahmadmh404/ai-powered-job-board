@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { AppSidebarClient } from "@/components/shared/_app-sidebar-client";
-import { SignedIn } from "@/app/services/clerk/components/sign-in-status";
+import { SignedIn } from "@/services/clerk/components/sign-in-status";
 import Link from "next/link";
 
 type Props = {

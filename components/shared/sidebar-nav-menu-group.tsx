@@ -3,7 +3,7 @@
 import {
   SignedIn,
   SignedOut,
-} from "@/app/services/clerk/components/sign-in-status";
+} from "@/services/clerk/components/sign-in-status";
 import {
   SidebarGroup,
   SidebarMenu,

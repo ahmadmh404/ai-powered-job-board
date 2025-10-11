@@ -3,7 +3,7 @@ import { JobListingTable } from "@/drizzle/schemas";
 import { desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { getCurrentOrganization } from "@/app/services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/services/clerk/lib/get-current-auth";
 import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 

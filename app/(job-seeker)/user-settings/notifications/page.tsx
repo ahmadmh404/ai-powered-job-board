@@ -1,6 +1,6 @@
-import { NotificationSettingsForm } from "@/app/features/users/components/notification-settings-form";
-import { getUserNotificationSettingsIdTag } from "@/app/features/users/db/cache/user-notification-settings";
-import { getCurrentUser } from "@/app/services/clerk/lib/get-current-auth";
+import { NotificationSettingsForm } from "@/features/users/components/notification-settings-form";
+import { getUserNotificationSettingsIdTag } from "@/features/users/db/cache/user-notification-settings";
+import { getCurrentUser } from "@/services/clerk/lib/get-current-auth";
 import LoadingSpinner from "@/components/loading-sinner";
 import { Card, CardContent } from "@/components/ui/card";
 import { db } from "@/drizzle/db";

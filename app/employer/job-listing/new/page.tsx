@@ -1,4 +1,4 @@
-import JobListingForm from "@/app/features/job-listings/components/job-listing-form";
+import JobListingForm from "@/features/job-listings/components/job-listing-form";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function NewJobListingPage() {

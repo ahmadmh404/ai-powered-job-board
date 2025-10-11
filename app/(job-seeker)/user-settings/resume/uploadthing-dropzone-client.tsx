@@ -1,6 +1,6 @@
 "use client";
 
-import { UploadDropZone } from "@/app/services/uploadthing/components/uploadthing";
+import { UploadDropZone } from "@/services/uploadthing/components/uploadthing";
 import { useRouter } from "next/navigation";
 
 export function DropZoneCLient() {
