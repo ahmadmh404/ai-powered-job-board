@@ -79,8 +79,6 @@ function JobListingForm({ jobListing }: Props) {
   });
 
   async function onSubmit(data: z.infer<typeof JobListingSchema>) {
-    console.log("data: ", data);
-
     const action = jobListing
       ? updateJobListing.bind(null, jobListing.id)
       : createJobListing;

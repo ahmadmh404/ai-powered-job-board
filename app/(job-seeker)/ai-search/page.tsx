@@ -18,7 +18,6 @@ export default function AISearchPage() {
         <AsyncIf
           condition={async () => {
             const { userId } = await getCurrentUser();
-            console.log("userId; ", userId);
             return userId != null;
           }}
           fallback={

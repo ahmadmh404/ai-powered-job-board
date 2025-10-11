@@ -1,16 +1,17 @@
 import { db } from "@/drizzle/db";
 import { inngest } from "../client";
-import { and, eq } from "drizzle-orm";
+import { and, eq, gte } from "drizzle-orm";
 
 import { subDays } from "date-fns";
 import { GetEvents } from "inngest";
-import { getMatchingJobListing } from "../ai/get-matchingjob-listings";
 import { resend } from "../../resend/client";
 import DailyJobListingEmail from "../../resend/components/daily-job-listing-email";
 import {
   JobListingTable,
   UserNotificationSettingsTable,
 } from "@/drizzle/schemas";
+import { env } from "@/data/env/server";
+import { getMatchingJobListing } from "../ai/get-matching-job-listings";
 
 export const properDailyUserJobListingNotifications = inngest.createFunction(
   {
@@ -18,7 +19,7 @@ export const properDailyUserJobListingNotifications = inngest.createFunction(
     name: "Proper Daily User Job Listing Notifications",
   },
   {
-    cron: "0 7 * * * *",
+    cron: "TZ=America/Chicago 0 7 * * *",
   },
   async ({ step, event }) => {
     const allUsers = step.run("get-all-users", async () => {
@@ -44,9 +45,9 @@ export const properDailyUserJobListingNotifications = inngest.createFunction(
       return await db.query.JobListingTable.findMany({
         where: and(
           eq(JobListingTable.status, "published"),
-          eq(
+          gte(
             JobListingTable.postedAt,
-            subDays(new Date(event?.ts ?? new Date()), 1)
+            subDays(new Date(event?.ts ?? Date.now()), 1)
           )
         ),
         columns: {
@@ -67,28 +68,30 @@ export const properDailyUserJobListingNotifications = inngest.createFunction(
       recentListings,
     ]);
 
-    if (usersNotifications == null || jobListings == null) return;
+    if (usersNotifications.length === 0 || jobListings.length == -0) return;
 
     const events = usersNotifications.map((notification) => {
       return {
         name: "app/email.daily-user-job-listing-notifications",
-        data: {
-          aiPrompt: notification.aiPrompt ?? undefined,
-          jobListings: jobListings.map((listing) => ({
-            ...listing,
-            organizationName: listing.organization.name,
-          })),
-        },
         user: {
           email: notification.user.email,
           name: notification.user.name,
+        },
+        data: {
+          aiPrompt: notification.aiPrompt ?? undefined,
+          jobListings: jobListings.map((listing) => {
+            return {
+              ...listing,
+              organizationName: listing.organization.name,
+            };
+          }),
         },
       } as const satisfies GetEvents<
         typeof inngest
       >["app/email.daily-user-job-listing-notifications"];
     });
 
-    step.sendEvent("send-emails", events);
+    await step.sendEvent("send-emails", events);
   }
 );
 
@@ -96,6 +99,10 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
   {
     id: "send-daily-user-job-listing-email",
     name: "Send User Job Listing Email",
+    throttle: {
+      limit: 10,
+      period: "1m",
+    },
   },
   {
     event: "app/email.daily-user-job-listing-notifications",
@@ -120,18 +127,19 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
         matchingIds.includes(listing.id)
       );
     }
+    console.log("user info: ", name, email);
 
     if (matchingJobListings.length === 0) return;
 
     await step.run("send-email", async () => {
       await resend.emails.send({
-        from: "linkedlist590@gmail.com",
+        from: "ahmadhossamo789@gmail.com",
         to: email,
         subject: "Daily Job Listings",
         react: DailyJobListingEmail({
           userName: name,
           jobListings: matchingJobListings,
-          serverUrl: "http://localhost:3000",
+          serverUrl: env.SERVER_URL,
         }),
       });
     });

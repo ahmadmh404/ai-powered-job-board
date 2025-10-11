@@ -13,7 +13,7 @@ export const UserTable = pgTable("users", {
   name: varchar().notNull(),
   // Clerk always return an image url
   imageUrl: varchar().notNull(),
-  email: varchar().unique(),
+  email: varchar().notNull().unique(),
   createdAt,
   updatedAt,
 });

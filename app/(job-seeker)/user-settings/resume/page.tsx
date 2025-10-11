@@ -79,8 +79,6 @@ async function AISummary() {
 
   const userResume = await getUserResume(userId);
 
-  console.log("userResume: ", userResume);
-
   if (userResume == null || userResume.aiSummary == null) return null;
 
   return (

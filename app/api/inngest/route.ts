@@ -11,6 +11,10 @@ import {
 } from "@/services/inngest/functions/clerk";
 import { createAiSummaryOfUploadedResume } from "@/services/inngest/functions/resumes";
 import { rankingApplicant } from "@/services/inngest/functions/job-listing-applications";
+import {
+  properDailyUserJobListingNotifications,
+  sendDailyUserJobListingEmail,
+} from "@/services/inngest/functions/email";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -23,5 +27,7 @@ export const { GET, POST, PUT } = serve({
     clerkDeleteOrganization,
     createAiSummaryOfUploadedResume,
     rankingApplicant,
+    properDailyUserJobListingNotifications,
+    sendDailyUserJobListingEmail,
   ],
 });

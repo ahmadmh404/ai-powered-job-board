@@ -8,7 +8,9 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+
 import tailwindConfig from "@/services/resend/data/tailwind-config";
+
 import { JobListingTable } from "@/drizzle/schemas";
 import {
   formatExperienceLevel,
@@ -43,6 +45,7 @@ export default function DailyJobListingEmail({
   jobListings: JobListing[];
   serverUrl: string;
 }) {
+  console.log("email job listings: ", jobListings);
   return (
     <Tailwind config={tailwindConfig}>
       <Html>
