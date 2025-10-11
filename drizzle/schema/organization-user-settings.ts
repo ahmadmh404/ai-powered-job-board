@@ -19,6 +19,7 @@ export const OrganizationUserSettingsTable = pgTable(
     id: varchar()
       .notNull()
       .references(() => UserTable.id),
+
     organizationId: varchar()
       .notNull()
       .references(() => OrganizationTable.id),

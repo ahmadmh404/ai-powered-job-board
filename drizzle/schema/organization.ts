@@ -10,10 +10,7 @@ import {
 export const OrganizationTable = pgTable("organizations", {
   id: varchar().primaryKey(),
   name: varchar().notNull(),
-  // Clerk always return an image url
   imageUrl: varchar(),
-
-  // imported from a file to avoide DRY
   createdAt,
   updatedAt,
 });

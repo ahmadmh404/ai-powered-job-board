@@ -70,7 +70,9 @@ async function SuspendedComponent({ searchParams, params }: Props) {
 
   if (jobListings.length === 0) {
     return (
-      <div className="text-muted-foreground p-4">No job listings found.</div>
+      <div className="text-muted-foreground p-4 text-center">
+        No job listings found.
+      </div>
     );
   }
 

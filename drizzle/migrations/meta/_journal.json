@@ -5,78 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1756276568928,
-      "tag": "0000_naive_golden_guardian",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1756292024676,
-      "tag": "0001_flaky_jack_murdock",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1756819327822,
-      "tag": "0002_wonderful_morlun",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1757078979285,
-      "tag": "0003_open_gladiator",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1757467421719,
-      "tag": "0004_low_dazzler",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1757468131705,
-      "tag": "0005_elite_selene",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1757468656753,
-      "tag": "0006_tiny_rage",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1757475618574,
-      "tag": "0007_wandering_karma",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1757648268453,
-      "tag": "0008_simple_phil_sheldon",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1757670098448,
-      "tag": "0009_loose_tony_stark",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1759991086715,
-      "tag": "0010_worthless_calypso",
+      "when": 1760082198174,
+      "tag": "0000_special_zzzax",
       "breakpoints": true
     }
   ]

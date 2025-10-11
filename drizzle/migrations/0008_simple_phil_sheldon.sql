@@ -1,1 +1,0 @@
-ALTER TABLE "job_listings" RENAME COLUMN "wageInterva" TO "wageInterval";
