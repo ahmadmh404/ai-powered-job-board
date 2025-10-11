@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/shared/app-sidebar";
-import { SidebarUserButton } from "../features/users/components/sidebar-user-button";
+import { SidebarUserButton } from "@/features/users/components/sidebar-user-button";
 
 import SidebarNavMenuGroup, {
   Item,
@@ -24,8 +24,6 @@ const navItems: Item[] = [
   },
 ];
 
-const footerButton = <SidebarUserButton />;
-
 const JobSeekerLayout = ({
   children,
   sidebar,
@@ -41,7 +39,7 @@ const JobSeekerLayout = ({
           <SidebarNavMenuGroup className="mt-auto" items={navItems} />
         </>
       }
-      footerButton={footerButton}
+      footerButton={<SidebarUserButton />}
     >
       <main className="flex-1 h-full">{children}</main>
     </AppSidebar>

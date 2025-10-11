@@ -14,14 +14,14 @@ import SidebarNavMenuGroup, {
 } from "@/components/shared/sidebar-nav-menu-group";
 
 import { ClipboardListIcon, PlusIcon } from "lucide-react";
-import { getCurrentOrganization } from "../services/clerk/lib/get-current-auth";
+import { getCurrentOrganization } from "@/services/clerk/lib/get-current-auth";
 import { redirect } from "next/navigation";
 import { ChildrenProps } from "@/types";
-import { SidebarOrganizationButton } from "../features/organization/components/sidebar-organization-button";
-import { hasOrgUserPermission } from "../services/clerk/lib/org-user-permissions";
+import { SidebarOrganizationButton } from "@/features/organization/components/sidebar-organization-button";
+import { hasOrgUserPermission } from "@/services/clerk/lib/org-user-permissions";
 import AsyncIf from "@/components/async-if";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getJobListingOrganizationTag } from "../features/job-listings/db/cache/job-listings";
+import { getJobListingOrganizationTag } from "@/features/job-listings/db/cache/job-listings";
 import { db } from "@/drizzle/db";
 import {
   JobLIstingApplicationTable,
@@ -29,8 +29,8 @@ import {
   JobListingTable,
 } from "@/drizzle/schemas";
 import { count, desc, eq } from "drizzle-orm";
-import { getJobListingApplicationJobListingTag } from "../features/job-listing-applications/db/cache/job-listing-applications";
-import { sortJobListingsByStatus } from "../features/job-listings/lib/utils";
+import { getJobListingApplicationJobListingTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";
+import { sortJobListingsByStatus } from "@/features/job-listings/lib/utils";
 import JobLIstingMenuGroup from "./_job-listings-menu-group";
 
 const navItems: Item[] = [

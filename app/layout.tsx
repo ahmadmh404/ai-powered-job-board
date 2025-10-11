@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ClerkProvider } from "./services/clerk/components/clerk-provider";
+import { ClerkProvider } from "@/services/clerk/components/clerk-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { UploadthingSSr } from "@/components/uploadthing";
 
