@@ -16,7 +16,7 @@ import { createdAt, updatedAt } from "../schema-helpers";
 export const OrganizationUserSettingsTable = pgTable(
   "organization_user_settings",
   {
-    id: varchar()
+    userId: varchar()
       .notNull()
       .references(() => UserTable.id),
 
@@ -29,14 +29,14 @@ export const OrganizationUserSettingsTable = pgTable(
     createdAt,
     updatedAt,
   },
-  (table) => [primaryKey({ columns: [table.id, table.organizationId] })]
+  (table) => [primaryKey({ columns: [table.userId, table.organizationId] })]
 );
 
 export const OrganizationUserSettingsReferences = relations(
   OrganizationUserSettingsTable,
   ({ one }) => ({
     user: one(UserTable, {
-      fields: [OrganizationUserSettingsTable.id],
+      fields: [OrganizationUserSettingsTable.userId],
       references: [UserTable.id],
     }),
 

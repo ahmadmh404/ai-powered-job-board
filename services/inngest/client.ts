@@ -2,6 +2,7 @@ import { JobListingTable } from "@/drizzle/schemas";
 import {
   DeletedObjectJSON,
   OrganizationJSON,
+  OrganizationMembershipJSON,
   UserJSON,
 } from "@clerk/nextjs/server";
 import { EventSchemas, Inngest } from "inngest";
@@ -22,6 +23,9 @@ type Events = {
   "Clerk/organization.created": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.updated": ClerkWebHookData<OrganizationJSON>;
   "Clerk/organization.deleted": ClerkWebHookData<DeletedObjectJSON>;
+
+  "Clerk/organization-user-settings.created": ClerkWebHookData<OrganizationMembershipJSON>;
+  "Clerk/organization-user-settings.deleted": ClerkWebHookData<OrganizationMembershipJSON>;
 
   "App/job-listing-application.created": {
     data: { jobListingId: string; userId: string };

@@ -82,7 +82,7 @@ export default function DailyJobListingEmail({
                 </div>
 
                 <Button
-                  href={`${serverUrl}?job-listing=${listing.id}`}
+                  href={`${serverUrl}?jobIds=${listing.id}`}
                   className="rounded-md text-sm font-medium bg-primary text-primary-foreground px-4 py-2 focus-visible:border-ring"
                 >
                   View Details

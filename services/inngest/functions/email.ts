@@ -133,7 +133,7 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
 
     await step.run("send-email", async () => {
       await resend.emails.send({
-        from: "ahmadhossamo789@gmail.com",
+        from: "Job Board <onboarding@resend.dev>",
         to: email,
         subject: "Daily Job Listings",
         react: DailyJobListingEmail({
@@ -142,6 +142,8 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
           serverUrl: env.SERVER_URL,
         }),
       });
+
+      console.log("Email was sent");
     });
   }
 );

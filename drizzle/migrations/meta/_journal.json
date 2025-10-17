@@ -15,6 +15,13 @@
       "when": 1760204088773,
       "tag": "0001_flimsy_mockingbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760297611049,
+      "tag": "0002_complete_mikhail_rasputin",
+      "breakpoints": true
     }
   ]
 }

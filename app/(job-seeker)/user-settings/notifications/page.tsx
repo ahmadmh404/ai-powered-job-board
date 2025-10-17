@@ -40,8 +40,7 @@ async function SuspendedComponent() {
 async function SuspendedForm({ userId }: { userId: string }) {
   const settings = await getNotificationSettings(userId);
 
-  if (settings)
-    return <NotificationSettingsForm notificationSettings={settings} />;
+  return <NotificationSettingsForm notificationSettings={settings} />;
 }
 
 async function getNotificationSettings(userId: string) {

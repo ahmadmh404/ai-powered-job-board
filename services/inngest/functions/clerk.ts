@@ -10,6 +10,10 @@ import {
   InsertOrganization,
   updateOrganization,
 } from "@/features/organization/db/organizations";
+import {
+  deleteOrganizationUserSettings,
+  insertOrganizationUserSettings,
+} from "@/features/organization/db/organization-user-settings";
 
 // verify teh webhook validaty
 function validateWebhook({
@@ -224,6 +228,62 @@ export const clerkDeleteOrganization = inngest.createFunction(
       }
 
       await deleteOrganization(id);
+    });
+  }
+);
+
+export const clerkCreateOrgMembership = inngest.createFunction(
+  {
+    id: "clerk/create-organization-user-settings",
+    name: "Clerk - Create Organization User Settings",
+  },
+  { event: "Clerk/organization-user-settings.created" },
+  async ({ event, step }) => {
+    await step.run("verify-webhook", async () => {
+      try {
+        validateWebhook(event.data);
+      } catch {
+        throw new NonRetriableError("Invalid webhook");
+      }
+    });
+
+    // step 2: insert the organization in the DB
+    await step.run("insert-organization-user-settings", async () => {
+      const userId = event.data.data.public_user_data.user_id;
+      const orgId = event.data.data.organization.id;
+
+      await insertOrganizationUserSettings({
+        userId,
+        organizationId: orgId,
+      });
+    });
+  }
+);
+
+export const clerkDeleteOrgMembership = inngest.createFunction(
+  {
+    id: "clerk/delete-organization-user-settings",
+    name: "Clerk - Delete Organization User Settings",
+  },
+  { event: "Clerk/organization-user-settings.deleted" },
+  async ({ event, step }) => {
+    await step.run("verify-webhook", async () => {
+      try {
+        validateWebhook(event.data);
+      } catch {
+        throw new NonRetriableError("Invalid webhook");
+      }
+    });
+
+    // step 2: insert the organization in the DB
+    await step.run("insert-organization-user-settings", async () => {
+      const userId = event.data.data.public_user_data.user_id;
+      const orgId = event.data.data.organization.id;
+
+      await deleteOrganizationUserSettings({
+        userId,
+        organizationId: orgId,
+      });
     });
   }
 );
