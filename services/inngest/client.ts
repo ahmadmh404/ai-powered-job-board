@@ -1,4 +1,4 @@
-import { JobListingTable } from "@/drizzle/schemas";
+import { JobLIstingApplicationTable, JobListingTable } from "@/drizzle/schemas";
 import {
   DeletedObjectJSON,
   OrganizationJSON,
@@ -46,6 +46,25 @@ type Events = {
     user: {
       email: string;
       name: string;
+    };
+  };
+
+  "app/email.daily-organization-user-applications": {
+    data: {
+      applications: (Pick<
+        typeof JobLIstingApplicationTable.$inferSelect,
+        "rating"
+      > & {
+        userName: string;
+        organizationId: string;
+        organizationName: string;
+        jobListingId: string;
+        jobListingTitle: string;
+      })[];
+    };
+    user: {
+      name: string;
+      email: string;
     };
   };
 };

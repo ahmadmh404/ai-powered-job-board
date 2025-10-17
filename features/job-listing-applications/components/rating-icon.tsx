@@ -16,7 +16,7 @@ export function RatingIcon({
     (index) => (
       <StarIcon
         key={index}
-        className={cn(`size-5`, rating > index && "fill-current", className)}
+        className={cn(`size-5`, rating >= index && "fill-current", className)}
       />
     )
   );

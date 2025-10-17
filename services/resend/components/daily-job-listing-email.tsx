@@ -45,7 +45,6 @@ export default function DailyJobListingEmail({
   jobListings: JobListing[];
   serverUrl: string;
 }) {
-  console.log("email job listings: ", jobListings);
   return (
     <Tailwind config={tailwindConfig}>
       <Html>
