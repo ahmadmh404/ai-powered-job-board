@@ -17,6 +17,7 @@ export const applicationStages = [
   "denied",
   "applied",
   "interested",
+  "interviewed",
   "hired",
 ] as const;
 export type ApplicationStage = (typeof applicationStages)[number];

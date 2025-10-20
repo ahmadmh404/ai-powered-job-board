@@ -1,11 +1,16 @@
 "use server";
 
 import z from "zod";
-import { getCurrentUser } from "@/services/clerk/lib/get-current-auth";
+import {
+  getCurrentOrganization,
+  getCurrentUser,
+} from "@/services/clerk/lib/get-current-auth";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { db } from "@/drizzle/db";
 import { and, eq } from "drizzle-orm";
 import {
+  ApplicationStage,
+  applicationStages,
   JobLIstingApplicationTable,
   JobListingTable,
   UserResumeTable,
@@ -13,9 +18,14 @@ import {
 import { getUserResumeIdTAg } from "@/features/users/db/cache/user-resumes";
 import { getJobListingIdTag } from "../../job-listings/db/cache/job-listings";
 import { jobListingApplicationSchema } from "../../job-listing-applications/actions/schemas";
-import { insertJobListingApplication } from "../db/job-listing-applications";
+import {
+  insertJobListingApplication,
+  updateJobListingApplication,
+} from "../db/job-listing-applications";
 import { inngest } from "@/services/inngest/client";
 import { getJobListingApplicationIdTag } from "../db/cache/job-listing-applications";
+import { hasOrgUserPermission } from "@/services/clerk/lib/org-user-permissions";
+import { RATING_OPTIONS } from "../data/constants";
 
 export async function createJobListingApplication(
   jobListingId: string,
@@ -77,6 +87,115 @@ export async function createJobListingApplication(
   };
 }
 
+// update job listing application stage
+export async function updateJobListingApplicationStage(
+  {
+    jobListingId,
+    userId,
+  }: {
+    jobListingId: string;
+    userId: string;
+  },
+  unsafeStage: ApplicationStage
+) {
+  const { success, data: stage } = z
+    .enum(applicationStages)
+    .safeParse(unsafeStage);
+
+  if (!success) {
+    return {
+      error: true,
+      message: "Invalid Stage",
+    };
+  }
+
+  if (!(await hasOrgUserPermission("job_listing_application:change_stage"))) {
+    return {
+      error: true,
+      message: "You have no permission to update this application",
+    };
+  }
+
+  const { orgId } = await getCurrentOrganization();
+  const jobListing = await getJobListing(jobListingId);
+
+  if (
+    orgId == null ||
+    jobListing == null ||
+    orgId !== jobListing.organizationId
+  ) {
+    return {
+      error: true,
+      message: "You have no permission to update this application",
+    };
+  }
+
+  await updateJobListingApplication(
+    { jobListingId, userId },
+    {
+      stage,
+    }
+  );
+
+  return { error: false, message: "Job listing stage updated successfully" };
+}
+
+// update job listing application stage
+export async function updateJobListingApplicationRating(
+  {
+    jobListingId,
+    userId,
+  }: {
+    jobListingId: string;
+    userId: string;
+  },
+  unsafeRating: number | null
+) {
+  const { success, data: rating } = z
+    .number()
+    .min(1)
+    .max(5)
+    .nullable()
+    .safeParse(unsafeRating);
+
+  if (!success) {
+    return {
+      error: true,
+      message: "Invalid Rating",
+    };
+  }
+
+  if (!(await hasOrgUserPermission("job_listing_application:change_stage"))) {
+    return {
+      error: true,
+      message: "You have no permission to update this application",
+    };
+  }
+
+  const { orgId } = await getCurrentOrganization();
+  const jobListing = await getJobListing(jobListingId);
+
+  if (
+    orgId == null ||
+    jobListing == null ||
+    orgId !== jobListing.organizationId
+  ) {
+    return {
+      error: true,
+      message: "You have no permission to update this application",
+    };
+  }
+
+  await updateJobListingApplication(
+    { jobListingId, userId },
+    {
+      rating,
+    }
+  );
+
+  return { error: false, message: "Job listing rating updated successfully" };
+}
+
 async function getUserJobListingApplication(
   userId: string,
   jobListingId: string
@@ -115,5 +234,15 @@ async function getUserResume(userId: string) {
   return db.query.UserResumeTable.findFirst({
     where: eq(UserResumeTable.userId, userId),
     columns: { userId: true },
+  });
+}
+
+async function getJobListing(jobListingId: string) {
+  "use cache";
+  cacheTag(getJobListingIdTag(jobListingId));
+
+  return db.query.JobListingTable.findFirst({
+    where: eq(JobListingTable.id, jobListingId),
+    columns: { organizationId: true },
   });
 }

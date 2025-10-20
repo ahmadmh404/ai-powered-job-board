@@ -24,13 +24,23 @@ import MarkdownRenderer from "@/components/markdown/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
-import { JobListingStatus, JobListingTable } from "@/drizzle/schemas";
+import {
+  JobLIstingApplicationTable,
+  JobListingStatus,
+  JobListingTable,
+} from "@/drizzle/schemas";
 import { and, eq } from "drizzle-orm";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
+import { Separator } from "@/components/ui/separator";
+import { getJobListingApplicationJobListingTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";
+import { getUserIdTag } from "@/features/users/db/cache/users";
+import { getUserResumeIdTAg } from "@/features/users/db/cache/user-resumes";
+import { ApplicationsTable } from "@/features/job-listing-applications/components/applications-table";
+import { SkeletonApplicationTable } from "@/features/job-listing-applications/components/skeleton-application-table";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -123,8 +133,61 @@ async function SuspendedPage({ params }: Props) {
         }
         dialogTitle="Description"
       />
+
+      <Separator />
+      <div className="space-y-6">
+        <h2 className="text-xl font-medium"></h2>
+        <Suspense fallback={<SkeletonApplicationTable />}>
+          <Applications jobListingId={jobListing.id} />
+        </Suspense>
+      </div>
     </div>
   );
+}
+
+async function Applications({ jobListingId }: { jobListingId: string }) {
+  const applications = await getApplications(jobListingId);
+
+  return (
+    <ApplicationsTable
+      applications={applications}
+      canUpdateRating={await hasOrgUserPermission(
+        "job_listing_application:change_rating"
+      )}
+      canUpdateStage={await hasOrgUserPermission(
+        "job_listing_application:change_stage"
+      )}
+    />
+  );
+}
+
+async function getApplications(jobListingId: string) {
+  "use cache";
+  cacheTag(getJobListingApplicationJobListingTag(jobListingId));
+
+  const data = await db.query.JobLIstingApplicationTable.findMany({
+    where: eq(JobLIstingApplicationTable.jobListingId, jobListingId),
+    columns: {
+      jobListingId: true,
+      coverLetter: true,
+      rating: true,
+      stage: true,
+      createdAt: true,
+    },
+    with: {
+      user: {
+        columns: { id: true, name: true, imageUrl: true },
+        with: { resume: { columns: { resumeFileUrl: true, aiSummary: true } } },
+      },
+    },
+  });
+
+  data.forEach(({ user }) => {
+    cacheTag(getUserIdTag(user.id));
+    cacheTag(getUserResumeIdTAg(user.id));
+  });
+
+  return data;
 }
 
 function ToggleJobListingStatusButton({
