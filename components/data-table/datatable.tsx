@@ -29,7 +29,7 @@ import { DataTablePagination } from "./data-table-pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  initialFilters: ColumnFiltersState;
+  initialFilters?: ColumnFiltersState;
   noResultsMessage?: ReactNode;
   ToolbarComponent?: ComponentType<{ table: TableType<TData> }>;
 }

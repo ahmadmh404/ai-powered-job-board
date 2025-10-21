@@ -60,6 +60,7 @@ type Props = {
   applications: Application[];
   canUpdateRating: boolean;
   canUpdateStage: boolean;
+  noResultsMessage?: ReactNode;
 };
 
 function getColumns(
@@ -165,8 +166,15 @@ export function ApplicationsTable({
   applications,
   canUpdateRating,
   canUpdateStage,
+  noResultsMessage,
 }: Props) {
-  return <DataTable data={applications} columns={getColumns(true, true)} />;
+  return (
+    <DataTable
+      data={applications}
+      columns={getColumns(canUpdateRating, canUpdateStage)}
+      noResultsMessage={noResultsMessage}
+    />
+  );
 }
 
 // stage cell

@@ -40,7 +40,7 @@ import { getJobListingApplicationJobListingTag } from "@/features/job-listing-ap
 import { getUserIdTag } from "@/features/users/db/cache/users";
 import { getUserResumeIdTAg } from "@/features/users/db/cache/user-resumes";
 import { ApplicationsTable } from "@/features/job-listing-applications/components/applications-table";
-import { SkeletonApplicationTable } from "@/features/job-listing-applications/components/skeleton-application-table";
+import LoadingSpinner from "@/components/loading-sinner";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -142,6 +142,17 @@ async function SuspendedPage({ params }: Props) {
         </Suspense>
       </div>
     </div>
+  );
+}
+
+function SkeletonApplicationTable() {
+  return (
+    <ApplicationsTable
+      applications={[]}
+      canUpdateRating={false}
+      canUpdateStage={false}
+      noResultsMessage={<LoadingSpinner className="size-12" />}
+    />
   );
 }
 
