@@ -10,7 +10,7 @@ import {
   UserResumeTable,
   UserTable,
 } from "@/drizzle/schemas";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { ReactNode, useOptimistic, useState, useTransition } from "react";
 import { sortApplicationByStage } from "../lib/utils";
 import { formatJobListingApplicationStage } from "../lib/formatters";
@@ -40,6 +40,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 
 type Application = Pick<
   typeof JobLIstingApplicationTable.$inferSelect,
@@ -61,6 +62,7 @@ type Props = {
   canUpdateRating: boolean;
   canUpdateStage: boolean;
   noResultsMessage?: ReactNode;
+  disableToolbar?: boolean;
 };
 
 function getColumns(
@@ -94,7 +96,7 @@ function getColumns(
       },
     },
     {
-      accessorKey: "Stage",
+      accessorKey: "stage",
       header: ({ column }) => (
         <DataTableSortableColumn title="stage" column={column} />
       ),
@@ -102,7 +104,7 @@ function getColumns(
         return sortApplicationByStage(a.stage, b.stage);
       },
       filterFn: ({ original }, _, value) => {
-        return value.includes(original.stage);
+        return value.includes?.(original.stage);
       },
       cell: ({ row }) => (
         <StageCell
@@ -114,12 +116,12 @@ function getColumns(
       ),
     },
     {
-      accessorKey: "Rating",
+      accessorKey: "rating",
       header: ({ column }) => (
         <DataTableSortableColumn title="Rating" column={column} />
       ),
       filterFn: ({ original }, _, value) => {
-        return value.includes(original.stage);
+        return value.includes?.(original.rating);
       },
       cell: ({ row }) => (
         <RatingCell
@@ -131,6 +133,7 @@ function getColumns(
       ),
     },
     {
+      id: "createdAT",
       accessorKey: "createdAt",
       accessorFn: (row) => row.createdAt,
       header: ({ column }) => (
@@ -167,14 +170,74 @@ export function ApplicationsTable({
   canUpdateRating,
   canUpdateStage,
   noResultsMessage,
+  disableToolbar,
 }: Props) {
   return (
     <DataTable
       data={applications}
       columns={getColumns(canUpdateRating, canUpdateStage)}
       noResultsMessage={noResultsMessage}
+      ToolbarComponent={disableToolbar ? DisabledToolbar : Toolbar}
+      initialFilters={[
+        {
+          id: "stage",
+          value: applicationStages.filter((stage) => stage !== "denied"),
+        },
+      ]}
     />
   );
+}
+
+function Toolbar<T>({
+  table,
+  disabled,
+}: {
+  table: Table<T>;
+  disabled?: boolean;
+}) {
+  const hiddenRows = table.getCoreRowModel().rows.length - table.getRowCount();
+
+  return (
+    <div className="flex items-center gap-2">
+      {table.getColumn("stage") && (
+        <DataTableFacetedFilter
+          column={table.getColumn("stage")}
+          title="Stage"
+          disabled={disabled}
+          options={applicationStages
+            .toSorted(sortApplicationByStage)
+            .map((stage) => ({
+              label: <StageDetails stage={stage} />,
+              value: stage,
+              key: stage,
+            }))}
+        />
+      )}
+
+      {table.getColumn("rating") && (
+        <DataTableFacetedFilter
+          column={table.getColumn("rating")}
+          title="Stage"
+          disabled={disabled}
+          options={RATING_OPTIONS.map((rating, i) => ({
+            label: <RatingIcon rating={rating} />,
+            value: rating,
+            key: i,
+          }))}
+        />
+      )}
+
+      {hiddenRows > 0 && (
+        <div className="text-sm text-muted-foreground ml-2">
+          {hiddenRows} {hiddenRows > 1 ? "rows" : "row"} hidden rows
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DisabledToolbar<T>({ table }: { table: Table<T> }) {
+  return <Toolbar table={table} disabled={false} />;
 }
 
 // stage cell

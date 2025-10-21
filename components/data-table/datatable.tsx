@@ -26,12 +26,15 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 
-interface DataTableProps<TData, TValue> {
+interface DataTables<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   initialFilters?: ColumnFiltersState;
   noResultsMessage?: ReactNode;
-  ToolbarComponent?: ComponentType<{ table: TableType<TData> }>;
+  ToolbarComponent?: ComponentType<{
+    table: TableType<TData>;
+    disabled?: boolean;
+  }>;
 }
 
 export function DataTable<TData, TValue>({
@@ -40,7 +43,7 @@ export function DataTable<TData, TValue>({
   initialFilters,
   ToolbarComponent,
   noResultsMessage = "No results",
-}: DataTableProps<TData, TValue>) {
+}: DataTables<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     initialFilters ?? []

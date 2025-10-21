@@ -151,6 +151,7 @@ function SkeletonApplicationTable() {
       applications={[]}
       canUpdateRating={false}
       canUpdateStage={false}
+      disableToolbar
       noResultsMessage={<LoadingSpinner className="size-12" />}
     />
   );
@@ -161,6 +162,7 @@ async function Applications({ jobListingId }: { jobListingId: string }) {
 
   return (
     <ApplicationsTable
+      disableToolbar={false}
       applications={applications.map((application) => ({
         ...application,
         coverLetterMarkdown: application.coverLetter ? (
