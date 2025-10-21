@@ -327,9 +327,7 @@ function ActionsCell({
 
         <DropdownMenuContent align="end">
           {resumeUrl != null || resumeMarkdown != null ? (
-            <DropdownMenuItem
-              onClick={() => setOpenModule("coverLetterModule")}
-            >
+            <DropdownMenuItem onClick={() => setOpenModule("resumeModel")}>
               View Resume
             </DropdownMenuItem>
           ) : (
@@ -339,7 +337,9 @@ function ActionsCell({
           )}
 
           {coverLetterMarkdown != null ? (
-            <DropdownMenuItem onClick={() => setOpenModule("resumeModel")}>
+            <DropdownMenuItem
+              onClick={() => setOpenModule("coverLetterModule")}
+            >
               View Cover Letter
             </DropdownMenuItem>
           ) : (
@@ -373,11 +373,15 @@ function ActionsCell({
               )}
             </DialogHeader>
 
-            <DialogDescription className="mt-2">
-              This is an AI generated summary of the applicant&apos;s resume
-            </DialogDescription>
+            {resumeMarkdown && (
+              <>
+                <DialogDescription className="mt-2">
+                  This is an AI generated summary of the applicant&apos;s resume
+                </DialogDescription>
 
-            <div className="flex-1 overflow-y-auto">{resumeMarkdown}</div>
+                <div className="flex-1 overflow-y-auto">{resumeMarkdown}</div>
+              </>
+            )}
           </DialogContent>
         </Dialog>
       )}
@@ -393,7 +397,7 @@ function ActionsCell({
               <DialogDescription>{userName}</DialogDescription>
             </DialogHeader>
 
-            <div className="flex-1 overflow-y-auto">{resumeMarkdown}</div>
+            <div className="flex-1 overflow-y-auto">{coverLetterMarkdown}</div>
           </DialogContent>
         </Dialog>
       )}
