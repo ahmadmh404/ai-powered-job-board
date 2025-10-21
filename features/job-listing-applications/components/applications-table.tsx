@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/data-table/datatable";
+import { DataTable } from "@/components/data-table/data-table";
 import { DataTableSortableColumn } from "@/components/data-table/data-table-sortable-column";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {

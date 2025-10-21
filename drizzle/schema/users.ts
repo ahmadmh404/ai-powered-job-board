@@ -19,7 +19,7 @@ export const UserTable = pgTable("users", {
 });
 
 export const UserReferences = relations(UserTable, ({ one, many }) => ({
-  // herer we don't have a key pointing to other table so we don't specify the extra field and references.
+  // here we don't have a key pointing to other table so we don't specify the extra field and references.
   notificationSettings: one(UserNotificationSettingsTable),
   resume: one(UserResumeTable),
   organizationUserSettings: many(OrganizationUserSettingsTable),

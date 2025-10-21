@@ -6,7 +6,7 @@ import { revalidateOrganizationCache } from "@/features/organization/db/cache/or
 export async function InsertOrganization(
   org: typeof OrganizationTable.$inferInsert
 ) {
-  // What onConflictDonotUpdate does is that ignores any conflict requests.
+  // What onConflictDoNotUpdate does is that ignores any conflict requests.
   await db.insert(OrganizationTable).values(org).onConflictDoNothing();
 
   revalidateOrganizationCache(org.id);
@@ -16,7 +16,7 @@ export async function updateOrganization(
   id: string,
   org: Partial<typeof OrganizationTable.$inferInsert>
 ) {
-  // eq stands for === operator, two args, the table column and the vlaue
+  // eq stands for === operator, two args, the table column and the value
   await db
     .update(OrganizationTable)
     .set(org)

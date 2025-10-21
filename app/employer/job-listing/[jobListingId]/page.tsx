@@ -33,7 +33,7 @@ import { and, eq } from "drizzle-orm";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
 import { getJobListingApplicationJobListingTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";

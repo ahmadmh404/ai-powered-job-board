@@ -25,7 +25,6 @@ import {
 import { inngest } from "@/services/inngest/client";
 import { getJobListingApplicationIdTag } from "../db/cache/job-listing-applications";
 import { hasOrgUserPermission } from "@/services/clerk/lib/org-user-permissions";
-import { RATING_OPTIONS } from "../data/constants";
 
 export async function createJobListingApplication(
   jobListingId: string,

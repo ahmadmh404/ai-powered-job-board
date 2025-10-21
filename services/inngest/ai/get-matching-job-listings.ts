@@ -6,7 +6,7 @@ import {
 } from "@/drizzle/schemas";
 import { createAgent, gemini } from "@inngest/agent-kit";
 import * as z from "zod";
-import { getLastOutputMessage } from "./get-last-utpt-message";
+import { getLastOutputMessage } from "./get-last-output-message";
 import { env } from "@/data/env/server";
 
 const listingSchema = z.object({
