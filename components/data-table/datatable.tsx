@@ -1,13 +1,19 @@
 "use client";
 
+import { ComponentType, ReactNode, useState } from "react";
+
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
+  type Table as TableType,
 } from "@tanstack/react-table";
 
 import {
@@ -18,33 +24,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
 import { DataTablePagination } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  initialFilters: ColumnFiltersState;
+  noResultsMessage?: ReactNode;
+  ToolbarComponent?: ComponentType<{ table: TableType<TData> }>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  initialFilters,
+  ToolbarComponent,
+  noResultsMessage = "No results",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    initialFilters ?? []
+  );
 
   const table = useReactTable({
     data,
     columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      {ToolbarComponent && <ToolbarComponent table={table} />}
+
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -88,7 +109,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {noResultsMessage}
                 </TableCell>
               </TableRow>
             )}
