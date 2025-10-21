@@ -33,7 +33,7 @@ import { and, eq } from "drizzle-orm";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React, { Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
 import { getJobListingApplicationJobListingTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";
@@ -150,7 +150,25 @@ async function Applications({ jobListingId }: { jobListingId: string }) {
 
   return (
     <ApplicationsTable
-      applications={applications}
+      applications={applications.map((application) => ({
+        ...application,
+        coverLetterMarkdown: application.coverLetter ? (
+          <MarkdownRenderer source={application.coverLetter} />
+        ) : null,
+        user: {
+          ...application.user,
+          resume: application.user.resume
+            ? {
+                ...application.user.resume,
+                markdownSummary: application.user.resume.aiSummary ? (
+                  <MarkdownRenderer
+                    source={application.user.resume.aiSummary}
+                  />
+                ) : null,
+              }
+            : null,
+        },
+      }))}
       canUpdateRating={await hasOrgUserPermission(
         "job_listing_application:change_rating"
       )}

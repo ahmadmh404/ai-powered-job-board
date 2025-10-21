@@ -11,7 +11,7 @@ import {
   UserTable,
 } from "@/drizzle/schemas";
 import { ColumnDef } from "@tanstack/react-table";
-import { ReactNode, useOptimistic, useTransition } from "react";
+import { ReactNode, useOptimistic, useState, useTransition } from "react";
 import { sortApplicationByStage } from "../lib/utils";
 import { formatJobListingApplicationStage } from "../lib/formatters";
 import { StageIcon } from "./stage-icon";
@@ -20,6 +20,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import {
@@ -28,9 +29,17 @@ import {
 } from "../actions/actions";
 import { toast } from "sonner";
 import { RatingIcon } from "./rating-icon";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, MoreHorizontalIcon } from "lucide-react";
 import { RATING_OPTIONS } from "../data/constants";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import Link from "next/link";
 
 type Application = Pick<
   typeof JobLIstingApplicationTable.$inferSelect,
@@ -136,7 +145,16 @@ function getColumns(
         const jobListing = row.original;
         const resume = jobListing.user.resume;
 
-        return <ActionsCell />;
+        return (
+          <ActionsCell
+            userName={jobListing.user.name}
+            coverLetterMarkdown={jobListing.coverLetterMarkdown}
+            //@ts-expect-error typescript isn't smart enough to know about the resumeFileUrl
+            resumeUrl={resume.resumeFileUrl}
+            //@ts-expect-error typescript isn't smart enough to know about the markdownSummary
+            resumeMarkdown={resume.markdownSummary}
+          />
+        );
       },
     },
   ];
@@ -286,6 +304,102 @@ type ActionsCellType = {
   userName: string;
   resumeUrl: string | null;
 };
+
+function ActionsCell({
+  coverLetterMarkdown,
+  resumeMarkdown,
+  userName,
+  resumeUrl,
+}: ActionsCellType) {
+  const [openModule, setOpenModule] = useState<
+    "resumeModel" | "coverLetterModule" | null
+  >(null);
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={"ghost"} size={"icon"}>
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontalIcon className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+          {resumeUrl != null || resumeMarkdown != null ? (
+            <DropdownMenuItem
+              onClick={() => setOpenModule("coverLetterModule")}
+            >
+              View Resume
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuLabel className="text-muted-foreground">
+              No Resume
+            </DropdownMenuLabel>
+          )}
+
+          {coverLetterMarkdown != null ? (
+            <DropdownMenuItem onClick={() => setOpenModule("resumeModel")}>
+              View Cover Letter
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuLabel className="text-muted-foreground">
+              No cover letter
+            </DropdownMenuLabel>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {(resumeUrl || resumeMarkdown) && (
+        <Dialog
+          open={openModule === "resumeModel"}
+          onOpenChange={(o) => setOpenModule(o ? "resumeModel" : null)}
+        >
+          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100% - 2rem)] overflow-hidden flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Resume</DialogTitle>
+              <DialogDescription>{userName}</DialogDescription>
+
+              {resumeUrl && (
+                <Button className="self-start" asChild>
+                  <Link
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Original Resume
+                  </Link>
+                </Button>
+              )}
+            </DialogHeader>
+
+            <DialogDescription className="mt-2">
+              This is an AI generated summary of the applicant&apos;s resume
+            </DialogDescription>
+
+            <div className="flex-1 overflow-y-auto">{resumeMarkdown}</div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {coverLetterMarkdown && (
+        <Dialog
+          open={openModule === "coverLetterModule"}
+          onOpenChange={(o) => setOpenModule(o ? "coverLetterModule" : null)}
+        >
+          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100% - 2rem)] overflow-hidden flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Cover Letter</DialogTitle>
+              <DialogDescription>{userName}</DialogDescription>
+            </DialogHeader>
+
+            <div className="flex-1 overflow-y-auto">{resumeMarkdown}</div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
+}
 
 function StageDetails({ stage }: { stage: ApplicationStage }) {
   return (
