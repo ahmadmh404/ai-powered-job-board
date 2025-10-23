@@ -52,7 +52,7 @@ function SheetContent({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left";
-  hideCloseButton: boolean;
+  hideCloseButton?: boolean;
 }) {
   return (
     <SheetPortal>
