@@ -53,7 +53,7 @@ export const clerkCreateUser = inngest.createFunction(
         (email) => email.id === userData.primary_email_address_id
       );
 
-      if (email === null) {
+      if (email === null || email?.email_address == null) {
         throw new NonRetriableError("No primary email address found");
       }
 
