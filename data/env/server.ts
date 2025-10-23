@@ -3,11 +3,18 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
+    // For Local
     DB_NAME: z.string().min(1),
     DB_PORT: z.string().min(1),
     DB_PASSWORD: z.string().min(1),
     DB_USER: z.string().min(1),
     DB_HOST: z.string().min(1),
+
+    // For Production
+    DATABASE_URL: z.string().min(1),
+    DATABASE_URL_UNPOOLED: z.string().min(1),
+    PGHOST: z.string().min(1),
+
     CLERK_SECRET_KEY: z.string().min(1),
     CLERK_WEBHOOK_SECRET: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
@@ -26,7 +33,8 @@ export const env = createEnv({
 
       return {
         ...rest,
-        DATABASE_URL: `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+        // in local
+        LOCAL_DATABASE_URL: `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
       };
     });
   },
