@@ -78,6 +78,10 @@ function JobListingForm({ jobListing }: Props) {
         },
   });
 
+  const wageInterval = form.watch("wageInterval");
+
+  console.log("wageInterval: ", wageInterval);
+
   async function onSubmit(data: z.infer<typeof JobListingSchema>) {
     const action = jobListing
       ? updateJobListing.bind(null, jobListing.id)
@@ -142,7 +146,10 @@ function JobListingForm({ jobListing }: Props) {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <Select value={field.value ?? ""}>
+                        <Select
+                          value={field.value ?? ""}
+                          onValueChange={field.onChange}
+                        >
                           <FormControl>
                             <SelectTrigger className="rounded-l-none">
                               / <SelectValue />
@@ -200,8 +207,8 @@ function JobListingForm({ jobListing }: Props) {
                     }
                   >
                     <FormControl suppressHydrationWarning>
-                      <SelectTrigger className="w-full">
-                        / <SelectValue />
+                      <SelectTrigger className="w-full text-left">
+                        /<SelectValue />
                       </SelectTrigger>
                     </FormControl>
 

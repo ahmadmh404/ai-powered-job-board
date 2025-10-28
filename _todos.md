@@ -9,3 +9,7 @@
 
 - The bug with updating the rating in DB was fixed.
 - new issue with get cache/job-listings.ts
+
+### 28 Oct, 25
+
+- Test creating job listings with neon db link.

@@ -6,10 +6,11 @@ import { Suspense } from "react";
 import { getCurrentOrganization } from "@/services/clerk/lib/get-current-auth";
 import { getJobListingOrganizationTag } from "@/features/job-listings/db/cache/job-listings";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import LoadingSpinner from "@/components/loading-sinner";
 
 export default function EmployerHomePage() {
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingSpinner className="size-5 my-5 text-center" />}>
       <SuspendedPage />
     </Suspense>
   );
