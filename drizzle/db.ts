@@ -9,5 +9,5 @@ neonConfig.webSocketConstructor = ws;
 // for edge ens like vercel edge
 neonConfig.poolQueryViaFetch = true;
 
-const sql = neon(env.DATABASE_URL);
+const sql = neon(env.POSTGRES_URL);
 export const db = drizzle({ client: sql, schema });
