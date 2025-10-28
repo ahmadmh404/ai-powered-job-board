@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1760082198174,
-      "tag": "0000_special_zzzax",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1760204088773,
-      "tag": "0001_flimsy_mockingbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1760297611049,
-      "tag": "0002_complete_mikhail_rasputin",
+      "when": 1761527953117,
+      "tag": "0000_concerned_the_fury",
       "breakpoints": true
     }
   ]

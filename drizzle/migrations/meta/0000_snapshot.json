@@ -1,5 +1,5 @@
 {
-  "id": "c8bb32bb-76ee-42d8-a87f-42550dcfd0b2",
+  "id": "04e50b67-a01f-4521-a449-d87bb4c238a3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -30,7 +30,7 @@
           "name": "email",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
@@ -355,8 +355,8 @@
       "name": "organization_user_settings",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "userId": {
+          "name": "userId",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
@@ -397,12 +397,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organization_user_settings_id_users_id_fk": {
-          "name": "organization_user_settings_id_users_id_fk",
+        "organization_user_settings_userId_users_id_fk": {
+          "name": "organization_user_settings_userId_users_id_fk",
           "tableFrom": "organization_user_settings",
           "tableTo": "users",
           "columnsFrom": [
-            "id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -425,10 +425,10 @@
         }
       },
       "compositePrimaryKeys": {
-        "organization_user_settings_id_organizationId_pk": {
-          "name": "organization_user_settings_id_organizationId_pk",
+        "organization_user_settings_userId_organizationId_pk": {
+          "name": "organization_user_settings_userId_organizationId_pk",
           "columns": [
-            "id",
+            "userId",
             "organizationId"
           ]
         }
@@ -616,6 +616,7 @@
         "denied",
         "applied",
         "interested",
+        "interviewed",
         "hired"
       ]
     }

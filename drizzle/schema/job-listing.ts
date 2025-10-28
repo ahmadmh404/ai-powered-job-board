@@ -58,7 +58,7 @@ export const JobListingTable = pgTable(
   "job_listings",
   {
     id,
-    // foreign key from organaiztoin table
+    // foreign key from organization table
     organizationId: varchar()
       .references(() => OrganizationTable.id, {
         onDelete: "cascade",

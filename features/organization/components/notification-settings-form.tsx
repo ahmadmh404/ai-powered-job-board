@@ -107,7 +107,7 @@ export function NotificationSettingsForm({
                   <FormControl className="w-full">
                     <SelectTrigger>
                       {field.value === null ? (
-                        <span>Sny Rating</span>
+                        <span>Any Rating</span>
                       ) : (
                         <RatingIcon rating={field.value} />
                       )}
