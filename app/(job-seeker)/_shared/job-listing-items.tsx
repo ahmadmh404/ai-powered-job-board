@@ -255,8 +255,6 @@ async function getJobListings(
     orderBy: [desc(JobListingTable.isFeatured), desc(JobListingTable.postedAt)],
   });
 
-  console.log("job listings: ", data);
-
   data.forEach((listing) => {
     cacheTag(getOrganizationIdTag(listing.organization.id));
   });

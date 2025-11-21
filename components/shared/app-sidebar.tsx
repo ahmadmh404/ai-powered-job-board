@@ -33,7 +33,6 @@ export function AppSidebar({ children, content, footerButton }: Props) {
             </Link>
           </SidebarHeader>
 
-          {/* Implemnt later */}
           <SidebarContent>{content}</SidebarContent>
 
           <SignedIn>
