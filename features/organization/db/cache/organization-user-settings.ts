@@ -22,11 +22,12 @@ export function revalidateOrganizationUserSettingsCache({
   userId: string;
   organizationId: string;
 }) {
-  revalidateTag(getOrganizationUserSettingsGlobalTag());
+  revalidateTag(getOrganizationUserSettingsGlobalTag(), "max");
   revalidateTag(
     getOrganizationUserSettingsIdTag({
       userId,
       organizationId,
-    })
+    }),
+    "max",
   );
 }

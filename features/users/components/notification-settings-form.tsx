@@ -37,7 +37,7 @@ export function NotificationSettingsForm({
   });
 
   async function onSUbmit(
-    data: z.infer<typeof UserNotificationSettingsSchema>
+    data: z.infer<typeof UserNotificationSettingsSchema>,
   ) {
     const result = await updateUserNotificationSettings(data);
     if (result.error) {

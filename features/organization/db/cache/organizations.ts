@@ -14,6 +14,6 @@ export const getOrganizationIdTag = (orgId: string) => {
 // when i add or update or delete a user i will call this
 export const revalidateOrganizationCache = (orgId: string) => {
   // this revalidateTag is a nextjs build in functions
-  revalidateTag(getOrganizationGlobalTag());
-  revalidateTag(getOrganizationIdTag(orgId));
+  revalidateTag(getOrganizationGlobalTag(), "max");
+  revalidateTag(getOrganizationIdTag(orgId), "max");
 };
