@@ -20,7 +20,7 @@ export function revalidateJobListingCache({
   organizationId: string;
   jobListingId: string;
 }) {
-  revalidateTag(getJobListingGlobalTag());
-  revalidateTag(getJobListingOrganizationTag(organizationId));
-  revalidateTag(getJobListingIdTag(jobListingId));
+  revalidateTag(getJobListingGlobalTag(), "max");
+  revalidateTag(getJobListingOrganizationTag(organizationId), "max");
+  revalidateTag(getJobListingIdTag(jobListingId), "max");
 }
