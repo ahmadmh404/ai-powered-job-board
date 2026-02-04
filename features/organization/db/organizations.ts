@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { revalidateOrganizationCache } from "@/features/organization/db/cache/organizations";
 
 export async function InsertOrganization(
-  org: typeof OrganizationTable.$inferInsert
+  org: typeof OrganizationTable.$inferInsert,
 ) {
   // What onConflictDoNotUpdate does is that ignores any conflict requests.
   await db.insert(OrganizationTable).values(org).onConflictDoNothing();
@@ -14,7 +14,7 @@ export async function InsertOrganization(
 
 export async function updateOrganization(
   id: string,
-  org: Partial<typeof OrganizationTable.$inferInsert>
+  org: Partial<typeof OrganizationTable.$inferInsert>,
 ) {
   // eq stands for === operator, two args, the table column and the value
   await db

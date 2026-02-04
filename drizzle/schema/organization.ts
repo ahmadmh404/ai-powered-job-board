@@ -22,5 +22,5 @@ export const OrganizationReferences = relations(
 
     // for each job listing we have settings so we have many settings
     organizationSettings: many(OrganizationUserSettingsTable),
-  })
+  }),
 );

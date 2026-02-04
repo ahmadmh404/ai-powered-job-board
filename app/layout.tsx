@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { UploadthingSSr } from "@/components/uploadthing";
 
 import "@mdxeditor/editor/style.css";
-import "@/app/globals.css";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
