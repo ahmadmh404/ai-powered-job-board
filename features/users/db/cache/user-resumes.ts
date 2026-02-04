@@ -10,6 +10,6 @@ export const getUserResumeIdTAg = (userId: string) => {
 };
 
 export const revalidateUserResumeCache = (id: string) => {
-  revalidateTag(getUserResumeGlobalTAg());
-  revalidateTag(getUserResumeIdTAg(id));
+  revalidateTag(getUserResumeGlobalTAg(), "max");
+  revalidateTag(getUserResumeIdTAg(id), "max");
 };

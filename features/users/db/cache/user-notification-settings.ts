@@ -14,6 +14,6 @@ export const getUserNotificationSettingsIdTag = (id: string) => {
 // when i add or update or delete a user i will call this
 export const revalidateUserNotificationSettingsCache = (id: string) => {
   // this revalidateTag is a nextjs build in function
-  revalidateTag(getUserNotificationSettingsGlobalTag());
-  revalidateTag(getUserNotificationSettingsIdTag(id));
+  revalidateTag(getUserNotificationSettingsGlobalTag(), "max");
+  revalidateTag(getUserNotificationSettingsIdTag(id), "max");
 };

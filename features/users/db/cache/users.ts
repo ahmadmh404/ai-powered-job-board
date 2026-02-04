@@ -14,6 +14,6 @@ export const getUserIdTag = (id: string) => {
 // when i add or update or delete a user i will call this
 export const revalidateUserCache = (id: string) => {
   // this revalidateTag is a nextjs build in functoin
-  revalidateTag(getUserGlobalTag());
-  revalidateTag(getUserIdTag(id));
+  revalidateTag(getUserGlobalTag(), "max");
+  revalidateTag(getUserIdTag(id), "max");
 };
