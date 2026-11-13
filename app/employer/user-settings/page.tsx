@@ -25,8 +25,6 @@ async function SuspendedComponent() {
   const { userId } = await getCurrentUser();
   const { orgId } = await getCurrentOrganization();
 
-  console.log("ids:", userId, orgId);
-
   if (userId == null || orgId == null) return notFound();
 
   return (
@@ -61,13 +59,13 @@ async function getOrganizationUserSettings(userId: string, orgId: string) {
     getOrganizationUserSettingsIdTag({
       userId,
       organizationId: orgId,
-    })
+    }),
   );
 
   return db.query.OrganizationUserSettingsTable.findFirst({
     where: and(
       eq(OrganizationUserSettingsTable.userId, userId),
-      eq(OrganizationUserSettingsTable.organizationId, orgId)
+      eq(OrganizationUserSettingsTable.organizationId, orgId),
     ),
     columns: {
       newApplicationEmailNotifications: true,

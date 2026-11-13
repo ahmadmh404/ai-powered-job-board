@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schemas";
 import { env } from "@/data/env/server";
 import { updateUserResume } from "@/features/users/db/user-resumes";
+import { fetchUploadThingFile } from "@/lib/fetch-uploadthing-fiile";
+import { NonRetriableError } from "inngest";
 
 export const createAiSummaryOfUploadedResume = inngest.createFunction(
   {
@@ -25,26 +27,30 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
 
     if (userResume == null) return;
 
+    // Downloading the Resume data
+    const resume = await step.run("download-resume-data", async () => {
+      try {
+        return await fetchUploadThingFile(userResume.resumeFileUrl);
+      } catch (error) {
+        throw new NonRetriableError("File Weren't Found!");
+      }
+    });
+
     const result = await step.ai.infer("create-ai-summary", {
-      model: step.ai.models.anthropic({
-        model: "claude-3-5-sonnet-latest",
-        defaultParameters: { max_tokens: 2048 },
-        apiKey: env.ANTHROPIC_API_KEY,
+      model: step.ai.models.gemini({
+        model: "gemini-3.8-flash",
+        defaultParameters: {},
+        apiKey: env.GEMINI_API_KEY,
       }),
       body: {
-        messages: [
+        contents: [
           {
             role: "user",
-            content: [
+            parts: [
               {
-                type: "document",
-                source: {
-                  type: "url",
-                  url: userResume.resumeFileUrl,
-                },
+                inlineData: resume,
               },
               {
-                type: "text",
                 text: "Summarize the following resume and extract all key skills, experience, and qualifications. The summary should include all the information that a hiring manager would need to know about the candidate in order to determine if they are a good fit for a job. This summary should be formatted as markdown. Do not return any other text. If the file does not look like a resume return the text 'N/A'.",
               },
             ],
@@ -53,11 +59,16 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
       },
     });
 
-    await step.run("save-ai-summary", async () => {
-      const message = result.content[0];
-      if (message.type !== "text") return;
+    // Getting the message content.
+    if (result.candidates == null || result.candidates.length === 0) return;
+    const message = result.candidates[0].content.parts[0];
 
-      await updateUserResume(userId, { aiSummary: message.text });
+    console.log({ message });
+
+    await step.run("save-ai-summary", async () => {
+      if ("text" in message) {
+        await updateUserResume(userId, { aiSummary: message.text });
+      }
     });
-  }
+  },
 );

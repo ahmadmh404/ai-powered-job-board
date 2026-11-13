@@ -12,7 +12,7 @@ export async function InsertUser(user: typeof UserTable.$inferInsert) {
 
 export async function updateUser(
   id: string,
-  user: Partial<typeof UserTable.$inferInsert>
+  user: Partial<typeof UserTable.$inferInsert>,
 ) {
   // eq stands for === operator, two args, the table column and the value
   await db.update(UserTable).set(user).where(eq(UserTable.id, id));

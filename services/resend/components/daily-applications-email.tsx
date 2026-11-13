@@ -31,8 +31,6 @@ export default function DailyApplicationEmail({
   userName: string;
   applications: Application[];
 }) {
-  console.log("data: ", applications);
-
   return (
     <Tailwind config={tailwindConfig}>
       <Html>
@@ -45,7 +43,7 @@ export default function DailyApplicationEmail({
             listings.
           </Text>
           {Object.entries(
-            Object.groupBy(applications, (a) => a.organizationId)
+            Object.groupBy(applications, (a) => a.organizationId),
           ).map(([orgId, orgApplications], i) => {
             if (orgApplications == null || orgApplications.length === 0) {
               return null;
@@ -94,7 +92,7 @@ function OrganizationSection({
               noMargin={i === 0}
             />
           );
-        }
+        },
       )}
     </Section>
   );
@@ -113,7 +111,7 @@ function JobListingCard({
     <div
       className={cn(
         "bg-card text-card-foreground rounded-lg border p-4 border-primary border-solid",
-        !noMargin && "mt-6"
+        !noMargin && "mt-6",
       )}
     >
       <Heading as="h3" className="leading-none font-semibold text-xl mt-0 mb-3">
@@ -139,7 +137,7 @@ function RatingIcons({ rating }: { rating: number | null }) {
     stars.push(
       <span key={i} className="w-3 -mb-[7px] mr-0.5">
         {rating >= i ? "★" : "☆"}
-      </span>
+      </span>,
     );
   }
 

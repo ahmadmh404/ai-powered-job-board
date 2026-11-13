@@ -47,6 +47,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import NewJobListingApplicationForm from "@/features/job-listing-applications/components/new-job-listing-application-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -83,7 +84,13 @@ export default function JobListingPage({ params, searchParams }: Props) {
           }
         >
           <ResizableHandle withHandle className="mx-2" />
-          <ResizablePanel id="right" order={2} minSize={30} defaultSize={30}>
+          <ResizablePanel
+            id="right"
+            order={2}
+            minSize={30}
+            maxSize={60}
+            defaultSize={30}
+          >
             <div className="p-3 h-screen overflow-y-aut">
               <Suspense fallback={<LoadingSpinner />}>
                 <JobListingDetails
@@ -115,68 +122,70 @@ async function JobListingDetails({ params, searchParams }: Props) {
     .join("");
 
   return (
-    <div className="space-y-6 @container">
-      <div className="space-y-4">
-        <div className="flex gap-3 items-start">
-          <Avatar className="size-14 @max-sm:hidden">
-            <AvatarImage
-              src={jobListing.organization.imageUrl ?? undefined}
-              alt={jobListing.organization.name}
-            />
-            <AvatarFallback className="uppercase bg-primary text-muted-foreground">
-              {nameInitials}
-            </AvatarFallback>
-          </Avatar>
+    <ScrollArea className="h-full">
+      <div className="space-y-6 @container">
+        <div className="space-y-4">
+          <div className="flex gap-3 items-start">
+            <Avatar className="size-14 @max-sm:hidden">
+              <AvatarImage
+                src={jobListing.organization.imageUrl ?? undefined}
+                alt={jobListing.organization.name}
+              />
+              <AvatarFallback className="uppercase bg-primary text-muted-foreground">
+                {nameInitials}
+              </AvatarFallback>
+            </Avatar>
 
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-bold tracking-tight">
-              {jobListing.title}
-            </h1>
+            <div className="flex flex-col gap-1">
+              <h1 className="text-2xl font-bold tracking-tight">
+                {jobListing.title}
+              </h1>
 
-            <div className="text-base text-muted-foreground">
-              {jobListing.organization.name}
+              <div className="text-base text-muted-foreground">
+                {jobListing.organization.name}
+              </div>
+
+              {jobListing.postedAt != null && (
+                <div className="text-sm font-medium text-primary ml-auto @min-md:hidden">
+                  <Suspense>
+                    <DaysSincePosting postedAt={jobListing.postedAt} />
+                  </Suspense>
+                </div>
+              )}
             </div>
 
             {jobListing.postedAt != null && (
-              <div className="text-sm font-medium text-primary ml-auto @min-md:hidden">
+              <div className="text-sm font-medium text-primary ml-auto mt-2 @max-md:hidden">
                 <Suspense>
                   <DaysSincePosting postedAt={jobListing.postedAt} />
                 </Suspense>
               </div>
             )}
+
+            <Button variant={"outline"} size={"icon"} asChild>
+              <Link
+                href={`/${convertSearchParamsToString(await searchParams)}`}
+                className="ml-auto"
+              >
+                <span className="sr-only">Close</span>
+                <XIcon />
+              </Link>
+            </Button>
           </div>
 
-          {jobListing.postedAt != null && (
-            <div className="text-sm font-medium text-primary ml-auto mt-2 @max-md:hidden">
-              <Suspense>
-                <DaysSincePosting postedAt={jobListing.postedAt} />
-              </Suspense>
-            </div>
-          )}
+          <div className="flex flex-wrap gap-3 mt-2">
+            <JobListingBadges jobListing={jobListing} />
+          </div>
 
-          <Button variant={"outline"} size={"icon"} asChild>
-            <Link
-              href={`/${convertSearchParamsToString(await searchParams)}`}
-              className="ml-auto"
-            >
-              <span className="sr-only">Close</span>
-              <XIcon />
-            </Link>
-          </Button>
+          <Suspense fallback={<Button disabled>Apply</Button>}>
+            <ApplyButton jobListingId={jobListing.id} />
+          </Suspense>
         </div>
 
-        <div className="flex flex-wrap gap-3 mt-2">
-          <JobListingBadges jobListing={jobListing} />
-        </div>
-
-        <Suspense fallback={<Button disabled>Apply</Button>}>
-          <ApplyButton jobListingId={jobListing.id} />
-        </Suspense>
+        {/* Job Listing Markdown */}
+        <MarkdownRenderer source={jobListing.description} />
       </div>
-
-      {/* Job Listing Markdown */}
-      <MarkdownRenderer source={jobListing.description} />
-    </div>
+    </ScrollArea>
   );
 }
 
@@ -277,7 +286,7 @@ async function getJobListingApplication(jobListingId: string, userId: string) {
   return db.query.JobLIstingApplicationTable.findFirst({
     where: and(
       eq(JobLIstingApplicationTable.jobListingId, jobListingId),
-      eq(JobLIstingApplicationTable.userId, userId)
+      eq(JobLIstingApplicationTable.userId, userId),
     ),
   });
 }
@@ -289,7 +298,7 @@ async function getJobListing(id: string) {
   const listing = await db.query.JobListingTable.findFirst({
     where: and(
       eq(JobListingTable.id, id),
-      eq(JobListingTable.status, "published")
+      eq(JobListingTable.status, "published"),
     ),
     with: {
       organization: {

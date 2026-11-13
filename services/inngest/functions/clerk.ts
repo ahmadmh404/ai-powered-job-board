@@ -35,11 +35,12 @@ export const clerkCreateUser = inngest.createFunction(
   { event: "Clerk/user.created" },
   async ({ event, step }) => {
     // step 1: verify the webhook
-    // steps are used to run retries from where a task stopped the last time it ran.
+    // steps are used to run retries from wheres a task stopped the last time it ran.
     await step.run("verify-webhook", async () => {
       try {
         validateWebhook(event.data);
-      } catch {
+      } catch (e) {
+        console.log("Webhook erifycation Errro: ", e);
         // this fancy function says 'don't buther yourself this step woill never success.
         throw new NonRetriableError("Invalid webhook");
       }
@@ -50,7 +51,7 @@ export const clerkCreateUser = inngest.createFunction(
       const userData = event.data.data;
 
       const email = userData.email_addresses.find(
-        (email) => email.id === userData.primary_email_address_id
+        (email) => email.id === userData.primary_email_address_id,
       );
 
       if (email === null || email?.email_address == null) {
@@ -73,7 +74,7 @@ export const clerkCreateUser = inngest.createFunction(
     await step.run("create-user-notification-settings", async () => {
       await insertUserNotificationSettings({ userId });
     });
-  }
+  },
 );
 
 // clerk update user
@@ -98,7 +99,7 @@ export const clerkUpdateUser = inngest.createFunction(
       const userData = event.data.data;
 
       const email = userData.email_addresses.find(
-        (email) => email.id === userData.primary_email_address_id
+        (email) => email.id === userData.primary_email_address_id,
       );
 
       if (email == null) {
@@ -113,7 +114,7 @@ export const clerkUpdateUser = inngest.createFunction(
         updatedAt: new Date(userData.updated_at),
       });
     });
-  }
+  },
 );
 
 // clerk delete user
@@ -143,7 +144,7 @@ export const clerkDeleteUser = inngest.createFunction(
 
       await deleteUser(id);
     });
-  }
+  },
 );
 
 // create organization
@@ -174,7 +175,7 @@ export const clerkCreateOrganization = inngest.createFunction(
         updatedAt: new Date(orgData.updated_at),
       });
     });
-  }
+  },
 );
 
 export const clerkUpdateOrganization = inngest.createFunction(
@@ -202,7 +203,7 @@ export const clerkUpdateOrganization = inngest.createFunction(
         updatedAt: new Date(orgData.updated_at),
       });
     });
-  }
+  },
 );
 
 export const clerkDeleteOrganization = inngest.createFunction(
@@ -229,7 +230,7 @@ export const clerkDeleteOrganization = inngest.createFunction(
 
       await deleteOrganization(id);
     });
-  }
+  },
 );
 
 export const clerkCreateOrgMembership = inngest.createFunction(
@@ -257,7 +258,7 @@ export const clerkCreateOrgMembership = inngest.createFunction(
         organizationId: orgId,
       });
     });
-  }
+  },
 );
 
 export const clerkDeleteOrgMembership = inngest.createFunction(
@@ -285,5 +286,5 @@ export const clerkDeleteOrgMembership = inngest.createFunction(
         organizationId: orgId,
       });
     });
-  }
+  },
 );

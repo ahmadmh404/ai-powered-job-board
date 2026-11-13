@@ -67,7 +67,7 @@ type Props = {
 
 function getColumns(
   canUpdateRating: boolean,
-  canUpdateStage: boolean
+  canUpdateStage: boolean,
 ): ColumnDef<Application>[] {
   return [
     {
@@ -264,7 +264,7 @@ function StageCell({ canUpdate, jobListingId, stage, userId }: StageCellProps) {
           jobListingId,
           userId,
         },
-        stage
+        stage,
       );
 
       if (res.error) {
@@ -332,7 +332,7 @@ function RatingCell({
           jobListingId,
           userId,
         },
-        rating
+        rating,
       );
 
       if (res.error) {
@@ -426,7 +426,7 @@ function ActionsCell({
           open={openModule === "resumeModel"}
           onOpenChange={(o) => setOpenModule(o ? "resumeModel" : null)}
         >
-          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100% - 2rem)] overflow-hidden flex flex-col">
+          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100%-2rem)] overflow-hidden flex flex-col">
             <DialogHeader>
               <DialogTitle>Resume</DialogTitle>
               <DialogDescription>{userName}</DialogDescription>
@@ -462,7 +462,7 @@ function ActionsCell({
           open={openModule === "coverLetterModule"}
           onOpenChange={(o) => setOpenModule(o ? "coverLetterModule" : null)}
         >
-          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100% - 2rem)] overflow-hidden flex flex-col">
+          <DialogContent className="lg:max-w-5xl md:max-w-3xl max-h-[calc(100%-2rem)] overflow-hidden flex flex-col">
             <DialogHeader>
               <DialogTitle>Cover Letter</DialogTitle>
               <DialogDescription>{userName}</DialogDescription>

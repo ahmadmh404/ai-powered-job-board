@@ -18,7 +18,7 @@ export const customFileRouter = {
         maxFileCount: 1,
       },
     },
-    { awaitServerData: true }
+    { awaitServerData: true },
   )
     .middleware(async () => {
       const { userId } = await getCurrentUser();

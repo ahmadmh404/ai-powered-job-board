@@ -183,10 +183,10 @@ async function Applications({ jobListingId }: { jobListingId: string }) {
         },
       }))}
       canUpdateRating={await hasOrgUserPermission(
-        "job_listing_application:change_rating"
+        "job_listing_application:change_rating",
       )}
       canUpdateStage={await hasOrgUserPermission(
-        "job_listing_application:change_stage"
+        "job_listing_application:change_stage",
       )}
     />
   );
@@ -320,7 +320,7 @@ export async function getJobListing(id: string, orgId: string) {
   return db.query.JobListingTable.findFirst({
     where: and(
       eq(JobListingTable.id, id),
-      eq(JobListingTable.organizationId, orgId)
+      eq(JobListingTable.organizationId, orgId),
     ),
   });
 }

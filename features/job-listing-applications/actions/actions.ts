@@ -28,7 +28,7 @@ import { hasOrgUserPermission } from "@/services/clerk/lib/org-user-permissions"
 
 export async function createJobListingApplication(
   jobListingId: string,
-  unsafeData: z.infer<typeof jobListingApplicationSchema>
+  unsafeData: z.infer<typeof jobListingApplicationSchema>,
 ) {
   const permissionError = {
     error: true,
@@ -43,7 +43,7 @@ export async function createJobListingApplication(
 
   const userJobListingApplication = await getUserJobListingApplication(
     userId,
-    jobListingId
+    jobListingId,
   );
 
   if (userJobListingApplication) {
@@ -95,7 +95,7 @@ export async function updateJobListingApplicationStage(
     jobListingId: string;
     userId: string;
   },
-  unsafeStage: ApplicationStage
+  unsafeStage: ApplicationStage,
 ) {
   const { success, data: stage } = z
     .enum(applicationStages)
@@ -133,7 +133,7 @@ export async function updateJobListingApplicationStage(
     { jobListingId, userId },
     {
       stage,
-    }
+    },
   );
 
   return { error: false, message: "Job listing stage updated successfully" };
@@ -148,7 +148,7 @@ export async function updateJobListingApplicationRating(
     jobListingId: string;
     userId: string;
   },
-  unsafeRating: number | null
+  unsafeRating: number | null,
 ) {
   const { success, data: rating } = z
     .number()
@@ -189,7 +189,7 @@ export async function updateJobListingApplicationRating(
     { jobListingId, userId },
     {
       rating,
-    }
+    },
   );
 
   return { error: false, message: "Job listing rating updated successfully" };
@@ -197,7 +197,7 @@ export async function updateJobListingApplicationRating(
 
 async function getUserJobListingApplication(
   userId: string,
-  jobListingId: string
+  jobListingId: string,
 ) {
   "use cache";
   cacheTag(getJobListingApplicationIdTag({ userId, jobListingId }));
@@ -205,7 +205,7 @@ async function getUserJobListingApplication(
   return db.query.JobLIstingApplicationTable.findFirst({
     where: and(
       eq(JobLIstingApplicationTable.userId, userId),
-      eq(JobLIstingApplicationTable.jobListingId, jobListingId)
+      eq(JobLIstingApplicationTable.jobListingId, jobListingId),
     ),
     columns: {
       userId: true,
@@ -220,7 +220,7 @@ async function getPublishJobListing(id: string) {
   return db.query.JobListingTable.findFirst({
     where: and(
       eq(JobListingTable.id, id),
-      eq(JobListingTable.status, "published")
+      eq(JobListingTable.status, "published"),
     ),
     columns: { id: true },
   });

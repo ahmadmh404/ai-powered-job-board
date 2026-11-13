@@ -19,7 +19,7 @@ import {
 } from "../lib/plan-features-helpers";
 
 export async function createJobListing(
-  unsaveData: z.infer<typeof JobListingSchema>
+  unsaveData: z.infer<typeof JobListingSchema>,
 ) {
   const { orgId } = await getCurrentOrganization();
 
@@ -52,7 +52,7 @@ export async function createJobListing(
 
 export async function updateJobListing(
   id: string,
-  unsaveData: Partial<typeof JobListingTable.$inferInsert>
+  unsaveData: Partial<typeof JobListingTable.$inferInsert>,
 ) {
   const { orgId } = await getCurrentOrganization();
 

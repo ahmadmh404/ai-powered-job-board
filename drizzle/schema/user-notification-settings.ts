@@ -9,12 +9,12 @@ export const UserNotificationSettingsTable = pgTable(
   {
     userId: varchar()
       .primaryKey()
-      .references(() => UserTable.id),
+      .references(() => UserTable.id, { onDelete: "cascade" }),
     newJobEmailNotifications: boolean().notNull().default(false),
     aiPrompt: varchar(),
     createdAt,
     updatedAt,
-  }
+  },
 );
 
 export const UserNotificationSettingsReferences = relations(
@@ -24,5 +24,5 @@ export const UserNotificationSettingsReferences = relations(
       fields: [UserNotificationSettingsTable.userId],
       references: [UserTable.id],
     }),
-  })
+  }),
 );

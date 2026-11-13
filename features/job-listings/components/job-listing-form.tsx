@@ -78,10 +78,6 @@ function JobListingForm({ jobListing }: Props) {
         },
   });
 
-  const wageInterval = form.watch("wageInterval");
-
-  console.log("wageInterval: ", wageInterval);
-
   async function onSubmit(data: z.infer<typeof JobListingSchema>) {
     const action = jobListing
       ? updateJobListing.bind(null, jobListing.id)
@@ -134,7 +130,7 @@ function JobListingForm({ jobListing }: Props) {
                         field.onChange(
                           isNaN(e.target.valueAsNumber)
                             ? null
-                            : e.target.valueAsNumber
+                            : e.target.valueAsNumber,
                         );
                       }}
                     />

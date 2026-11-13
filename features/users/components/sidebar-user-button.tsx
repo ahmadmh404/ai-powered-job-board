@@ -21,7 +21,7 @@ async function SidebarUserSuspense() {
       <SignOutButton>
         <SidebarMenuButton>
           <LogOutIcon />
-          <span>Log Out</span>
+          Log Out
         </SidebarMenuButton>
       </SignOutButton>
     );

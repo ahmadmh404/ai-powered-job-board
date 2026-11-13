@@ -50,8 +50,8 @@ export const properDailyUserJobListingNotifications = inngest.createFunction(
           eq(JobListingTable.status, "published"),
           gte(
             JobListingTable.postedAt,
-            subDays(new Date(event?.ts ?? Date.now()), 1)
-          )
+            subDays(new Date(event?.ts ?? Date.now()), 1),
+          ),
         ),
         columns: {
           createdAt: false,
@@ -95,7 +95,7 @@ export const properDailyUserJobListingNotifications = inngest.createFunction(
     });
 
     await step.sendEvent("send-emails", events);
-  }
+  },
 );
 
 export const sendDailyUserJobListingEmail = inngest.createFunction(
@@ -127,10 +127,9 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
       });
 
       matchingJobListings = jobListings.filter((listing) =>
-        matchingIds.includes(listing.id)
+        matchingIds.includes(listing.id),
       );
     }
-    console.log("user info: ", name, email);
 
     if (matchingJobListings.length === 0) return;
 
@@ -148,7 +147,7 @@ export const sendDailyUserJobListingEmail = inngest.createFunction(
 
       console.log("Email was sent");
     });
-  }
+  },
 );
 
 export const prepareDailyOrganizationUsrApplicationNotifications =
@@ -166,7 +165,7 @@ export const prepareDailyOrganizationUsrApplicationNotifications =
         return await db.query.OrganizationUserSettingsTable.findMany({
           where: eq(
             OrganizationUserSettingsTable.newApplicationEmailNotifications,
-            true
+            true,
           ),
           columns: {
             userId: true,
@@ -183,7 +182,7 @@ export const prepareDailyOrganizationUsrApplicationNotifications =
         return await db.query.JobLIstingApplicationTable.findMany({
           where: gte(
             JobLIstingApplicationTable.createdAt,
-            subDays(new Date(event?.ts ?? Date.now()), 1)
+            subDays(new Date(event?.ts ?? Date.now()), 1),
           ),
           columns: {
             rating: true,
@@ -212,7 +211,7 @@ export const prepareDailyOrganizationUsrApplicationNotifications =
       // group the notifications by userId
       const groupedUserNotifications = Object.groupBy(
         userNotifications,
-        (u) => u.userId
+        (u) => u.userId,
       );
 
       // get events data
@@ -263,7 +262,7 @@ export const prepareDailyOrganizationUsrApplicationNotifications =
 
       // activate the events
       await step.sendEvent("send-emails", events);
-    }
+    },
   );
 
 export const sendDailyOrganizationUserApplicationEmails =
@@ -296,5 +295,5 @@ export const sendDailyOrganizationUserApplicationEmails =
           }),
         });
       });
-    }
+    },
   );

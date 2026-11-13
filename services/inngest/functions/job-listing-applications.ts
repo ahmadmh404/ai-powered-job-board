@@ -23,7 +23,7 @@ export const rankingApplicant = inngest.createFunction(
       const application = await db.query.JobLIstingApplicationTable.findFirst({
         where: and(
           eq(JobLIstingApplicationTable.userId, userId),
-          eq(JobLIstingApplicationTable.jobListingId, jobListingId)
+          eq(JobLIstingApplicationTable.jobListingId, jobListingId),
         ),
         columns: {
           coverLetter: true,
@@ -72,7 +72,7 @@ export const rankingApplicant = inngest.createFunction(
     if (coverLetter == null || jobListing == null) return;
 
     await applicantRankingAgent.run(
-      JSON.stringify({ coverLetter, resumeSummary, jobListing, userId })
+      JSON.stringify({ coverLetter, resumeSummary, jobListing, userId }),
     );
-  }
+  },
 );

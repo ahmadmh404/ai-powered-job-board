@@ -23,7 +23,6 @@ type Props = {
 export function SidebarUserButtonClient({ user }: Props) {
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
-
   const { openUserProfile } = useClerk();
 
   return (
