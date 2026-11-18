@@ -1,15 +1,64 @@
-## SPN App Todos
+# App's Current state report
 
-### 5 Oct, 25
+## Job seeker
 
-- Gemini API worked but the the rating isn't updating in the DB although the rating is passed
-- Anthropic API doesn't work cuz the limitation and need for credits.
+### 1. Missing Loading tates
 
-### 6 Oct, 25
+This is related to missing loading skeleton on loading data or apges.
 
-- The bug with updating the rating in DB was fixed.
-- new issue with get cache/job-listings.ts
+- List Job Listings on home page.
+- AI search page content.
 
-### 28 Oct, 25
+### Empty form submission
 
-- Test creating job listings with neon db link.
+This is related to submitting an empty form and wasting server resources.
+
+- Job Listing Filter Form.
+- AI swarch form.
+
+### 3. Visual Bug
+
+This is related to bugs in the UI.
+
+**1. Job Listing Details:**
+
+- it uses sheet when page is loaded.
+- when existing a job listing details page and reopening it it doen't open the sheet/resizable-panel
+
+### 4. Features recommendation
+
+This is related to recommended features to implement.
+
+- A job seeker can track job listings applied to.
+
+## Organization Employee
+
+### 1. Business Logic Bugs
+
+This is related to the app's business logic
+
+- An orga employee can't apply for a job that his company published & can not see it's job listings in the public.
+
+### 2. Logcc Bugs
+
+- mutations must trigger instant queries revalidation -> UI updates or saying refresh the page to see the results. -- toasts already exist--.
+
+### 1. Missing Loading tates
+
+This is related to missing loading skeleton.
+
+- Job Listing Details skeleton.
+
+### 4. Features Recommendation
+
+- Apply job-listing-based applicant rating filter so for each job listing we have a different allowed_to_be_sent applicants emails.
+
+## Production Release
+
+### 1. Clerk
+
+- update env vars in vercel project settings (publician and webhook).
+- learn how to go out live on inngest with clerk webhook.
+- verify if the react-email has production guide
+- also verify uploadthing production guide.
+- also verify if gemini needs updates for production.

@@ -14,7 +14,7 @@ import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getMatchingJobListing } from "@/services/inngest/ai/get-matching-job-listings";
 
 export async function insertJobListing(
-  jobListing: typeof JobListingTable.$inferInsert
+  jobListing: typeof JobListingTable.$inferInsert,
 ) {
   const [newListing] = await db
     .insert(JobListingTable)
@@ -34,7 +34,7 @@ export async function insertJobListing(
 
 export async function updateJobListing(
   id: string,
-  jobListing: Partial<typeof JobListingTable.$inferInsert>
+  jobListing: Partial<typeof JobListingTable.$inferInsert>,
 ) {
   const [updatedJobListing] = await db
     .update(JobListingTable)
@@ -65,7 +65,7 @@ export async function deleteJobListing(id: string) {
 }
 
 export const getJobListingAISearchResults = async (
-  unsafe: z.infer<typeof jobListingAISearchSchema>
+  unsafe: z.infer<typeof jobListingAISearchSchema>,
 ): Promise<
   { error: true; message: string } | { error: false; jobIds: string[] }
 > => {
