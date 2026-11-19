@@ -38,7 +38,7 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
 
     const result = await step.ai.infer("create-ai-summary", {
       model: step.ai.models.gemini({
-        model: "gemini-3.8-flash",
+        model: env.GEMINI_MODEL,
         defaultParameters: {},
         apiKey: env.GEMINI_API_KEY,
       }),

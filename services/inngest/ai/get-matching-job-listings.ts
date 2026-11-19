@@ -53,11 +53,11 @@ export async function getMatchingJobListing({
             stateAbbreviation: listing.stateAbbreviation ?? undefined,
             locationRequirement: listing.locationRequirement ?? undefined,
           }))
-          .parse(listing)
-      )
+          .parse(listing),
+      ),
     )}`,
     model: gemini({
-      model: "gemini-2.5-flash",
+      model: env.GEMINI_MODEL,
       apiKey: env.GEMINI_API_KEY,
     }),
   });
