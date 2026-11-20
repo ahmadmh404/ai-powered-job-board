@@ -1,7 +1,11 @@
 import { updateJobListingApplication } from "@/features/job-listing-applications/db/job-listing-applications";
 import { env } from "@/data/env/server";
-import { createAgent, createTool, gemini } from "@inngest/agent-kit";
+import { createAgent, createTool, openai } from "@inngest/agent-kit";
 import { z } from "zod";
+import {
+  GROQ_BASE_URL,
+  AI_MODELS,
+} from "@/features/job-listing-applications/data/constants";
 
 const saveApplicantRatingTool = createTool({
   name: "save-applicant-ranking",
@@ -23,11 +27,20 @@ export const applicantRankingAgent = createAgent({
   name: "Applicant Ranking Agent",
   description:
     "Agent for ranking job applicants for specific job listings based on their resume and cover letter.",
-  system:
-    "You are an expert at ranking job applicants for specific jobs based on their resume and cover letter. You will be provided with a user prompt that includes a user's id, resume and cover letter as well as the job listing they are applying for in JSON. Your task is to compare the job listing with the applicant's resume and cover letter and provide a rating for the applicant on how well they fit that specific job listing. The rating should be a number between 1 and 5, where 5 is the highest rating indicating a perfect or near perfect match. A rating 3 should be used for applicants that barely meet the requirements of the job listing, while a rating of 1 should be used for applicants that do not meet the requirements at all. You should save this user rating in the database and not return any output.",
+  system: `You are an expert at ranking job applicants for specific jobs based on their resume summary and cover letter. 
+You will receive a JSON object containing userId, jobListing (including its id), resumeSummary, and coverLetter. 
+Compare the job listing requirements with the applicant's resume summary and cover letter, then assign an integer rating from 1 to 5:
+- 5: Perfect or near-perfect match
+- 4: Strong match meeting almost all requirements
+- 3: Barely meets the core requirements
+- 2: Weak match missing key requirements
+- 1: Does not meet requirements at all
+
+You MUST call the "save-applicant-ranking" tool with the exact userId, jobListing.id as jobListingId, and your integer rating. After calling the tool, stop and do not return extra text.`,
   tools: [saveApplicantRatingTool],
-  model: gemini({
-    model: env.GEMINI_MODEL,
-    apiKey: env.GEMINI_API_KEY,
+  model: openai({
+    model: AI_MODELS.HIGH_REASONING,
+    baseUrl: GROQ_BASE_URL,
+    apiKey: env.GROQ_API_KEY,
   }),
 });

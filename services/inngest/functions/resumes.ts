@@ -6,6 +6,10 @@ import { env } from "@/data/env/server";
 import { updateUserResume } from "@/features/users/db/user-resumes";
 import { fetchUploadThingFile } from "@/lib/fetch-uploadthing-fiile";
 import { NonRetriableError } from "inngest";
+import {
+  GROQ_BASE_URL,
+  AI_MODELS,
+} from "@/features/job-listing-applications/data/constants";
 
 export const createAiSummaryOfUploadedResume = inngest.createFunction(
   {
@@ -32,43 +36,40 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
       try {
         return await fetchUploadThingFile(userResume.resumeFileUrl);
       } catch (error) {
-        throw new NonRetriableError("File Weren't Found!");
+        throw new NonRetriableError(
+          error instanceof Error
+            ? error.message
+            : "File couldn't be processed.",
+        );
       }
     });
 
     const result = await step.ai.infer("create-ai-summary", {
-      model: step.ai.models.gemini({
-        model: env.GEMINI_MODEL,
-        defaultParameters: {},
-        apiKey: env.GEMINI_API_KEY,
+      model: step.ai.models.openai({
+        baseUrl: GROQ_BASE_URL,
+        model: AI_MODELS.LOW_REASONING,
+        apiKey: env.GROQ_API_KEY,
       }),
       body: {
-        contents: [
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an expert technical recruiter. Summarize the provided resume clearly in markdown, highlighting key skills, years of experience, notable roles, and education so hiring managers can quickly evaluate the candidate.",
+          },
           {
             role: "user",
-            parts: [
-              {
-                inlineData: resume,
-              },
-              {
-                text: "Summarize the following resume and extract all key skills, experience, and qualifications. The summary should include all the information that a hiring manager would need to know about the candidate in order to determine if they are a good fit for a job. This summary should be formatted as markdown. Do not return any other text. If the file does not look like a resume return the text 'N/A'.",
-              },
-            ],
+            content: `Please summarize this resume:\n\n${resume.text}`,
           },
         ],
       },
     });
 
-    // Getting the message content.
-    if (result.candidates == null || result.candidates.length === 0) return;
-    const message = result.candidates[0].content.parts[0];
-
-    console.log({ message });
+    const aiSummary = result.choices?.[0]?.message?.content;
+    if (!aiSummary) return;
 
     await step.run("save-ai-summary", async () => {
-      if ("text" in message) {
-        await updateUserResume(userId, { aiSummary: message.text });
-      }
+      await updateUserResume(userId, { aiSummary });
     });
   },
 );

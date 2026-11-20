@@ -8,9 +8,10 @@ export const env = createEnv({
     CLERK_SECRET_KEY: z.string().min(1),
     CLERK_WEBHOOK_SECRET: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
-    GEMINI_API_KEY: z.string().min(1),
+
+    GROQ_API_KEY: z.string().min(1),
+
     RESEND_API_KEY: z.string().min(1),
-    GEMINI_MODEL: z.string().min(1),
   },
 
   // this prop takes all our process env variables and validate them over these zod validate rules

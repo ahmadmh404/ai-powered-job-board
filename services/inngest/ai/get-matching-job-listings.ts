@@ -4,10 +4,15 @@ import {
   locationRequirements,
   wageIntervals,
 } from "@/drizzle/schemas";
-import { createAgent, gemini } from "@inngest/agent-kit";
+import { createAgent, gemini, openai } from "@inngest/agent-kit";
 import * as z from "zod";
 import { getLastOutputMessage } from "./get-last-output-message";
 import { env } from "@/data/env/server";
+import {
+  GROQ_BASE_URL,
+  AI_MODELS,
+  CEREBRAS_BASE_URL,
+} from "@/features/job-listing-applications/data/constants";
 
 const listingSchema = z.object({
   id: z.string(),
@@ -27,49 +32,62 @@ interface Props {
   jobListings: z.infer<typeof listingSchema>[];
   options?: { maxNumberOfJobs?: number };
 }
-
 export async function getMatchingJobListing({
   jobListings,
   prompt,
   options: { maxNumberOfJobs } = {},
 }: Props) {
+  if (jobListings.length === 0) return [];
+
   const NO_JOBS = "NO_JOBS";
+
+  const compactListings = jobListings.map((listing) => {
+    const parsed = listingSchema.parse(listing);
+    return {
+      id: parsed.id,
+      title: parsed.title,
+      // Truncate long descriptions so 50+ jobs still fit easily in one prompt
+      description: parsed.description.slice(0, 800),
+      wage: parsed.wage ?? undefined,
+      wageInterval: parsed.wageInterval ?? undefined,
+      city: parsed.city ?? undefined,
+      stateAbbreviation: parsed.stateAbbreviation ?? undefined,
+      experienceLevel: parsed.experienceLevel,
+      type: parsed.type,
+      locationRequirement: parsed.locationRequirement,
+    };
+  });
 
   const agent = createAgent({
     name: "Job Listings Agent",
     description: "Agent for matching users with job listings",
-    system: `You are an expert at matching people with jobs based on their specific experience, and requirements. The provided user prompt will be a description that can include information about themselves as well what they are looking for in a job. ${
+    system: `You are an expert at matching people with jobs based on their specific experience and requirements. The user prompt describes their background and what they are looking for. ${
       maxNumberOfJobs
-        ? `You are to return up to ${maxNumberOfJobs} jobs.`
+        ? `Return up to ${maxNumberOfJobs} matching jobs.`
         : `Return all jobs that match their requirements.`
-    } Return the jobs as a comma separated list of jobIds. If you cannot find any jobs that match the user prompt, return the text "${NO_JOBS}". Here is the JSON array of available job listings: ${JSON.stringify(
-      jobListings.map((listing) =>
-        listingSchema
-          .transform((listing) => ({
-            ...listing,
-            wage: listing.wage ?? undefined,
-            wageInterval: listing.wageInterval ?? undefined,
-            city: listing.city ?? undefined,
-            stateAbbreviation: listing.stateAbbreviation ?? undefined,
-            locationRequirement: listing.locationRequirement ?? undefined,
-          }))
-          .parse(listing),
-      ),
-    )}`,
-    model: gemini({
-      model: env.GEMINI_MODEL,
-      apiKey: env.GEMINI_API_KEY,
+    }
+STRICT OUTPUT RULES:
+- Return ONLY a comma-separated list of matching job IDs (e.g. id1,id2,id3) with NO extra text, markdown, or explanation.
+- If no jobs match, return ONLY the exact string "${NO_JOBS}".
+
+Available job listings JSON:
+${JSON.stringify(compactListings)}`,
+    model: openai({
+      model: AI_MODELS.HIGH_REASONING,
+      baseUrl: GROQ_BASE_URL,
+      apiKey: env.GROQ_API_KEY,
     }),
   });
 
   const result = await agent.run(prompt);
+  const lastMessage = getLastOutputMessage(result)?.trim();
 
-  const lastMessage = getLastOutputMessage(result);
+  if (!lastMessage || lastMessage === NO_JOBS) return [];
 
-  if (lastMessage == null || lastMessage === NO_JOBS) return [];
-
+  // Filter against valid IDs in case the model hallucinates or adds extra words
+  const validIds = new Set(jobListings.map((j) => j.id));
   return lastMessage
-    ?.split(",")
+    .split(",")
     .map((jobId) => jobId.trim())
-    .filter(Boolean);
+    .filter((jobId) => validIds.has(jobId));
 }
