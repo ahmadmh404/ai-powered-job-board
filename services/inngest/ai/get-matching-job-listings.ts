@@ -11,7 +11,6 @@ import { env } from "@/data/env/server";
 import {
   GROQ_BASE_URL,
   AI_MODELS,
-  CEREBRAS_BASE_URL,
 } from "@/features/job-listing-applications/data/constants";
 
 const listingSchema = z.object({
