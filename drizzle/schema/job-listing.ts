@@ -18,7 +18,7 @@ export const wageIntervals = ["hourly", "yearly"] as const;
 export type WageInterval = (typeof wageIntervals)[number];
 export const WageIntervalEnum = pgEnum(
   "job_listing_wage_interval",
-  wageIntervals
+  wageIntervals,
 );
 
 // location requirement
@@ -26,7 +26,7 @@ export const locationRequirements = ["in-office", "remote", "hybrid"] as const;
 export type LocationRequirement = (typeof locationRequirements)[number];
 export const LocationRequirementEnum = pgEnum(
   "job_listing_location_requirement",
-  locationRequirements
+  locationRequirements,
 );
 
 // experience level
@@ -34,7 +34,7 @@ export const experienceLevels = ["junior", "mid-level", "senior"] as const;
 export type ExperienceLevel = (typeof experienceLevels)[number];
 export const ExperienceLevelEnum = pgEnum(
   "job_listing_experience_level",
-  experienceLevels
+  experienceLevels,
 );
 
 // job listing status
@@ -42,7 +42,7 @@ export const jobListingStatus = ["draft", "published", "delisted"] as const;
 export type JobListingStatus = (typeof jobListingStatus)[number];
 export const JobListingStatusEnum = pgEnum(
   "job_listing_status",
-  jobListingStatus
+  jobListingStatus,
 );
 
 // job listing type
@@ -85,7 +85,7 @@ export const JobListingTable = pgTable(
   },
 
   // to search faster depending on state abbreviation
-  (table) => [index().on(table.stateAbbreviation)]
+  (table) => [index().on(table.stateAbbreviation)],
 );
 
 // relations
@@ -100,5 +100,5 @@ export const jobListingReferences = relations(
 
     // relation have neither fields nor references. This tells Typescript that applications is nullable:
     applications: many(JobLIstingApplicationTable),
-  })
+  }),
 );
