@@ -10,6 +10,7 @@ import {
   GROQ_BASE_URL,
   AI_MODELS,
 } from "@/features/job-listing-applications/data/constants";
+import { sanitizeAiMdx } from "@/lib/utils";
 
 export const createAiSummaryOfUploadedResume = inngest.createFunction(
   {
@@ -54,8 +55,15 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
         messages: [
           {
             role: "system",
-            content:
-              "You are an expert technical recruiter. Summarize the provided resume clearly in markdown, highlighting key skills, years of experience, notable roles, and education so hiring managers can quickly evaluate the candidate.",
+            content: [
+              "You are an expert technical recruiter. Summarize the provided resume clearly in GitHub-Flavored Markdown, highlighting key skills, years of experience, notable roles, and education so hiring managers can quickly evaluate the candidate.",
+              "",
+              "Formatting rules for MDX compatibility:",
+              "- You may use standard Markdown headings, bullet lists, bold text, and tables.",
+              "- Inside Markdown tables, always use self-closing <br /> tags for line breaks (never unclosed <br>).",
+              "- Do not use any other raw HTML tags (such as <p>, <div>, <span>, or <hr>).",
+              "- Avoid raw curly braces ({ or }) and unescaped angle brackets (< or >) in plain text.",
+            ].join("\n"),
           },
           {
             role: "user",
@@ -69,7 +77,7 @@ export const createAiSummaryOfUploadedResume = inngest.createFunction(
     if (!aiSummary) return;
 
     await step.run("save-ai-summary", async () => {
-      await updateUserResume(userId, { aiSummary });
+      await updateUserResume(userId, { aiSummary: sanitizeAiMdx(aiSummary) });
     });
   },
 );
