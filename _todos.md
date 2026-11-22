@@ -6,15 +6,15 @@
 
 This is related to missing loading skeleton on loading data or apges.
 
-- List Job Listings on home page.
-- AI search page content.
+- List Job Listings on home page. ✅
+- AI search page content. ✅
 
 ### Empty form submission
 
 This is related to submitting an empty form and wasting server resources.
 
-- Job Listing Filter Form.
-- AI swarch form.
+- Job Listing Filter Form. ✅
+- AI swarch form. ✅
 
 ### 3. Visual Bug
 
@@ -22,8 +22,8 @@ This is related to bugs in the UI.
 
 **1. Job Listing Details:**
 
-- it uses sheet when page is loaded.
-- when existing a job listing details page and reopening it it doen't open the sheet/resizable-panel
+- it uses sheet when windows is bigger than 1024
+- when existing a job listing details page and reopening it it doen't open the sheet/resizable-panel ✅
 
 ### 4. Features recommendation
 
@@ -47,18 +47,8 @@ This is related to the app's business logic
 
 This is related to missing loading skeleton.
 
-- Job Listing Details skeleton.
+- Job Listing Details skeleton. ✅
 
 ### 4. Features Recommendation
 
 - Apply job-listing-based applicant rating filter so for each job listing we have a different allowed_to_be_sent applicants emails.
-
-## Production Release
-
-### 1. Clerk
-
-- update env vars in vercel project settings (publician and webhook).
-- learn how to go out live on inngest with clerk webhook.
-- verify if the react-email has production guide
-- also verify uploadthing production guide.
-- also verify if gemini needs updates for production.

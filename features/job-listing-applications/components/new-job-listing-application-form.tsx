@@ -62,7 +62,6 @@ export default function NewJobListingApplicationForm({
               </FormControl>
 
               <FormDescription>Optional</FormDescription>
-
               <FormMessage />
             </FormItem>
           )}

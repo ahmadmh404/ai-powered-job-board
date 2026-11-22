@@ -241,7 +241,7 @@ export default function JobListingFilterForm() {
 
         <Button
           type="submit"
-          disabled={form.formState.isSubmitting}
+          disabled={!form.formState.isDirty || form.formState.isSubmitting}
           className="w-full"
         >
           <LoadingSwap isLoading={form.formState.isSubmitting}>

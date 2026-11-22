@@ -70,7 +70,7 @@ export function JobListingAISearchForm() {
         <Button
           className="w-full"
           type="submit"
-          disabled={form.formState.isSubmitting}
+          disabled={!form.formState.isDirty || form.formState.isSubmitting}
         >
           <LoadingSwap isLoading={form.formState.isSubmitting}>
             Search

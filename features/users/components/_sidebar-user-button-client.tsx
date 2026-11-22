@@ -30,7 +30,7 @@ export function SidebarUserButtonClient({ user }: Props) {
       <DropdownMenuTrigger asChild>
         <SidebarMenuButton
           size={"lg"}
-          className="data-[state=open]:bg-sidebar-accent data-[state=open[:text-sidebar-accent-foreground"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
           <UserInfo user={user} />
           <ChevronsUpDownIcon className="ml-auto group-data-[state=collapsed]:hidden" />

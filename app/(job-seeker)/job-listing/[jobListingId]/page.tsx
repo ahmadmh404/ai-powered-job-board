@@ -3,6 +3,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Skeleton } from "@/components/ui/skeleton";
 import JobListingItems, {
   DaysSincePosting,
 } from "../../_shared/job-listing-items";
@@ -15,11 +16,7 @@ import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getJobListingIdTag } from "@/features/job-listings/db/cache/job-listings";
 import { db } from "@/drizzle/db";
 import { and, eq } from "drizzle-orm";
-import {
-  JobLIstingApplicationTable,
-  JobListingTable,
-  UserResumeTable,
-} from "@/drizzle/schemas";
+import { JobListingTable } from "@/drizzle/schemas";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -27,27 +24,8 @@ import { convertSearchParamsToString } from "@/lib/convert-search-params-to-stri
 import { XIcon } from "lucide-react";
 import JobListingBadges from "@/features/job-listings/components/job-listing-badges";
 import MarkdownRenderer from "@/components/markdown/markdown-renderer";
-import { getCurrentUser } from "@/services/clerk/lib/get-current-auth";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { SignUpButton } from "@/services/clerk/components/auth-buttons";
-import { getJobListingApplicationIdTag } from "@/features/job-listing-applications/db/cache/job-listing-applications";
-import { differenceInDays } from "date-fns";
-import { connection } from "next/server";
-import { getUserResumeIdTAg } from "@/features/users/db/cache/user-resumes";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import NewJobListingApplicationForm from "@/features/job-listing-applications/components/new-job-listing-application-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ApplyButton } from "@/features/job-listing-applications/components/apply-button";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -68,12 +46,15 @@ export default function JobListingPage({ params, searchParams }: Props) {
           breakPoint="min-width:1024px"
           otherwise={
             <ClientSheet>
-              <SheetContent className="p-4 overflow-y-auto" hideCloseButton>
+              <SheetContent
+                className="p-5 pr-4 overflow-y-auto min-w-[500px]"
+                hideCloseButton
+              >
                 <SheetHeader>
-                  <SheetTitle>Job Listing Details</SheetTitle>
+                  <SheetTitle>Job Listin;g Details</SheetTitle>
                 </SheetHeader>
 
-                <Suspense fallback={<LoadingSpinner />}>
+                <Suspense fallback={<JobListingDetailsSkeleton />}>
                   <JobListingDetails
                     searchParams={searchParams}
                     params={params}
@@ -92,7 +73,7 @@ export default function JobListingPage({ params, searchParams }: Props) {
             defaultSize={30}
           >
             <div className="p-3 h-screen overflow-y-aut">
-              <Suspense fallback={<LoadingSpinner />}>
+              <Suspense fallback={<JobListingDetailsSkeleton />}>
                 <JobListingDetails
                   searchParams={searchParams}
                   params={params}
@@ -155,7 +136,7 @@ async function JobListingDetails({ params, searchParams }: Props) {
             </div>
 
             {jobListing.postedAt != null && (
-              <div className="text-sm font-medium text-primary ml-auto mt-2 @max-md:hidden">
+              <div className="text-sm font-medium text-primary ml-auto @max-md:hidden">
                 <Suspense>
                   <DaysSincePosting postedAt={jobListing.postedAt} />
                 </Suspense>
@@ -189,106 +170,68 @@ async function JobListingDetails({ params, searchParams }: Props) {
   );
 }
 
-async function ApplyButton({ jobListingId }: { jobListingId: string }) {
-  const { userId } = await getCurrentUser();
-
-  if (userId == null) {
-    return (
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button>Apply</Button>
-        </PopoverTrigger>
-
-        <PopoverContent className="flex flex-col gap-2">
-          You need to create an account before applying fo a ob
-          <SignUpButton />
-        </PopoverContent>
-      </Popover>
-    );
-  }
-
-  const application = await getJobListingApplication(jobListingId, userId);
-
-  if (application != null) {
-    const formatter = new Intl.RelativeTimeFormat(undefined, {
-      style: "short",
-      numeric: "always",
-    });
-
-    await connection();
-    const difference = differenceInDays(application.createdAt, new Date());
-
-    return (
-      <div className="text-muted-foreground text-sm">
-        You have applied for this job{" "}
-        {difference === 0 ? "Today" : formatter.format(difference, "days")}
-      </div>
-    );
-  }
-
-  const userResume = await getUserResume(userId);
-
-  if (userResume == null) {
-    return (
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button>Apply</Button>
-        </PopoverTrigger>
-
-        <PopoverContent className="flex flex-col gap-2">
-          You need to upload a resume to apply for a job.
-          <Button asChild>
-            <Link href={"/user-settings/resume"}>Upload Resume</Link>
-          </Button>
-        </PopoverContent>
-      </Popover>
-    );
-  }
-
+export function JobListingDetailsSkeleton() {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Apply</Button>
-      </DialogTrigger>
-      <DialogContent className="md:max-w-3xl flex flex-col max-h-[calc(100% - 2rem)] overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>Application</DialogTitle>
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Loading job listing details"
+      className="space-y-6 @container"
+    >
+      <span className="sr-only">Loading job listing details...</span>
 
-          <DialogDescription>
-            Applying for a job cannot be undone and is something that you can
-            onl do once per job listing.
-          </DialogDescription>
-        </DialogHeader>
+      <div className="space-y-4">
+        {/* Header row: Avatar, Title/Org/Date, Close button */}
+        <div className="flex gap-3 items-start">
+          <Skeleton className="size-14 rounded-full shrink-0 @max-sm:hidden" />
 
-        <div className="flex-1">
-          <NewJobListingApplicationForm jobListingId={jobListingId} />
+          <div className="flex flex-col flex-1 min-w-0 gap-1.5">
+            <Skeleton className="h-7 w-3/4 max-w-md" />
+            <Skeleton className="h-5 w-2/5 max-w-[220px]" />
+
+            {/* Mobile posted-at slot (`@min-md:hidden`) */}
+            <Skeleton className="h-4 w-16 mt-0.5 @min-md:hidden" />
+          </div>
+
+          {/* Desktop posted-at slot (`@max-md:hidden`) */}
+          <Skeleton className="h-4 w-14 shrink-0 @max-md:hidden" />
+
+          {/* Close button (`size="icon"`) */}
+          <Skeleton className="size-9 rounded-md shrink-0" />
         </div>
-      </DialogContent>
-    </Dialog>
+
+        {/* JobListingBadges row */}
+        <div className="flex flex-wrap gap-3 mt-2">
+          <Skeleton className="h-6 w-20 rounded-md" />
+          <Skeleton className="h-6 w-24 rounded-md" />
+          <Skeleton className="h-6 w-20 rounded-md" />
+          <Skeleton className="h-6 w-24 rounded-md" />
+          <Skeleton className="h-6 w-20 rounded-md" />
+        </div>
+
+        {/* Apply button */}
+        <Skeleton className="h-9 w-20 rounded-md" />
+      </div>
+
+      {/* Job listing description / markdown body */}
+      <div className="space-y-4 pt-2">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-11/12" />
+          <Skeleton className="h-4 w-4/5" />
+        </div>
+
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-44" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+    </div>
   );
-}
-
-async function getUserResume(userId: string) {
-  "use cache";
-
-  cacheTag(getUserResumeIdTAg(userId));
-
-  return db.query.UserResumeTable.findFirst({
-    where: eq(UserResumeTable.userId, userId),
-  });
-}
-
-async function getJobListingApplication(jobListingId: string, userId: string) {
-  "use cache";
-
-  cacheTag(getJobListingApplicationIdTag({ jobListingId, userId }));
-
-  return db.query.JobLIstingApplicationTable.findFirst({
-    where: and(
-      eq(JobLIstingApplicationTable.jobListingId, jobListingId),
-      eq(JobLIstingApplicationTable.userId, userId),
-    ),
-  });
 }
 
 async function getJobListing(id: string) {

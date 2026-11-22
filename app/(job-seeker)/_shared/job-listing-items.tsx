@@ -15,6 +15,7 @@ import {
   OrganizationTable,
   jobListingTypes,
 } from "@/drizzle/schemas";
+import { Skeleton } from "@/components/ui/skeleton";
 import { convertSearchParamsToString } from "@/lib/convert-search-params-to-string";
 import { cn } from "@/lib/utils";
 import { and, desc, eq, ilike, or, SQL } from "drizzle-orm";
@@ -53,7 +54,7 @@ const searchParamsSchema = z.object({
 
 export default function JobListingItems(props: Props) {
   return (
-    <Suspense>
+    <Suspense fallback={<JobListingItemsSkeleton />}>
       <SuspendedComponent {...props} />
     </Suspense>
   );
@@ -125,7 +126,7 @@ function JobListingListItem({
     <Card
       className={cn(
         "@container",
-        jobListing.isFeatured && "border-featured bg-featured/20"
+        jobListing.isFeatured && "border-featured bg-featured/20",
       )}
     >
       <CardHeader>
@@ -189,7 +190,7 @@ export async function DaysSincePosting({ postedAt }: { postedAt: Date }) {
 
 async function getJobListings(
   searchParams: z.infer<typeof searchParamsSchema>,
-  jobListingId: string | undefined
+  jobListingId: string | undefined,
 ) {
   "use cache";
   cacheTag(getJobListingGlobalTag());
@@ -197,13 +198,13 @@ async function getJobListings(
   const whereConditions: (SQL | undefined)[] = [];
   if (searchParams.title) {
     whereConditions.push(
-      ilike(JobListingTable.title, `%${searchParams.title}%`)
+      ilike(JobListingTable.title, `%${searchParams.title}%`),
     );
   }
 
   if (searchParams.locationRequirement) {
     whereConditions.push(
-      eq(JobListingTable.locationRequirement, searchParams.locationRequirement)
+      eq(JobListingTable.locationRequirement, searchParams.locationRequirement),
     );
   }
 
@@ -213,13 +214,13 @@ async function getJobListings(
 
   if (searchParams.state) {
     whereConditions.push(
-      eq(JobListingTable.stateAbbreviation, searchParams.state)
+      eq(JobListingTable.stateAbbreviation, searchParams.state),
     );
   }
 
   if (searchParams.experience) {
     whereConditions.push(
-      eq(JobListingTable.experienceLevel, searchParams.experience)
+      eq(JobListingTable.experienceLevel, searchParams.experience),
     );
   }
 
@@ -229,7 +230,7 @@ async function getJobListings(
 
   if (searchParams.jobIds) {
     whereConditions.push(
-      or(...searchParams.jobIds.map((jobId) => eq(JobListingTable.id, jobId)))
+      or(...searchParams.jobIds.map((jobId) => eq(JobListingTable.id, jobId))),
     );
   }
 
@@ -238,10 +239,10 @@ async function getJobListings(
       jobListingId
         ? and(
             eq(JobListingTable.status, "published"),
-            eq(JobListingTable.id, jobListingId)
+            eq(JobListingTable.id, jobListingId),
           )
         : undefined,
-      and(eq(JobListingTable.status, "published"), ...whereConditions)
+      and(eq(JobListingTable.status, "published"), ...whereConditions),
     ),
     with: {
       organization: {
@@ -260,4 +261,60 @@ async function getJobListings(
   });
 
   return data;
+}
+
+type JobListingItemsSkeletonProps = {
+  count?: number;
+  className?: string;
+};
+
+export function JobListingItemsSkeleton({
+  count = 5,
+  className,
+}: JobListingItemsSkeletonProps) {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Loading job listings"
+      className={cn("flex flex-col gap-y-3", className)}
+    >
+      <span className="sr-only">Loading job listings...</span>
+      {Array.from({ length: count }).map((_, index) => (
+        <JobListingItemSkeleton key={index} />
+      ))}
+    </div>
+  );
+}
+
+export function JobListingItemSkeleton({ className }: { className?: string }) {
+  return (
+    <Card className={cn("@container", className)}>
+      <CardHeader>
+        <div className="flex gap-4">
+          {/* Matches Avatar (`size-14 @max-sm:hidden`) */}
+          <Skeleton className="size-14 rounded-full shrink-0 @max-sm:hidden" />
+
+          {/* Title, organization name, and mobile posted-date slot */}
+          <div className="flex-1 min-w-0 space-y-2">
+            <Skeleton className="h-6 w-3/5 max-w-sm" />
+            <Skeleton className="h-4 w-2/5 max-w-[200px]" />
+            <Skeleton className="h-4 w-16 @min-md:hidden" />
+          </div>
+
+          {/* Desktop posted-date slot (`ml-auto @max-md:hidden`) */}
+          <Skeleton className="h-4 w-14 shrink-0 ml-auto @max-md:hidden" />
+        </div>
+      </CardHeader>
+
+      {/* Matches JobListingBadges row (`flex flex-wrap gap-2`) */}
+      <CardContent className="flex flex-wrap gap-2">
+        <Skeleton className="h-5 w-20 rounded-md" />
+        <Skeleton className="h-5 w-24 rounded-md" />
+        <Skeleton className="h-5 w-16 rounded-md" />
+        <Skeleton className="h-5 w-28 rounded-md" />
+      </CardContent>
+    </Card>
+  );
 }

@@ -1,6 +1,6 @@
 // to make all the functions for user entries caching
 
-import { getGlobalTag, getIdlTag } from "@/lib/data-cache";
+import { getGlobalTag, getIdlTag, getOrganizationTag } from "@/lib/data-cache";
 import { revalidateTag } from "next/cache";
 
 export const getOrganizationGlobalTag = () => {

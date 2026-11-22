@@ -25,12 +25,15 @@ function useIsBreakPoint(breakPoint: string) {
     const controller = new AbortController();
     const media = window.matchMedia(`(${breakPoint})`);
 
+    // Sync immediately on mount so initial render matches viewport
+    setIsBreakPoint(media.matches);
+
     media.addEventListener(
       "change",
       (e) => {
         setIsBreakPoint(e.matches);
       },
-      { signal: controller.signal }
+      { signal: controller.signal },
     );
 
     return () => {
